@@ -1,0 +1,70 @@
+---
+title: "String Mapping"
+author: "Michael Miao"
+date: "8/16/2018"
+output:
+  html_document: default
+  pdf_document: default
+  word_document: default
+params:
+  filename1: "~/git/R-scripts/Mapping/questions.csv" #address of input file 1, change the address to change any input files.
+  filename2: "~/git/R-scripts/Mapping/Final Web Questions.csv" #address of input file 2, change the address to change any input files.
+  output: "./result.csv" #customize name and path for the output file.
+  file1var1: "id" #columnname 1 in file 1.
+  file1var2: "question" #columname 2 in file 1 (the string you want to match with).
+  file2var1: "Variable.Name" #columname 1 in file 1. 
+  file2var2: "Question" #columname 2 in file 2 (the string you want to match with).
+  outputcolumn: "ID" #New column created in out put file based the matched order.
+---
+  
+```{r}
+#packages needed for this project
+require(stringr) 
+require(dplyr) #cbind func.
+require(readr) #read_csv
+library("magrittr",warn.conflicts = FALSE) #pipe "%>%"
+```
+
+```{r}
+#Read the two input files.
+file1 <- read.csv(file = params$filename1)
+file2 <- read.csv(file = params$filename2)
+```
+
+
+```{r}
+#This is the first loaded file.
+input_file1 <- file1
+
+#This is the seceond loaded file.
+input_file2 <- file2
+
+```
+
+
+```{r}
+#Extract the the columns of variables that will be used for matching, and save them as dataframe respectively.
+file1_selected <- cbind(file1[params$file1var1],file1[params$file1var2]) %>% as.data.frame()
+file2_selected <- cbind(file2[params$file2var1],file2[params$file2var2]) %>% as.data.frame()
+
+#delete all N/A entries in two data frames.
+file1_selected <- na.omit(file1_selected)
+file2_selected <- na.omit(file2_selected)
+
+```
+
+
+```{r}
+#Use match function for string matching and keep the name for the columns
+#Based on the source of "question" string matching, we output a temoporary "id" column.
+temp <- file1[params$file1var1][match(file2[params$file2var2][,1],file1[params$file1var2][,1]),] %>% as.character() %>% cbind() %>%
+  `colnames<-`(params$outputcolumn)
+
+#Create a columns in "variablename_questions" to place the temp columns.
+final <- cbind(file2_selected,temp) #%>% as.data.frame()
+
+#Export the final results as a .CSV file and do further checking and manual work.
+write.csv(final,params$output)
+
+```
+

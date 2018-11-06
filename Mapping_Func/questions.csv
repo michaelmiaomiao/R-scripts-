@@ -1,0 +1,532 @@
+id,question,subject,category,construct,subconstruct
+310,My parents set very high standards for me.,Student,Background,Parenting,Expectations
+508,Chinese,Student,Background,Language,Fluency
+371,Friendly,Student,Personality Traits,Big5,Agreeableness
+289,Studying the universe and planets,Student,Career Assessment,Vocational Interest,Investigative
+251,I love meeting new people.,Student,Preference,College,Openness
+290,Building your own house,Student,Career Assessment,Vocational Interest,Realistic
+135,What other languages do you speak?,Student,Background,Demographics,Language
+11,What subject(s) does your child receive tutoring on?,Parent,Background,Middle School,Tutoring
+121,Is forgetful in daily activities.,Parent,Disability in Learning,ADHD,Inattention
+79,Solve math problems,Parent,Career Assessment,Vocational Confidence,Investigative
+509,Arabic,Student,Background,Language,Fluency
+1,What's your child's grade?,Parent,Background,Middle School,grade
+504,Please choose the district your family lives in.,Parent,Background,Demographics,Location
+4,Do you have Hukou of the city where the school resides?,Parent,Background,Demographics,Location
+279,Managing clients' account,Student,Career Assessment,Vocational Interest,Conventional
+388,Curious,Student,Personality Traits,Big5,Openness
+180,It is important to justify the choices I make.,Student,Learning Strategies,Critical Thinking,Critical Opennes
+523,"The UES Self-Discovery Inventory (the “UES-SDI”) provided to you has been prepared by USA-UES. If you complete the UES-SDI, we treat your responses and your results as confidential information. Your personal information will not be shared with or sold to third parties.
+
+Please note that the accuracy of your survey results will depend on how precisely and honestly you answer the questions.Please enter your name below, which will indicate that you voluntarily agree to participate in it.",Student,Introduction,Disclaimer,First page
+526,Please enter your child's name below.,Parent,Introduction,Child Name,---
+100,"Do you have specific expectation for your child's future work industry (e.g. manufacturing, service industry)?",Parent,Preference,work,postgraduation
+507,Please enter your child's school name below.,Parent,Background,Middle School,school
+15,Please choose the city in which your family lives in.,Parent,Background,Demographics,Location
+54,Quiet,Parent,Personality Traits,Big5,Extraversion
+517,Russian,Student,Background,Language,Fluency
+386,Confident,Student,Personality Traits,Big5,Emotional Stability
+312,My parents got angry at me when I make a mistake by accident.,Student,Background,Parenting,Patience
+520,Others___,Student,Background,Language,Fluency
+521,How fluent are you in this language？,Student,Background,Language,Fluency
+385,Stable,Student,Personality Traits,Big5,Emotional Stability
+513,Italian,Student,Background,Language,Fluency
+359,Have you earned any prize in public speaking at or above the municipal level during middle school ?,Student,Extracurriculumn,Specialty,Public Speaking
+45,Sympathetic,Parent,Personality Traits,Big5,Agreeableness
+61,Conventional,Parent,Personality Traits,Big5,Openness
+60,Complex,Parent,Personality Traits,Big5,Openness
+5,Please choose the district your family lives in.,Parent,Background,Demographics,Location
+117,Has difficulty organizing tasks and activities.,Parent,Disability in Learning,ADHD,Inattention
+78,Do complex calculations,Parent,Career Assessment,Vocational Confidence,Investigative
+518,Spanish,Student,Background,Language,Fluency
+136,Others______,Student,Background,Demographics,Language
+243,For the intense feelings I experience when I am communicating my own ideas to others,Student,Motivation,Academic motivation,Intrinsic
+390,My parents want me to go to college in the U.S.,Student,Motivation,Study in U.S.,Extrinsic
+161,I think about what I need to learn before I start working.,Student,Learning Strategies,Meta-Cognition,Meta-Cognition
+449,Play a sport,Student,Career Assessment,Voc Interest & Voc Confidence,IRealistic
+165,"I review my lecture notes regularly, even when a test is not imminent.",Student,Learning Strategies,Time Management,Long Term
+80,Understand science - use information to figure things out,Parent,Career Assessment,Vocational Confidence,Investigative
+87,Play a sport,Parent,Career Assessment,Vocational Confidence,Realistic
+90,Give talks or speeches,Parent,Career Assessment,Vocational Confidence,Social
+91,Mediate disputes,Parent,Career Assessment,Vocational Confidence,Social
+395,I want to have independence.,Student,Motivation,Study in U.S.,Extrinsic
+104,Fidgets with hands or feet or squirms in seat.,Parent,Disability in Learning,ADHD,Hyperactivity-Impulsivity
+108,Is “on the go” or acts as if “driven by a motor.”,Parent,Disability in Learning,ADHD,Hyperactivity-Impulsivity
+107,Has difficulty playing or engaging in leisure activities quietly.,Parent,Disability in Learning,ADHD,Hyperactivity-Impulsivity
+106,Runs about or climbs excessively in situations in which it is inappropriate.,Parent,Disability in Learning,ADHD,Hyperactivity-Impulsivity
+105,Leaves in situations in which remaining seated is expected.,Parent,Disability in Learning,ADHD,Hyperactivity-Impulsivity
+505,Please choose the city in which your family lives.,Parent,Background,Demographics,Location
+197,"When I am participating in group tasks and discussions, my body language shows that I am actively involved.",Student,Communication & Collaboration Skill,Collaboration,Engagement
+213,Having few desires,Student,Knowledge and Beliefs,cultural values,Non-competitive
+204,Valuing education,Student,Knowledge and Beliefs,cultural values,Competitive
+138,What other language  do you speak?,Student,Background,Demographics,Language
+393,Some of my friends are planning to attend U.S. colleges.,Student,Motivation,Study in U.S.,Extrinsic
+111,Has difficulty awaiting turn.,Parent,Disability in Learning,ADHD,Hyperactivity-Impulsivity
+110,Blurts out answers even before questions have been completed.,Parent,Disability in Learning,ADHD,Hyperactivity-Impulsivity
+160,I think of several ways to solve a problem and then choose the best.,Student,Learning Strategies,Meta-Cognition,Meta-Cognition
+109,Talks excessively.,Parent,Disability in Learning,ADHD,Hyperactivity-Impulsivity
+126,"Your child struggles with higher math, such as algebra.",Parent,Disability in Learning,Reading Disability,RD
+125,Your child has unexpected difficulty with learning a foreign language.,Parent,Disability in Learning,Reading Disability,RD
+124,Your child repeatedly reports that he was unaware of assignments and deadlines because the teacher “never told” him what was required.,Parent,Disability in Learning,Reading Disability,RD
+207,Ordering relationships by status and observing this order,Student,Knowledge and Beliefs,cultural values,Filial piety
+123,Your child has extreme difficulty managing and keeping track of homework assignments and deadlines for his various classes.,Parent,Disability in Learning,Reading Disability,RD
+122,Your child must repeatedly read and reread material in order to understand it.,Parent,Disability in Learning,Reading Disability,RD
+247,Class size is not important to me.,Student,Preference,College,Conscientiousness
+394,I want to get better job opportunities.,Student,Motivation,Study in U.S.,Extrinsic
+62,Conservative,Parent,Personality Traits,Big5,Openness
+68,Do a lot of paperwork in a short time,Parent,Career Assessment,Vocational Confidence,Conventional
+185,I interrupt other people to say what I want to say before I forget it.,Student,Communication & Collaboration Skill,Communication,Active Listening
+384,Nervous,Student,Personality Traits,Big5,Emotional Stability
+127,There is a significant discrepancy between your child's IQs and test scores.,Parent,Disability in Learning,Reading Disability,RD
+503,Please choose the district your family lives in.,Parent,Background,Demographics,Location
+497,Others,Student,Background,Demographics,Language
+422,Stay focused under pressure,Student,Personality Traits,Resilience,Resilience
+525,This is the last part of your assessment. Please take out your headphones and raise your hand before proceeding.,Student,DynEd,DynEd,---
+102,Other Industry____,Parent,Preference,work,postgraduation
+96,Do you expect your child attend college in any specific state or location in the U.S.?,Parent,Preference,College,location
+57,Calm,Parent,Personality Traits,Big5,Emotional Stability
+437,Sell things,Student,Career Assessment,Voc Interest & Voc Confidence,IEnterprising
+112,Interrupts or intrudes on others.,Parent,Disability in Learning,ADHD,Hyperactivity-Impulsivity
+145,I ask myself how well I am doing while I am learning something new.,Student,Learning Strategies,Meta-Cognition,Meta-Cognition
+511,French,Student,Background,Language,Fluency
+175,I usually try to think about the bigger picture during a discussion to ensure that the discussion does not deviate from the theme.,Student,Learning Strategies,Critical Thinking,Critical Opennes
+258,"Life is free in U.S., so I can do whatever I want.",Student,Knowledge and Beliefs,american education,Misconceptions
+114,Has difficulty sustaining attention in tasks or play activities.,Parent,Disability in Learning,ADHD,Inattention
+116,Does not follow through on instructions and fails to finish work.,Parent,Disability in Learning,ADHD,Inattention
+85,"Use power tools (e.g. drills, chainsaws, etc.)",Parent,Career Assessment,Vocational Confidence,Realistic
+52,Reserved,Parent,Personality Traits,Big5,Extraversion
+3,Please choose the city in which your child's school is.,Parent,Background,Middle School,school
+200,I am punctual with good attendance.,Student,Communication & Collaboration Skill,Collaboration,Participation
+298,Mediating family conflicts,Student,Career Assessment,Vocational Interest,Social
+189,"To help a person understand me, I change the way I speak based on how the other person is talking to me.",Student,Communication & Collaboration Skill,Communication,Use of language
+152,I ask myself if there was an easier way to do things after I finish a task.,Student,Learning Strategies,Meta-Cognition,Meta-Cognition
+166,I find it hard to stick to a study schedule.,Student,Learning Strategies,Time Management,Long Term
+412,I finish whatever I begin.,Student,Personality Traits,GRIT,GRIT
+147,I learn more when I am interested in the topic.,Student,Learning Strategies,Meta-Cognition,Meta-Cognition
+244,For the pleasure that I experience when I read interesting material,Student,Motivation,Academic motivation,Intrinsic
+411,I have difficulty maintaining my focus on projects that take more than a few months to complete.,Student,Personality Traits,GRIT,GRIT
+88,Cooperate well with others,Parent,Career Assessment,Vocational Confidence,Social
+23,Has any of the parents studied abroad?,Parent,Background,Demographics,SES
+471,Solve math problems,Student,Career Assessment,Voc Interest & Voc Confidence,CInvestigative
+372,Compassionate,Student,Personality Traits,Big5,Agreeableness
+130,What is/are your primary language(s)?,Student,Background,Language,Fluency
+465,Convince people to do things your way,Student,Career Assessment,Voc Interest & Voc Confidence,CEnterprising
+217,Has difficulty reading unfamiliar words and often guesses at them,Student,Disability in Learning,Reading Disability,RD
+218,Resists writing tasks,Student,Disability in Learning,Reading Disability,RD
+219,Has trouble with punctuation,Student,Disability in Learning,Reading Disability,RD
+220,Has messy handwriting,Student,Disability in Learning,Reading Disability,RD
+221,Makes frequent errors in characters,Student,Disability in Learning,Reading Disability,RD
+222,Doesn't like to read for fun,Student,Disability in Learning,Reading Disability,RD
+223,Struggles to understand what you have read,Student,Disability in Learning,Reading Disability,RD
+224,"Pauses, repeats or makes frequent mistakes when reading aloud",Student,Disability in Learning,Reading Disability,RD
+225,Becomes frustrated or angry when doing school work,Student,Disability in Learning,Reading Disability,RD
+133,Others______,Student,Background,Demographics,Language
+413,I am diligent.,Student,Personality Traits,GRIT,GRIT
+291,Engaging in geological exploration,Student,Career Assessment,Vocational Interest,Realistic
+469,Plan and organize activities and events,Student,Career Assessment,Voc Interest & Voc Confidence,CEnterprising
+119,Loses things necessary for tasks or activities.,Parent,Disability in Learning,ADHD,Inattention
+444,"Work with fine instruments (such as microscopes, measuring equipment, etc.)",Student,Career Assessment,Voc Interest & Voc Confidence,IInvestigative
+174,I write a set of goals for myself regularly.,Student,Learning Strategies,Time Management,Short Term
+157,I learn best when I already know something about the topic.,Student,Learning Strategies,Meta-Cognition,Meta-Cognition
+490,"Avoids tasks (eg, schoolwork, homework) that require sustained mental effort.",Student,Disability in Learning,ADHD,Inattention
+66,"Sketch, draw, or paint",Parent,Career Assessment,Vocational Confidence,Artistics
+303,I am a creative person,Student,Creativity,Self-reported creativity,Evidence-based assessment of creative self- efficacy
+17,Please choose the district your family lives in.,Parent,Background,Demographics,Location
+236,Because of the fact that when I succeed in school I feel important,Student,Motivation,Academic motivation,Extrinsic
+170,I am still working on a major assignment the night before it is due.,Student,Learning Strategies,Time Management,Long Term
+216,I like my work best when I can do it really well without too much trouble.,Student,Knowledge and Beliefs,Mindset,Fixed mindset
+452,Give talks or speeches,Student,Career Assessment,Voc Interest & Voc Confidence,ISocial
+14,Does your family live in the  same city as his/her school is in？,Parent,Background,Demographics,Location
+70,"Work well within a system, such as a goverment agency or a hierarchical system.",Parent,Career Assessment,Vocational Confidence,Conventional
+156,I know what the teacher expects me to learn.,Student,Learning Strategies,Meta-Cognition,Meta-Cognition
+82,"Work with fine instruments (such as microscopes, measuring equipment)",Parent,Career Assessment,Vocational Confidence,Investigative
+27,Does your child exercise regularly?,Parent,Background,Habit,exercise
+264,Other roles_____,Student,Extracurriculumn,Activity,Group
+76,Start a new project (e.g.public welfare project or commercial project),Parent,Career Assessment,Vocational Confidence,Enterprising
+12,Other subject______,Parent,Background,Middle School,Tutoring
+280,Managing a restaurant,Student,Career Assessment,Vocational Interest,Enterprising
+457,"Perform on the stage (e.g. singing, dancing, playing music instruments, or acting)",Student,Career Assessment,Voc Interest & Voc Confidence,CArtistics
+238,In order to obtain a more prestigious job later on,Student,Motivation,Academic motivation,Extrinsic
+131,Others______,Student,Background,Demographics,Language
+460,Do a lot of paperwork in a short time,Student,Career Assessment,Voc Interest & Voc Confidence,CConventional
+141,What other  language do you speak?,Student,Background,Demographics,Language
+297,Tutoring students,Student,Career Assessment,Vocational Interest,Social
+9,How many students are there in your child's grade?,Parent,Background,Middle School,school
+28,Do parents exercise regularly?,Parent,Background,Habit,exercise
+466,Lead a group discussion,Student,Career Assessment,Voc Interest & Voc Confidence,CEnterprising
+39,I often got angry at my child.,Parent,Background,Parenting,Patience
+404,New ideas and projects sometimes distract me from previous ones.,Student,Personality Traits,GRIT,GRIT
+480,Cooperate well with others,Student,Career Assessment,Voc Interest & Voc Confidence,CSocial
+492,Is easily distracted.,Student,Disability in Learning,ADHD,Inattention
+434,Work in a cubicle,Student,Career Assessment,Voc Interest & Voc Confidence,IConventional
+309,I never felt like I could meet my parents' standards.,Student,Background,Parenting,Expectations
+252,I enjoy being exposed to unfamiliar situations and perspectives and having a wide variety of social experiences in general.,Student,Preference,College,Openness
+344,What art work have you created？,Student,Extracurriculumn,Specialty,Art
+163,"I make simple charts, diagrams, or tables to help me organize course material.",Student,Learning Strategies,Organization,Material
+248,I'm looking for a school with extensive research facilities.,Student,Preference,College,Conscientiousness
+245,I don't think students and teachers need much communication under the class,Student,Preference,College,Agreeableness
+182,I usually check the credibility of the source of information before making judgements.,Student,Learning Strategies,Critical Thinking,Reflective Scepticism
+46,Warm,Parent,Personality Traits,Big5,Agreeableness
+31,Do parents have a reading habit?,Parent,Background,Habit,reading
+118,"Avoids tasks (eg, schoolwork, homework) that require sustained mental effort.",Parent,Disability in Learning,ADHD,Inattention
+477,"Use power tools (e.g. drills, chainsaws, etc.)",Student,Career Assessment,Voc Interest & Voc Confidence,CRealistic
+439,Plan and organize activities and events,Student,Career Assessment,Voc Interest & Voc Confidence,IEnterprising
+427,"Perform on the stage (e.g. singing, dancing, playing music instruments, or acting)",Student,Career Assessment,Voc Interest & Voc Confidence,IArtistics
+524,Now please raise your hand and let us know you are here. Wait for further instructions before proceeding.,Student,Break,Break,---
+362,What types of sports are you specialized in?,Student,Extracurriculumn,Specialty,Sports
+323,"Thoughts that you would be better off dead, or of hurting yourself in some way",Student,Mental Health,Depression,Depression
+414,I have achieved a goal that took years of work.,Student,Personality Traits,GRIT,GRIT
+203,"I ask others (peers, staff and mentors) for feedback and advice, and consider their ideas seriously in thinking about my work.",Student,Communication & Collaboration Skill,Collaboration,Using feedback
+153,I decide what I need to get done before I start a task.,Student,Learning Strategies,Meta-Cognition,Meta-Cognition
+527,What is your child's date of birth. (Please follow DD/MM/YYYY),Parent,Background,Demographics,Age
+142,Others______,Student,Background,Demographics,Language
+494,What language(s) do you speak?,Student,Background,Demographics,Language
+48,Self-disciplined,Parent,Personality Traits,Big5,Conscientiousness
+276,Organizing files,Student,Career Assessment,Vocational Interest,Conventional
+317,"Trouble falling or staying asleep, or sleeping too much",Student,Mental Health,Depression,Depression
+391,I want to attend a college with better ranking.,Student,Motivation,Study in U.S.,Extrinsic
+392,American diploma is more recognized.,Student,Motivation,Study in U.S.,Extrinsic
+396,I want to gain different learning experience,Student,Motivation,Study in U.S.,Intrinsic
+397,I want to challenge myself.,Student,Motivation,Study in U.S.,Intrinsic
+398,U.S. education resources are better.,Student,Motivation,Study in U.S.,Intrinsic
+399,Learning environment is more suitable for me.,Student,Motivation,Study in U.S.,Intrinsic
+400,I want to learn the most advanced science and technology.,Student,Motivation,Study in U.S.,Intrinsic
+401,of the yearning for life in the United States,Student,Motivation,Study in U.S.,Intrinsic
+402,I want to stand out from my peers.,Student,Motivation,Study in U.S.,Intrinsic
+454,Teach/train others,Student,Career Assessment,Voc Interest & Voc Confidence,ISocial
+302,"When I am confronted with a problem, I can usually find several solutions",Student,Creativity,Self-reported creativity,Evidence-based assessment of creative self- efficacy
+50,Careless,Parent,Personality Traits,Big5,Conscientiousness
+81,Suggest a better way to accomplish a task,Parent,Career Assessment,Vocational Confidence,Investigative
+487,Does not seem to listen when spoken to directly.,Student,Disability in Learning,ADHD,Inattention
+431,Keep accurate records,Student,Career Assessment,Voc Interest & Voc Confidence,IConventional
+489,Has difficulty organizing tasks and activities.,Student,Disability in Learning,ADHD,Inattention
+162,"When I study the readings for a course, I outline the material to help me organize my thoughts.",Student,Learning Strategies,Organization,Material
+250,I like attending big sporting events.,Student,Preference,College,Extraversion
+257,It is easy to do well in the U.S. college.,Student,Knowledge and Beliefs,american education,Misconceptions
+37,I spent time talking with my child regularly.,Parent,Background,Parenting,Engagement
+416,Handle unpleasant feelings,Student,Personality Traits,Resilience,Resilience
+418,Try to see humorous side of problems,Student,Personality Traits,Resilience,Resilience
+382,Reserved,Student,Personality Traits,Big5,Extraversion
+283,Being an entrepreneur,Student,Career Assessment,Vocational Interest,Enterprising
+417,Deal with whatever comes,Student,Personality Traits,Resilience,Resilience
+473,Suggest a better way to accomplish a task,Student,Career Assessment,Voc Interest & Voc Confidence,CInvestigative
+387,Inventive,Student,Personality Traits,Big5,Openness
+205,Accumulating wealth,Student,Knowledge and Beliefs,cultural values,Competitive
+265,What type of culture performance have you participated in?,Student,Extracurriculumn,Activity,Group
+249,I have a major in mind already.,Student,Preference,College,Conscientiousness
+320,Feeling bad about yourself—or that you are a failure or have let yourself or your family down,Student,Mental Health,Depression,Depression
+424,Think of self as strong person,Student,Personality Traits,Resilience,Resilience
+475,Operate mechanical equipment(s),Student,Career Assessment,Voc Interest & Voc Confidence,CRealistic
+49,Disorganized,Parent,Personality Traits,Big5,Conscientiousness
+83,Operate mechanical equipment(s),Parent,Career Assessment,Vocational Confidence,Realistic
+374,Detached,Student,Personality Traits,Big5,Agreeableness
+271,Designing magazines or web pages,Student,Career Assessment,Vocational Interest,Artistic
+183,I usually think about the wider implications of a decision before taking action.,Student,Learning Strategies,Critical Thinking,Reflective Scepticism
+274,Painting,Student,Career Assessment,Vocational Interest,Artistic
+293,Repairing broken home appliances,Student,Career Assessment,Vocational Interest,Realistic
+168,I make good use of time.,Student,Learning Strategies,Time Management,Long Term
+253,Please choose the area that you are interested in.,Student,Preference,work,field
+84,Pitch a tent,Parent,Career Assessment,Vocational Confidence,Realistic
+93,What level of education do you expect your child to receive?,Parent,Preference,College,aspiration
+379,Outgoing,Student,Personality Traits,Big5,Extraversion
+254,Other areas_______,Student,Preference,work,field
+181,I often reevaluate my experiences so that I can learn from them.,Student,Learning Strategies,Critical Thinking,Reflective Scepticism
+241,For the pleasure I experience while surpassing myself in my studies,Student,Motivation,Academic motivation,Intrinsic
+77,Plan and organize activities and events,Parent,Career Assessment,Vocational Confidence,Enterprising
+318,Feeling tired or having little energy,Student,Mental Health,Depression,Depression
+89,Express yourself clearly,Parent,Career Assessment,Vocational Confidence,Social
+231,"When something is hard, it just makes me want to work more on it, not less",Student,Knowledge and Beliefs,Mindset,Growth mindset
+58,Emotionally stable,Parent,Personality Traits,Big5,Emotional Stability
+334,Please describe a part-time/internship that you worked the longest.,Student,Extracurriculumn,Activity,Individual
+361,Have you ever won in robot contests during middle school?,Student,Extracurriculumn,Specialty,Robotics
+246,I am a very independent learner.,Student,Preference,College,Conscientiousness
+403,Cautious,Student,Personality Traits,Big5,Openness
+173,I plan each day before I start it.,Student,Learning Strategies,Time Management,Short Term
+463,Write formal letters,Student,Career Assessment,Voc Interest & Voc Confidence,CConventional
+229,I like my work best when it makes me think hard.,Student,Knowledge and Beliefs,Mindset,Growth mindset
+316,"Feeling down, depressed, or hopeless",Student,Mental Health,Depression,Depression
+514,Japanese,Student,Background,Language,Fluency
+59,Open to new experiences,Parent,Personality Traits,Big5,Openness
+277,Managing Database,Student,Career Assessment,Vocational Interest,Conventional
+493,Is forgetful in daily activities.,Student,Disability in Learning,ADHD,Inattention
+370,Other type of specialty______,Student,Extracurriculumn,Specialty,zOthers
+65,"Perform on the stage (e.g. singing, dancing, playing music instruments, or acting)",Parent,Career Assessment,Vocational Confidence,Artistics
+435,Convince people to do things your way,Student,Career Assessment,Voc Interest & Voc Confidence,IEnterprising
+230,I like work that I'll learn from even if I make a lot of mistakes.,Student,Knowledge and Beliefs,Mindset,Growth mindset
+270,Stage performance,Student,Career Assessment,Vocational Interest,Artistic
+451,Express yourself clearly,Student,Career Assessment,Voc Interest & Voc Confidence,ISocial
+179,It's important to understand other people's viewpoints on an issue.,Student,Learning Strategies,Critical Thinking,Critical Opennes
+67,Creative writing,Parent,Career Assessment,Vocational Confidence,Artistics
+272,Creative Writing,Student,Career Assessment,Vocational Interest,Artistic
+409,I am a hard worker.,Student,Personality Traits,GRIT,GRIT
+206,"Protecting your ""face""",Student,Knowledge and Beliefs,cultural values,Competitive
+86,Tolerate harsh conditions,Parent,Career Assessment,Vocational Confidence,Realistic
+476,Pitch a tent,Student,Career Assessment,Voc Interest & Voc Confidence,CRealistic
+194,I go out of my way to help another person.,Student,Communication & Collaboration Skill,Collaboration,Collectivism
+458,"Sketch, draw, or paint",Student,Career Assessment,Voc Interest & Voc Confidence,CArtistics
+415,Adapt to change,Student,Personality Traits,Resilience,Resilience
+92,Teach/train others,Parent,Career Assessment,Vocational Confidence,Social
+506,How interested are you in having your child studying in the U.S college?,Parent,Preference,college:prompt,---
+101,Please select the industry that you would prefer your child to work in the future,Parent,Preference,work,postgraduation
+209,Supporting your parents financially,Student,Knowledge and Beliefs,cultural values,Filial piety
+228,"No matter how much intelligence you have, you can always change it a good deal.",Student,Knowledge and Beliefs,Mindset,Growth mindset
+447,"Use power tools (e.g. drills, chainsaws, etc.)",Student,Career Assessment,Voc Interest & Voc Confidence,IRealistic
+365,What types of academic contests have you participated in?,Student,Extracurriculumn,Specialty,Subject
+97,Please select below regions you wish that your child’s university is located in.,Parent,Preference,College,location
+522,"The UES Self-Discovery Inventory (the “UES-SDI”) provided to you has been prepared by USA-UES. If you complete the UES-SDI, we treat your responses and your results as confidential information. Your personal information will not be shared with or sold to third parties.
+
+This survey is meant for UES to get a comprehensive understanding of your child, in order to provide better personalized services. If you understand and agree to the terms of use, please enter your name below, which will indicate that you voluntarily agree to participate in it.",Parent,Introduction,Disclaimer,First page
+304,I am not afraid to express my ideas,Student,Creativity,Self-reported creativity,Personal assumptions / beliefs about own creativity
+441,Solve math problems,Student,Career Assessment,Voc Interest & Voc Confidence,IInvestigative
+151,I sometimes use learning strategies without thinking.,Student,Learning Strategies,Meta-Cognition,Meta-Cognition
+211,Obeying parents and superiors,Student,Knowledge and Beliefs,cultural values,Filial piety
+377,Easy-going,Student,Personality Traits,Big5,Conscientiousness
+281,Selling a house,Student,Career Assessment,Vocational Interest,Enterprising
+479,Play a sport,Student,Career Assessment,Voc Interest & Voc Confidence,CRealistic
+33,I often tell my child how much I love him/her.,Parent,Background,Parenting,Ability to Express Love
+56,Easily upset,Parent,Personality Traits,Big5,Emotional Stability
+273,Composing,Student,Career Assessment,Vocational Interest,Artistic
+239,Because I experience pleasure and satisfaction while learning new things,Student,Motivation,Academic motivation,Intrinsic
+226,I like my work best when I can do it perfectly without any mistakes.,Student,Knowledge and Beliefs,Mindset,Fixed mindset
+196,"When I have a need that others ignore, I'm hurt.",Student,Communication & Collaboration Skill,Collaboration,Collectivism
+491,Loses things necessary for tasks or activities.,Student,Disability in Learning,ADHD,Inattention
+55,Anxious,Parent,Personality Traits,Big5,Emotional Stability
+22,What is the highest degree mother completed?,Parent,Background,Demographics,SES
+367,Have you earned any prize in these subjects at or above a Municipal level contest during middle school?,Student,Extracurriculumn,Specialty,Subject
+10,Does your child have tutoring service outside school?,Parent,Background,Middle School,Tutoring
+72,Use computer to work long hours,Parent,Career Assessment,Vocational Confidence,Conventional
+44,Quarrelsome,Parent,Personality Traits,Big5,Agreeableness
+321,"Trouble concentrating on things, such as reading the newspaper or watching television",Student,Mental Health,Depression,Depression
+333,Please describe the computer programs that you have developed.,Student,Extracurriculumn,Activity,Individual
+482,Give talks or speeches,Student,Career Assessment,Voc Interest & Voc Confidence,CSocial
+516,Portuguese,Student,Background,Language,Fluency
+474,"Work with fine instruments (such as microscopes, measuring equipment, etc.)",Student,Career Assessment,Voc Interest & Voc Confidence,CInvestigative
+383,Sensitive,Student,Personality Traits,Big5,Emotional Stability
+486,Has difficulty sustaining attention in tasks or play activities.,Student,Disability in Learning,ADHD,Inattention
+208,Having respects for traditions,Student,Knowledge and Beliefs,cultural values,Filial piety
+113,Fails to give close attention to details or makes careless mistakes in schoolwork.,Parent,Disability in Learning,ADHD,Inattention
+324,Have you participated in the following activities during middle school?,Student,Extracurriculumn,Activity,Individual
+115,Does not seem to listen when spoken to directly.,Parent,Disability in Learning,ADHD,Inattention
+357,Other accomplishments of performance______,Student,Extracurriculumn,Specialty,Performance
+327,What is the volunteering/community service activity that you are most involved in?,Student,Extracurriculumn,Activity,Individual
+478,Tolerate harsh conditions,Student,Career Assessment,Voc Interest & Voc Confidence,CRealistic
+445,Operate mechanical equipment(s),Student,Career Assessment,Voc Interest & Voc Confidence,IRealistic
+149,I use different learning strategies depending on the task.,Student,Learning Strategies,Meta-Cognition,Meta-Cognition
+456,Design magazines,Student,Career Assessment,Voc Interest & Voc Confidence,CArtistics
+193,"I prefer working with others, because hearing others' ideas and bouncing my own ideas off of them helps me think of more ideas.",Student,Communication & Collaboration Skill,Collaboration,Brainstorming
+214,Being non-competitive,Student,Knowledge and Beliefs,cultural values,Non-competitive
+354,Other accomplishments in Music______,Student,Extracurriculumn,Specialty,Music
+481,Express yourself clearly,Student,Career Assessment,Voc Interest & Voc Confidence,CSocial
+158,I draw pictures or diagrams to help me understand while learning.,Student,Learning Strategies,Meta-Cognition,Meta-Cognition
+326,What is your position in the student governance?,Student,Extracurriculumn,Activity,Individual
+296,Organizing public service activties for underserved groups,Student,Career Assessment,Vocational Interest,Social
+375,Efficient,Student,Personality Traits,Big5,Conscientiousness
+423,Not be easily discouraged by failure,Student,Personality Traits,Resilience,Resilience
+405,My interests change from year to year.,Student,Personality Traits,GRIT,GRIT
+459,Creative writing,Student,Career Assessment,Voc Interest & Voc Confidence,CArtistics
+340,What role did you play?,Student,Extracurriculumn,Activity,Individual
+484,Teach/train others,Student,Career Assessment,Voc Interest & Voc Confidence,CSocial
+380,Energetic,Student,Personality Traits,Big5,Extraversion
+139,Others______,Student,Background,Demographics,Language
+64,Design magazines,Parent,Career Assessment,Vocational Confidence,Artistics
+21,What is the highest degree father completed?,Parent,Background,Demographics,SES
+30,Does your child have a reading habit?,Parent,Background,Habit,reading
+389,Consistent,Student,Personality Traits,Big5,Openness
+74,Lead a group discussion,Parent,Career Assessment,Vocational Confidence,Enterprising
+433,Write formal letters,Student,Career Assessment,Voc Interest & Voc Confidence,IConventional
+75,Sell things,Parent,Career Assessment,Vocational Confidence,Enterprising
+13,What types of extra-curriculum activities does your kid participate or plan to participate in the coming school year?,Parent,Background,Middle School,Tutoring
+155,I try to use ways of studying that have worked for me before.,Student,Learning Strategies,Meta-Cognition,Meta-Cognition
+16,Please choose the district your family lives in.,Parent,Background,Demographics,Location
+20,What is the highest education level that the primary caregiver completed?,Parent,Background,Demographics,SES
+2,Where does your child go to school?,Parent,Background,Middle School,school
+202,I carry myself in a professional manner.,Student,Communication & Collaboration Skill,Collaboration,Participation
+6,Please choose the district your family lives in.,Parent,Background,Demographics,Location
+171,I make sure that I keep up with the weekly readings and assignments for this course.,Student,Learning Strategies,Time Management,Short Term
+195,"When I have a need, I turn to others I know for help.",Student,Communication & Collaboration Skill,Collaboration,Collectivism
+178,I sometimes find a good argument that challenges some of my firmly held beliefs.,Student,Learning Strategies,Critical Thinking,Critical Opennes
+187,I find it easy to get my point across.,Student,Communication & Collaboration Skill,Communication,Communicating opinions
+41,I encourage my child to express his/her ideas freely.,Parent,Background,Parenting,Understanding
+35,"When I am angry, I scold at my child.",Parent,Background,Parenting,Empathy
+32,Does any of the parents smoke?,Parent,Background,Habit,smoking
+515,Korean,Student,Background,Language,Fluency
+519,What languages do you speak?,Student,Background,Language,Fluency
+485,Fails to give close attention to details or makes careless mistakes in schoolwork.,Student,Disability in Learning,ADHD,Inattention
+446,Pitch a tent,Student,Career Assessment,Voc Interest & Voc Confidence,IRealistic
+235,To prove to myself that I am capable of getting good grades,Student,Motivation,Academic motivation,Extrinsic
+512,German,Student,Background,Language,Fluency
+53,Enthusiastic,Parent,Personality Traits,Big5,Extraversion
+120,Is easily distracted.,Parent,Disability in Learning,ADHD,Inattention
+184,I often think about my actions and whether I could improve them.,Student,Learning Strategies,Critical Thinking,Reflective Scepticism
+164,"When I study for this course, I go through the readings and my class notes and try to find the most important ideas.",Student,Learning Strategies,Organization,Notes taking
+306,My parents are good role models for me.,Student,Background,Parenting,Consistency
+128,What is your age?,Student,Background,Demographics,Age
+360,What type of audience have you given the speech to?,Student,Extracurriculumn,Specialty,Public Speaking
+36,"As parents, we never fight in front of the child.",Parent,Background,Parenting,Empathy
+38,I rarely ask my child what he/she thinks.,Parent,Background,Parenting,Listening
+29,Does your child help you with housework?,Parent,Background,Habit,housework
+34,I enforce discipline.,Parent,Background,Parenting,Consistency
+426,Design magazines,Student,Career Assessment,Voc Interest & Voc Confidence,IArtistics
+510,English,Student,Background,Language,Fluency
+43,Critical,Parent,Personality Traits,Big5,Agreeableness
+47,Dependable,Parent,Personality Traits,Big5,Conscientiousness
+51,Extraverted,Parent,Personality Traits,Big5,Extraversion
+40,I try to understand what my child thinks.,Parent,Background,Parenting,Understanding
+472,Understand science - use information to figure things out,Student,Career Assessment,Voc Interest & Voc Confidence,CInvestigative
+159,"When I am done with my schoolwork, I ask myself what I have learned.",Student,Learning Strategies,Meta-Cognition,Meta-Cognition
+284,Promote new products to the public,Student,Career Assessment,Vocational Interest,Enterprising
+190,"When someone gets mad, I change my tone of voice to help calm them down.",Student,Communication & Collaboration Skill,Communication,Use of language
+63,Make original crafts for school projects,Parent,Career Assessment,Vocational Confidence,Artistics
+69,Keep accurate records,Parent,Career Assessment,Vocational Confidence,Conventional
+71,Write formal letters,Parent,Career Assessment,Vocational Confidence,Conventional
+73,Convince people to do things your way,Parent,Career Assessment,Vocational Confidence,Enterprising
+210,Having respects for the elderly,Student,Knowledge and Beliefs,cultural values,Filial piety
+233,Because eventually it will enable me to enter the job market in a field that I like,Student,Motivation,Academic motivation,Extrinsic
+319,Poor appetite or overeating,Student,Mental Health,Depression,Depression
+262,Other roles_____,Student,Extracurriculumn,Activity,Group
+337,What type of part-time/internship have you done?,Student,Extracurriculumn,Activity,Individual
+421,Achieve goals despite obstacles,Student,Personality Traits,Resilience,Resilience
+287,Developing new drugs or new treatments.,Student,Career Assessment,Vocational Interest,Investigative
+307,My parents rarely fight in front of me.,Student,Background,Parenting,Empathy
+294,Assembling furnitures,Student,Career Assessment,Vocational Interest,Realistic
+295,Reemployment counseling for unemployed people,Student,Career Assessment,Vocational Interest,Social
+378,Careless,Student,Personality Traits,Big5,Conscientiousness
+366,Other academic contests________,Student,Extracurriculumn,Specialty,Subject
+461,Keep accurate records,Student,Career Assessment,Voc Interest & Voc Confidence,CConventional
+467,Sell things,Student,Career Assessment,Voc Interest & Voc Confidence,CEnterprising
+191,"I use language in meaningful ways to inspire, entertain, inform and persuade others.",Student,Communication & Collaboration Skill,Communication,Use of language
+343,Do you have any specialties?,Student,Extracurriculumn,Specialty,All
+419,Cope with stress because I believe it can strengthen me,Student,Personality Traits,Resilience,Resilience
+198,"I recognize when two people are trying to say the same thing, but in different ways.",Student,Communication & Collaboration Skill,Collaboration,Managing conflict
+146,I really pay attention to important information.,Student,Learning Strategies,Meta-Cognition,Meta-Cognition
+381,Solitary,Student,Personality Traits,Big5,Extraversion
+144,I know when I understand something.,Student,Learning Strategies,Meta-Cognition,Meta-Cognition
+407,Setbacks don’t discourage me.,Student,Personality Traits,GRIT,GRIT
+448,Tolerate harsh conditions,Student,Career Assessment,Voc Interest & Voc Confidence,IRealistic
+234,Because this will help me make a better choice regarding my career orientation,Student,Motivation,Academic motivation,Extrinsic
+177,I am often on the lookout for new ideas.,Student,Learning Strategies,Critical Thinking,Critical Opennes
+308,My parents rarely spend time with me.,Student,Background,Parenting,Engagement
+425,Make original crafts for school projects,Student,Career Assessment,Voc Interest & Voc Confidence,IArtistics
+286,Studying animals and plants,Student,Career Assessment,Vocational Interest,Investigative
+201,I think of questions to ask and do so when appropriate.,Student,Communication & Collaboration Skill,Collaboration,Participation
+322,Moving or speaking so slowly that other people could have noticed. Or the opposite—being so restless that you have been moving around a lot more than usual,Student,Mental Health,Depression,Depression
+305,My parents really love me.,Student,Background,Parenting,Ability to Express Love
+215,"You can learn new things, but you cannot really change your basic level of intelligence.",Student,Knowledge and Beliefs,Mindset,Fixed mindset
+227,"To tell the truth, when I work hard, it makes me feel as though I'm not very smart.",Student,Knowledge and Beliefs,Mindset,Fixed mindset
+410,I often set a goal but later choose to pursue a different one.,Student,Personality Traits,GRIT,GRIT
+470,Do complex calculations,Student,Career Assessment,Voc Interest & Voc Confidence,CInvestigative
+285,Studying human anatomy,Student,Career Assessment,Vocational Interest,Investigative
+406,I have overcome setbacks to conquer an important challenge.,Student,Personality Traits,GRIT,GRIT
+275,Book-keeping,Student,Career Assessment,Vocational Interest,Conventional
+430,Do a lot of paperwork in a short time,Student,Career Assessment,Voc Interest & Voc Confidence,IConventional
+438,Start a new project (e.g.public welfare project or commercial project),Student,Career Assessment,Voc Interest & Voc Confidence,IEnterprising
+150,I occasionally check to make sure I’ll get my work done on time.,Student,Learning Strategies,Meta-Cognition,Meta-Cognition
+232,"Honestly, I don’t know; I really feel that I am wasting my time in school",Student,Motivation,Academic motivation,Amotivation
+167,I set and keep priorities.,Student,Learning Strategies,Time Management,Long Term
+443,Suggest a better way to accomplish a task,Student,Career Assessment,Voc Interest & Voc Confidence,IInvestigative
+237,Because I need a college degree to find a high-paying job later on,Student,Motivation,Academic motivation,Extrinsic
+336,Do you have other part-time/internship experience?,Student,Extracurriculumn,Activity,Individual
+429,Creative writing,Student,Career Assessment,Voc Interest & Voc Confidence,IArtistics
+292,Designing robots,Student,Career Assessment,Vocational Interest,Realistic
+408,I have been obsessed with a certain idea or project for a short time but later lost interest.,Student,Personality Traits,GRIT,GRIT
+278,Calculating employee benefit,Student,Career Assessment,Vocational Interest,Conventional
+267,Other roles_____,Student,Extracurriculumn,Activity,Group
+242,For the satisfaction I feel when I am in the process of accomplishing difficult academic activities,Student,Motivation,Academic motivation,Intrinsic
+453,Mediate disputes,Student,Career Assessment,Voc Interest & Voc Confidence,ISocial
+345,Other art works______,Student,Extracurriculumn,Specialty,Art
+339,Please describe your entrepreneurial experience in one sentence.,Student,Extracurriculumn,Activity,Individual
+432,"Work well within a system (e.g. A system such as goverment agency, hierarchical system）",Student,Career Assessment,Voc Interest & Voc Confidence,IConventional
+192,"I think about who my audience is when I communicate in speaking and writing, and adjust my vocabulary accordingly.",Student,Communication & Collaboration Skill,Communication,Use of language
+176,I use more than one source to find out information for myself.,Student,Learning Strategies,Critical Thinking,Critical Opennes
+468,Start a new project (e.g.public welfare project or commercial project),Student,Career Assessment,Voc Interest & Voc Confidence,CEnterprising
+256,It is easier to apply to U.S. colleges.,Student,Knowledge and Beliefs,american education,Misconceptions
+450,Cooperate well with others,Student,Career Assessment,Voc Interest & Voc Confidence,ISocial
+300,I feel that I am good at generating novel ideas.,Student,Creativity,Self-reported creativity,Creativity
+314,Little interest or pleasure in doing things,Student,Mental Health,Depression,Depression
+148,I use my learning strengths to make up for my weaknesses.,Student,Learning Strategies,Meta-Cognition,Meta-Cognition
+442,Understand science - use information to figure things out,Student,Career Assessment,Voc Interest & Voc Confidence,IInvestigative
+255,Studying in China is much harder than studying abroad.,Student,Knowledge and Beliefs,american education,Misconceptions
+299,Treating children with autism,Student,Career Assessment,Vocational Interest,Social
+373,Challenging,Student,Personality Traits,Big5,Agreeableness
+240,For the pleasure that I experience in broadening my knowledge about subjects which appeal to me,Student,Motivation,Academic motivation,Intrinsic
+464,Work in a cubicle,Student,Career Assessment,Voc Interest & Voc Confidence,CConventional
+488,Does not follow through on instructions and fails to finish work.,Student,Disability in Learning,ADHD,Inattention
+212,Having contentedness with one's position in life,Student,Knowledge and Beliefs,cultural values,Non-competitive
+154,I can make myself learn when I need to.,Student,Learning Strategies,Meta-Cognition,Meta-Cognition
+364,Other accomplishments in sports______,Student,Extracurriculumn,Specialty,Sports
+358,What type of audience have you performed for?,Student,Extracurriculumn,Specialty,Performance
+428,"Sketch, draw, or paint",Student,Career Assessment,Voc Interest & Voc Confidence,IArtistics
+440,Do complex calculations,Student,Career Assessment,Voc Interest & Voc Confidence,IInvestigative
+301,I don't consider myself as creative,Student,Creativity,Self-reported creativity,Evidence-based assessment of creative self- efficacy
+186,"When talking to someone, I try to maintain eye contact.",Student,Communication & Collaboration Skill,Communication,Active Listening
+455,Make original crafts for school projects,Student,Career Assessment,Voc Interest & Voc Confidence,CArtistics
+420,Bounce back after illness or hardship,Student,Personality Traits,Resilience,Resilience
+172,I make a list of the things I have to do each week.,Student,Learning Strategies,Time Management,Short Term
+269,Other roles_____,Student,Extracurriculumn,Activity,Group
+330,Do you have other volunteering/community service experience?,Student,Extracurriculumn,Activity,Individual
+483,Mediate disputes,Student,Career Assessment,Voc Interest & Voc Confidence,CSocial
+169,I continue to carry out unproductive routines or activities.,Student,Learning Strategies,Time Management,Long Term
+282,Being an agent for entertainers or sports stars,Student,Career Assessment,Vocational Interest,Enterprising
+436,Lead a group discussion,Student,Career Assessment,Voc Interest & Voc Confidence,IEnterprising
+376,Organized,Student,Personality Traits,Big5,Conscientiousness
+325,What is the topic and title of the research project that you involved in?,Student,Extracurriculumn,Activity,Individual
+311,My parents care about what I think.,Student,Background,Parenting,Listening
+349,Other accomplishments in Chess______,Student,Extracurriculumn,Specialty,Chess
+313,I am friends with my parents.,Student,Background,Parenting,Understanding
+188,I organize thoughts in my head before speaking.,Student,Communication & Collaboration Skill,Communication,Communicating opinions
+199,I make sure I understand what another person is saying before I respond.,Student,Communication & Collaboration Skill,Collaboration,Managing conflict
+462,"Work well within a system (e.g. A system such as goverment agency, hierarchical system）",Student,Career Assessment,Voc Interest & Voc Confidence,CConventional
+132,What other language do you speak?,Student,Background,Demographics,Language
+288,Researching a solution for air pollution,Student,Career Assessment,Vocational Interest,Investigative
+7,Please choose your child's school from the list,Parent,Background,Middle School,school
+8,What is your child's school ranking last semester?,Parent,Background,Middle School,school
+18,What is your relation to the child?,Parent,Background,Demographics,SES
+19,Who is the primary caregiver of the student?,Parent,Background,Demographics,SES
+24,What is the father's occupation?,Parent,Background,Demographics,SES
+25,What is the mother's occupation?,Parent,Background,Demographics,SES
+26,Annual household income?,Parent,Background,Demographics,SES
+42,How much time do you spend engaging with your child each week？,Parent,Background,Parenting,zEngagement
+94,Do you have any restrictions on the total cost of your child's education in the U.S.?,Parent,Preference,College,cost
+95,Please rank the following factors according to the degree of importance when choosing school.,Parent,Preference,College,factors
+98,"When helping your child choose future field of work, please rank the importance of following factors.",Parent,Preference,work,factors
+99,"After graduation, would you like your child to come back to China or stay and work in the U.S.?",Parent,Preference,work,postgraduation
+103,How much income do you expect you child to earn after graduation?,Parent,Preference,work,postgraduation
+129,What is your sex?,Student,Background,Demographics,Gender
+134,How fluent are you in this language？,Student,Background,Demographics,Language
+137,How fluent are you in this language？,Student,Background,Demographics,Language
+140,How fluent are you in this language？,Student,Background,Demographics,Language
+143,How fluent are you in this language？,Student,Background,Demographics,Language
+259,Have you participated in the following activities during middle school?,Student,Extracurriculumn,Activity,Group
+260,Which ones have you participated for over a year?,Student,Extracurriculumn,Activity,Group
+261,What is your role in the band/chorus/orchestra?,Student,Extracurriculumn,Activity,Group
+263,What is your role in the  dance team?,Student,Extracurriculumn,Activity,Group
+266,What is your role in the team sports?,Student,Extracurriculumn,Activity,Group
+268,What is your role in the  cheerleading?,Student,Extracurriculumn,Activity,Group
+315,how much impact do they have in your life or study?,Student,Mental Health,Depression,Depression
+328,How long have you involved in volunteering/community activity?,Student,Extracurriculumn,Activity,Individual
+329,"On average, how many hours do you participate in this activity per week?",Student,Extracurriculumn,Activity,Individual
+331,How long have you involved in volunteering/community service?,Student,Extracurriculumn,Activity,Individual
+332,"On average, how many hours do you participate in this activity per week?",Student,Extracurriculumn,Activity,Individual
+335,How long have you worked in this part-time/internship position?,Student,Extracurriculumn,Activity,Individual
+338,How long have you worked in the part-time/internship position?,Student,Extracurriculumn,Activity,Individual
+341,Hong long have you participated in boys/girls scout?,Student,Extracurriculumn,Activity,Individual
+342,What is the highest rank that you ever achieved?,Student,Extracurriculumn,Activity,Individual
+346,Your art work(s) has been______,Student,Extracurriculumn,Specialty,Art
+347,What type(s) of chess are you specialized in?,Student,Extracurriculumn,Specialty,Chess
+348,What type(s) of accomplishments do you have that demonstrate your specialty in chess?,Student,Extracurriculumn,Specialty,Chess
+350,"At what level, did you compete in the debate team during middle school?",Student,Extracurriculumn,Specialty,Debates
+351,Have you won any prize in debating?,Student,Extracurriculumn,Specialty,Debates
+352,Whic music specialties do you have？,Student,Extracurriculumn,Specialty,Music
+353,What type(s) of accomplishments do you have that demonstrate your specialty in music?,Student,Extracurriculumn,Specialty,Music
+355,What type(s) of performance are you specialized in?,Student,Extracurriculumn,Specialty,Performance
+356,What type(s) of accomplishments do you have that demonstrate your specialty in performance?,Student,Extracurriculumn,Specialty,Performance
+363,What type(s) of accomplishments do you have that demonstrate your specialty in sports?,Student,Extracurriculumn,Specialty,Sports
+368,What works have you done in writing?,Student,Extracurriculumn,Specialty,Writing
+369,Your works have ____,Student,Extracurriculumn,Specialty,Writing
+495,How fluent are you in this language？,Student,Background,Demographics,Language
+496,How fluent are you in this language？,Student,Background,Demographics,Language
+498,How fluent are you in Arabic？,Student,Background,Demographics,Language
+499,How fluent are you in English？,Student,Background,Demographics,Language
+500,How fluent are you in French？,Student,Background,Demographics,Language
+501,How fluent are you in German？,Student,Background,Demographics,Language
+502,How fluent are you in Italian？,Student,Background,Demographics,Language
