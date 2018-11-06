@@ -1,0 +1,51 @@
+---
+title: "Web-Scrap"
+author: "Michael Miao"
+date: "8/16/2018"
+output:
+  html_document: default
+  pdf_document: default
+  word_document: default
+
+params:
+  address: "http://www.admission.ucla.edu/prospect/Majors/lsmajor.htm" #Web-address for which website you want to scrape
+  webnode: ".td-format-50 a" #Node use please refer to the README.md
+  variablename: "Variable_Name" #Variable name for output file variables, could be several
+  outputfile: "~/Web_Scraping/output_file_name.csv" #Path for output file and name.
+---
+
+```{r}
+#load packages.
+library("rvest") #for webscrape
+library("stringr") 
+library("magrittr")
+```
+
+```{r}
+#put the websit link in html function.
+web <- html(params$address) 
+
+#Use Selector Gadget (in Google Chrome) to select information from that website, which automatically forms short piece of code and put the piece of code in html_nodes. 
+web_extract <- web%>%
+  html_nodes(params$webnode) %>% 
+  html_text()
+
+#Order the selected source(s).
+head(web_extract) 
+
+#Clean data-- remove useless entries (Here I use the exmample of eliminating digits and ",").
+raw_result <- as.data.frame(web_extract)
+raw_result <- apply(raw_result,2,function(x){str_replace_all(x,"[0-9]+","")})
+raw_result <- apply(raw_result,2,function(x){str_replace_all(x,",","")})
+result<-as.data.frame(raw_result)
+
+#Fill out the blank entries followed from previous step with N/A and eliminate N/A.  
+result[result==""] <- NA
+result <- na.omit(result)
+
+#Name the variable names in the data and output a .CSV file
+names(result) <- c(params$variablename)
+write.csv(result,params$outputfile,col.names = T)
+
+#More info on how to use Selector Gadget in R : https://cran.r-project.org/web/packages/rvest/vignettes/selectorgadget.html.
+```
