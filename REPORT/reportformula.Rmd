@@ -1,0 +1,835 @@
+---
+title: "reportformula"
+author: "Michael Miao"
+date: "9/7/2018"
+output: html_document
+
+params:
+  staffresponsefile: "Staff Test Response.xlsx"
+  Inventoryfile: "./Summer\ UES\ Self-Discovery\ Inventor20180709.xlsx"
+  Readsheet: "Final Web Questions"
+  WorkingDirectory: "./"
+  SuffixPer: "_personality"
+  SuffixSCha: "_7SuccessCharacters"
+  SuffixSCom: "_6KeySuccessCompetencies"
+  SuffixKeyEQ: "_8KeyEQSkills"
+  Fileformat: ".png"
+ 
+ 
+---
+
+```{r}
+########################################################################################
+# new survey (544 questions)
+# report is a final version of the results of all questions in screening process
+########################################################################################
+
+# variable name needs to be same as those in finalquestion_excel
+
+```
+
+```{r}
+# Package automatic upload and install
+# set up working directory
+# Chunk for package 
+setwd("~/git/R-scripts/Reportformula")
+
+
+if (!require("magrittr")) install.packages("magrittr")
+if (!require("data.table")) install.packages("data.table")
+if (!require("stringr")) install.packages("stringr")
+if (!require("ggplot2")) install.packages("ggplot2")
+if (!require("stargazer")) install.packages("stargazer")
+if (!require("grid")) install.packages("grid")
+if (!require("gridExtra")) install.packages("gridExtra")
+if (!require("reshape2")) install.packages("reshape2")
+if (!require("ggfortify")) install.packages("ggfortify")
+if (!require("readxl")) install.packages("readxl")
+if (!require("lubridate")) install.packages("lubridate")
+if (!require("date")) install.packages("date")
+
+library("stringr",warn.conflicts = FALSE)
+library("data.table",warn.conflicts = FALSE)
+library("magrittr",warn.conflicts = FALSE)
+library("ggplot2",warn.conflicts = FALSE)
+library("stargazer",warn.conflicts = FALSE)
+library("grid",warn.conflicts = FALSE)
+library(gridExtra,warn.conflicts = FALSE)
+library(reshape2,warn.conflicts = FALSE)
+library("ggfortify",warn.conflicts = FALSE)
+library(readxl,warn.conflicts = FALSE)
+library("lubridate",warn.conflicts = FALSE)
+library("date",warn.conflicts = FALSE)
+
+```
+
+# ---------------change variable names and create empty data table----------------
+# load survey questions: 1. Record all variable names 2. 
+# if the file is saved as xlsx, then this line can be used.
+
+# load original questionaire sheet by sheet
+# remember to delete all the lines/variables indicating the pomps
+# finalquestion_total <- read_xlsx("./survey/Final Question.xlsx", sheet = "Questions") %>%
+
+```{r}
+# Chunk for reading formula 
+file <- params$staffresponsefile
+finalquestion_total <- read_xlsx(params$Inventoryfile, sheet = params$Readsheet ) %>%
+  as.data.table %>%
+  # order
+  .[order(`Variable Name`),]
+finalquestion_total <- as.data.frame(finalquestion_total)
+finalquestion_total <- finalquestion_total[-which(is.na(str_match(finalquestion_total$`Variable Name`, "#prom"))==FALSE),] %>%
+  as.data.table
+lists <- read_xlsx("~/git/R-scripts/Reportformula/Summer\ UES\ Self-Discovery\ Inventor20180709.xlsx",sheet = "Lists") %>%
+  as.data.table # lists is the options for open questions in the survey, e.g. specialist
+```
+
+```{r}
+# Chunk for chunk for clean and modify raw data
+# get all variable names and rename them for later use
+varname <- str_replace_all(finalquestion_total[,`Variable Name`],"-","_")
+varname <- str_replace_all(varname," ","")
+finalquestion_total$`Variable Name` <- varname
+finalquestion_total$reorder <- c(0) # for reorder, everytime a new statistics is created in report, reorder is updated accordingly
+#################################################################
+# new data frame to simmulate the results (dataset: survey)     #
+#################################################################
+# create empty data table for simulation
+# first use matrix to assign row numbers and column numbers
+set.seed(10001)
+# Simmulations (Fake value)
+# the number of answers (in order to simulate students' choices)
+# some answers are reported in the Lists Sheet
+
+NumAns <- rowSums(!is.na(finalquestion_total[,which(is.na(str_match(colnames(finalquestion_total),"Ans [1-7]"))==FALSE),with = FALSE]))
+# upload raw data from the answers of the interviewees
+# rawsurvey <- read_xlsx("Staff Test Response.xlsx",sheet = "Form Responses 1")
+
+rawsurvey <- read_xlsx(file,sheet = "Form Responses 1")
+rawsurvey[1,] <- str_replace_all(rawsurvey[1,],"-","_")
+colnames(rawsurvey) <- rawsurvey[1,]
+rawsurvey <- rawsurvey[-1,]%>%
+  as.data.table
+
+rawsurvey <- rawsurvey[,"trackingnumber":=1:nrow(rawsurvey)] %>%
+  as.data.frame # adding tracking number
+rawsurvey[,3:ncol(rawsurvey)] <- apply(rawsurvey[,3:ncol(rawsurvey)],2,function(x){str_replace_all(x,"[a-z]+","")})
+rawsurvey[,3:ncol(rawsurvey)] <- apply(rawsurvey[,3:ncol(rawsurvey)],2,function(x){str_replace_all(x,"[A-Z]+","")})
+rawsurvey[,3:ncol(rawsurvey)] <- apply(rawsurvey[,3:ncol(rawsurvey)],2,function(x){str_replace_all(x,"-","")})
+rawsurvey[,3:ncol(rawsurvey)] <- apply(rawsurvey[,3:ncol(rawsurvey)],2,function(x){as.numeric(x)})
+rawsurvey <- rawsurvey[!is.na(rawsurvey[,2]),]
+
+set.seed(10001) # set seed
+survey <- do.call(cbind,lapply(NumAns, function(x){
+  if (x!=0 & x!=1){
+    # floor(rep(0,nrow(rawsurvey)))} #real situation
+  floor(runif(nrow(rawsurvey),1,x+1))}
+  else{
+    # floor(rep(0,nrow(rawsurvey))) #real situation 
+    floor(runif(nrow(rawsurvey),1,6))
+    # Cannot be NA, because in that way we cannot choose from the lists and cannot use str_c for testing.
+    # For real data, we could skip this step.
+  }
+})) %>%
+  as.data.table%>%
+  `colnames<-`(c(varname))%>%
+  as.data.frame
+survey$trackingnumber <- 1:nrow(survey)
+  rawloc <- as.numeric(na.omit(match(colnames(survey),colnames(rawsurvey))))
+survey[,which(is.na(match(colnames(survey),colnames(rawsurvey)))==FALSE)] <- rawsurvey[,rawloc]
+# check
+  identical(colnames(survey)[which(is.na(match(colnames(survey),colnames(rawsurvey)))==FALSE)],colnames(rawsurvey)[rawloc])
+  survey <- as.data.table(survey)
+# adjust for reverse items
+# rev is a indicator to mark which variable is reverse item
+# use str_count to identify the variables which need to be adjusted
+rev <- varname[which(str_count(finalquestion_total$Reverse)>0)]
+# have changed it to negative here. and in the following part, we can use 8-score to indicate the real number
+reverseadj <- 8-survey[,rev,with=FALSE] # create new lines
+survey[,which(str_count(finalquestion_total$Reverse)>0)] <- reverseadj
+# for reorder: add a new indentification row
+survey <- survey %>%
+  as.data.frame %>%
+  # rbind(.,rep(7,ncol(.))) %>%
+  as.data.table
+```
+
+```{r}
+# Chunk for capture and locating the data from the spreadsheet. 
+# This is required for the later use in the function. 
+#################################################################
+# statistical results                                           #
+#    report                                                     #
+#################################################################
+# Initialize data frame: and all the statistics results is contained in this data frame
+# reportvar <- str_replace_all(finalquestion_total$`Q#`,"-","_")
+# Initialize report as 0 
+# report$trackingnumber <- data.frame(1:nrow(survey))
+report <- matrix(0,nrow(survey),length(varname)) %>%
+  as.data.table %>%
+  `colnames<-` (varname)
+report[,"trackingnumber":=1:nrow(survey)]
+identical(colnames(report)[1:(ncol(report)-1)],varname) # check if these two lists are the same
+########################################################################################
+#    Background                                                                        #
+#  already reordered for the firsttime
+########################################################################################
+# identify the location of students' choice
+Answersloc <- which(is.na(str_match(colnames(finalquestion_total),"Ans[1-7]"))==FALSE)
+# replace variable name with tracking numbers to avoid making update manually
+# Define functions to automatically updated survey report (the most important part)
+report_des <- function(x,text = "Subject"){
+  options(warn = -1) # disable warnings
+  # change all the data tables into data frames 
+  survey <- as.data.frame(survey)
+  report <- as.data.frame(report)
+  finalquestion_total <- as.data.frame(finalquestion_total)
+  lists <- as.data.frame(lists)
+  # choice is a vector for selection
+  choice <- finalquestion_total[which(finalquestion_total$`Variable Name`==varname[x]),Answersloc][1,]
+  {if(sum(!is.na(choice))==0){
+    report[,x] <<- str_c(finalquestion_total$Question[x],"-- ",survey[,x])
+    finalquestion_total$reorder[x] <<- 1
+  }
+    if(sum(!is.na(choice))==1){
+      report[,x] <<- str_c(finalquestion_total$Question[x], "-- ", 
+                           lists[,which(colnames(lists)==text)][survey[,which(colnames(survey)==varname[x])[1]]])
+      finalquestion_total$reorder[x] <<- -1
+    }
+    if(sum(!is.na(choice))!=0 & sum(!is.na(choice))!=1){
+      report[,x] <<- factor(survey[,which(colnames(survey)==varname[x])[1]],
+                            levels = 1:NumAns[x], 
+                            labels = str_c(finalquestion_total$Question[x],"-- ",choice[1,1:NumAns[x]]))
+      finalquestion_total$reorder[x] <<- 1
+    }}
+}
+
+report_sum <- function(x=1,text){
+  survey <- as.data.frame(survey)
+  report <- as.data.frame(report)
+  finalquestion_total <- as.data.frame(finalquestion_total)
+  
+  Num <- which(is.na(str_match(varname,text))==FALSE)
+  finalquestion_total$reorder[Num] <<- 1
+  
+  loc <- do.call(c,lapply(text,function(i){
+    loc <<- which(is.na(str_match(varname,i))==FALSE)
+  }))
+  finalquestion_total$reorder[loc] <<- 1
+  
+  report[,loc[1]] <<-
+    rowSums(survey[,loc],na.rm = TRUE)
+  report[,loc[2:length(loc)]] <<- NA
+  report[,loc[1]]
+}
+
+report_mean <- function(x=1,text){
+  survey <- as.data.frame(survey)
+  report <- as.data.frame(report)
+  finalquestion_total <- as.data.frame(finalquestion_total)
+  
+  Num <- which(is.na(str_match(varname,text))==FALSE)
+  finalquestion_total$reorder[Num] <<- 1
+  
+  loc <- do.call(c,lapply(text,function(i){
+    loc <<- which(is.na(str_match(varname,i))==FALSE)
+  }))
+  finalquestion_total$reorder[loc] <<- 1
+  
+  report[,loc[1]] <<-
+    rowMeans(survey[,loc],na.rm = TRUE)
+  report[,loc[2:length(loc)]] <<- NA
+  report[,loc[1]]
+}
+
+
+report_meang <- function(x=1,text){
+  survey <- as.data.frame(survey)
+  report <- as.data.frame(report)
+  finalquestion_total <- as.data.frame(finalquestion_total)
+  
+  Num <- which(is.na(str_match(varname,text))==FALSE)
+  finalquestion_total$reorder[Num] <<- 1
+  
+  loc <- do.call(c,lapply(text,function(i){
+    loc <<- which(is.na(str_match(varname,i))==FALSE)
+  }))
+  finalquestion_total$reorder[loc] <<- 1
+  
+  report[,loc[1]] <<-
+    rowMeans(survey[,loc],na.rm = TRUE)/NumAns[x]
+  report[,loc[2:length(loc)]] <<- NA
+  report[,loc[1]]
+}
+
+# define the function for presenting several plots in one page (for analysis)
+multiplot <- function(..., plotlist=NULL, file, cols=1, layout=NULL) {
+  require(grid)
+  
+  # Make a list from the ... arguments and plotlist
+  plots <- c(list(...), plotlist)
+  
+  numPlots = length(plots)
+  
+  # If layout is NULL, then use 'cols' to determine layout
+  if (is.null(layout)) {
+    # Make the panel
+    # ncol: Number of columns of plots
+    # nrow: Number of rows needed, calculated from # of cols
+    layout <- matrix(seq(1, cols * ceiling(numPlots/cols)),
+                     ncol = cols, nrow = ceiling(numPlots/cols))
+  }
+  
+  if (numPlots==1) {
+    print(plots[[1]])
+    
+  } else {
+    # Set up the page
+    grid.newpage()
+    pushViewport(viewport(layout = grid.layout(nrow(layout), ncol(layout))))
+    
+    # Make each plot, in the correct location
+    for (i in 1:numPlots) {
+      # Get the i,j matrix positions of the regions that contain this subplot
+      matchidx <- as.data.frame(which(layout == i, arr.ind = TRUE))
+      
+      print(plots[[i]], vp = viewport(layout.pos.row = matchidx$row,
+                                      layout.pos.col = matchidx$col))
+    }
+  }
+}
+```
+
+```{r}
+#Chunk for special case； ADHD
+# Change value according to the original survey
+#################################################################
+#   ADHD         
+#   gender info 
+#################################################################
+# all values needs to be changed in range [0,3]
+# ADHD needs to be reversed
+survey[,varname[which(is.na(str_match(varname,"P_Disa_ADHD_Hyper"))==FALSE)]] <- 
+  survey[,varname[which(is.na(str_match(varname,"P_Disa_ADHD_Hyper"))==FALSE)],with=FALSE]-2
+survey[,varname[which(is.na(str_match(varname,"P_Disa_ADHD_Inatt"))==FALSE)]] <- 
+  survey[,varname[which(is.na(str_match(varname,"P_Disa_ADHD_Inatt"))==FALSE)],with=FALSE]-2
+
+survey <- as.data.frame(survey)
+for (i in 1:ncol(survey[,which(is.na(str_match(varname,"P_Disa_ADHD_Hyper"))==FALSE)])){
+  survey[,which(is.na(str_match(varname,"P_Disa_ADHD_Hyper"))==FALSE)][,i][
+    which(survey[,which(is.na(str_match(varname,"P_Disa_ADHD_Hyper"))==FALSE)][,i]<0)] <- 0       
+}
+
+for (i in 1:ncol(survey[,which(is.na(str_match(varname,"P_Disa_ADHD_Inatt"))==FALSE)])){
+  survey[,which(is.na(str_match(varname,"P_Disa_ADHD_Inatt"))==FALSE)][,i][
+    which(survey[,which(is.na(str_match(varname,"P_Disa_ADHD_Inatt"))==FALSE)][,i]<0)] <- 0       
+}
+survey <- as.data.table(survey)
+
+# For student, ADHD needs to be reversed
+# Step 1: change the scale from [1,5] to [0,0,1,2,3]
+survey[,varname[which(is.na(str_match(varname,"S_Disa_ADHD_Inatt"))==FALSE)]] <- 
+  survey[,varname[which(is.na(str_match(varname,"S_Disa_ADHD_Inatt"))==FALSE)],with=FALSE]-2
+
+survey <- as.data.frame(survey) # change it to data frame since there is no explicit commands
+# in data table do do the exactly same thing
+for (i in 1:ncol(survey[,which(is.na(str_match(varname,"S_Disa_ADHD_Inatt"))==FALSE)])){
+  survey[,which(is.na(str_match(varname,"S_Disa_ADHD_Inatt"))==FALSE)][,i][
+    which(survey[,which(is.na(str_match(varname,"S_Disa_ADHD_Inatt"))==FALSE)][,i]<0)] <- 0       
+}
+survey[,which(is.na(str_match(varname,"S_Disa_ADHD_Inatt"))==FALSE)] <- 3-survey[,which(is.na(str_match(varname,"S_Disa_ADHD_Inatt"))==FALSE)]
+survey <- as.data.table(survey) # after change the answer scales, transfer it back to data table
+
+```
+
+```{r}
+# Chunk for calculation formula and modify
+# SAgreeableness
+ReportFormula <- report_mean(text = "S_Pers_Big5_Agree") %>%
+  report_mean(text = "S_Pers_Big5_Agree")%>%
+  as.data.frame%>%
+  `colnames<-`(c("SAgreeableness"))
+# SConscientiousness
+ReportFormula$SConscientiousness <- report_mean(text = "S_Pers_Big5_Consc")%>%
+  report_mean(text = "S_Pers_Big5_Consc")
+# SExtraversion
+ReportFormula$SExtraversion <- report_mean(text = "S_Pers_Big5_Extra") %>%
+  report_mean(text = "S_Pers_Big5_Extra")
+# SEmotional Stability
+ReportFormula$`SEmotional Stability` <- report_mean(text = "S_Pers_Big5_Emoti") %>%
+  report_mean(text = "S_Pers_Big5_Emoti")
+# SOpenness
+ReportFormula$SOpenness <- report_mean(text = "S_Pers_Big5_Openn")%>%
+  report_mean(text = "S_Pers_Big5_Openn")
+# SVocConfidenceArt
+ReportFormula$SVocConfidenceArt <- report_mean(text = "S_Care_Voc_CArti") %>%
+  report_mean(text = "S_Care_Voc_CArti")
+# SVocConfidenceCon
+ReportFormula$SVocConfidenceCon <- report_mean(text = "S_Care_Voc_CConv")%>%
+  report_mean(text = "S_Care_Voc_CConv")
+# SVocConfidenceEnt
+ReportFormula$SVocConfidenceEnt <- report_mean(text = "S_Care_Voc_CEnte")%>%
+  report_mean(text = "S_Care_Voc_CEnte")
+# SVocConfidenceInv
+ReportFormula$SVocConfidenceInv <- report_mean(text = "S_Care_Voc_CInve")%>%
+  report_mean(text = "S_Care_Voc_CInve")
+# SVocConfidenceRea
+ReportFormula$SVocConfidenceRea <- report_mean(text = "S_Care_Voc_CReal")%>%
+  report_mean(text = "S_Care_Voc_CReal")
+# SVocConfidenceSoc
+ReportFormula$SVocConfidenceSoc <- report_mean(text = "S_Care_Voc_CSoci")%>%
+  report_mean(text = "S_Care_Voc_CSoci")
+
+# SVocInterestArt
+ReportFormula$SVocInterestArt <- report_mean(text = c("S_Care_Voc_IArti","S_Care_Voca_Artis"))%>%
+  report_mean(text = c("S_Care_Voc_IArti","S_Care_Voca_Artis"))
+# SVocInterestCon
+ReportFormula$SVocInterestCon <- report_mean(text = c("S_Care_Voc_IConv","S_Care_Voca_Conve"))%>%
+  report_mean(text = c("S_Care_Voc_IConv","S_Care_Voca_Conve"))
+# SVocInterestEnt
+ReportFormula$SVocInterestEnt <- report_mean(text = c("S_Care_Voc_IEnte","S_Care_Voca_Enter"))%>%
+  report_mean(text = c("S_Care_Voc_IEnte","S_Care_Voca_Enter"))
+# SVocInterestInv
+ReportFormula$SVocInterestInv <- report_mean(text = c("S_Care_Voc_IInve","S_Care_Voca_Inves"))%>%
+  report_mean(text = c("S_Care_Voc_IInve","S_Care_Voca_Inves"))
+# SVocInterestRea
+ReportFormula$SVocInterestRea <- report_mean(text = c("S_Care_Voc_IReal","S_Care_Voca_Reali"))%>%
+  report_mean(text = c("S_Care_Voc_IReal","S_Care_Voca_Reali"))
+# SVocInterestSoc
+ReportFormula$SVocInterestSoc <- report_mean(text = c("S_Care_Voc_ISoci","S_Care_Voca_Socia"))%>%
+  report_mean(text = c("S_Care_Voc_ISoci","S_Care_Voca_Socia"))
+
+# SParenting
+ReportFormula$SParenting <- report_mean(text = c("S_Back_Pare_Abili1", "S_Back_Pare_Consi1" , "S_Back_Pare_Empat1","S_Back_Pare_Engag1", "S_Back_Pare_Expec1" , "S_Back_Pare_Expec2" , "S_Back_Pare_Liste1" , "S_Back_Pare_Patie1" , "S_Back_Pare_Under1"))%>%
+  report_mean(text = c("S_Back_Pare_Abili1", "S_Back_Pare_Consi1" , "S_Back_Pare_Empat1","S_Back_Pare_Engag1", "S_Back_Pare_Expec1" , "S_Back_Pare_Expec2" , "S_Back_Pare_Liste1" , "S_Back_Pare_Patie1" , "S_Back_Pare_Under1"))
+# PParenting
+ReportFormula$PParenting <- report_mean(text = c("P_Back_Pare_Abili1" , "P_Back_Pare_Consi1" , "P_Back_Pare_Empat1" , "P_Back_Pare_Empat2" , "P_Back_Pare_Engag1" , "P_Back_Pare_Liste1" , "P_Back_Pare_Patie1" , "P_Back_Pare_Under1" , "P_Back_Pare_Under2" , "P_Back_Pare_zEnga1"))%>%
+  report_mean(text = c("P_Back_Pare_Abili1" , "P_Back_Pare_Consi1" , "P_Back_Pare_Empat1" , "P_Back_Pare_Empat2" , "P_Back_Pare_Engag1" , "P_Back_Pare_Liste1" , "P_Back_Pare_Patie1" , "P_Back_Pare_Under1" , "P_Back_Pare_Under2" , "P_Back_Pare_zEnga1"))
+# PAgreeableness
+ReportFormula$PAgreeableness <- report_mean(text = "P_Pers_Big5_Agree")%>%
+  report_mean(text = "P_Pers_Big5_Agree")
+# PConPcientiousness
+ReportFormula$PConPcientiousness <- report_mean(text ="P_Pers_Big5_Consc")%>%
+  report_mean(text ="P_Pers_Big5_Consc")
+# PExtraversion
+ReportFormula$PExtraversion <- report_mean(text = "P_Pers_Big5_Extra")%>%
+  report_mean(text = "P_Pers_Big5_Extra")
+# PEmotional Stability
+ReportFormula$`PEmotional Stability` <- report_mean(text = "P_Pers_Big5_Emoti")%>%
+  report_mean(text = "P_Pers_Big5_Emoti")
+# POpenness
+ReportFormula$POpenness <- report_mean(text = "P_Pers_Big5_Openn")%>%
+  report_mean(text = "P_Pers_Big5_Openn")
+# PVocational ConfidenceArt
+ReportFormula$`PVocational ConfidenceArt` <- report_mean(text = "P_Care_Voca_Artis")%>%
+  report_mean(text = "P_Care_Voca_Artis")
+# PVocational ConfidenceCon
+ReportFormula$`PVocational ConfidenceCon` <- report_mean(text = "P_Care_Voca_Conve")%>%
+  report_mean(text = "P_Care_Voca_Conve")
+# PVocational ConfidenceEnt
+ReportFormula$`PVocational ConfidenceEnt` <- report_mean(text = "P_Care_Voca_Enter")%>%
+  report_mean(text = "P_Care_Voca_Enter")
+# PVocational ConfidenceInv
+ReportFormula$`PVocational ConfidenceInv` <- report_mean(text = "P_Care_Voca_Inves")%>%
+  report_mean(text = "P_Care_Voca_Inves")
+# PVocational ConfidenceRea
+ReportFormula$`PVocational ConfidenceRea` <- report_mean(text = "P_Care_Voca_Reali")%>%
+  report_mean(text = "P_Care_Voca_Reali")
+# PVocational ConfidenceSoc
+ReportFormula$`PVocational ConfidenceSoc` <- report_mean(text = "P_Care_Voca_Socia")%>%
+  report_mean(text = "P_Care_Voca_Socia")
+
+# Critical Thinking 
+ReportFormula$`Critical Thinking` <- report_mean(text = c("S_Lear_Crit_Criti","S_Lear_Crit_Refle"))%>%
+  report_mean(text = c("S_Lear_Crit_Criti","S_Lear_Crit_Refle"))
+# Reflective Thinking
+ReportFormula$`Reflective Thinking` <- report_mean(text = "S_Lear_Meta_Meta")%>%
+  report_mean(text = "S_Lear_Meta_Meta")
+# Creativity
+ReportFormula$Creativity <- report_mean(text = c("S_Crea_Self_Creat1" , "S_Crea_Self_Evide1" , "S_Crea_Self_Evide2" , "S_Crea_Self_Evide3" , "S_Crea_Self_Perso1"))%>%
+  report_mean(text = c("S_Crea_Self_Creat1" , "S_Crea_Self_Evide1" , "S_Crea_Self_Evide2" , "S_Crea_Self_Evide3" , "S_Crea_Self_Perso1"))
+# Ability to focus
+ReportFormula$`Ability to focus` <- report_sum(text = c("S_Disa_ADHD_Inatt"))%>%
+  report_sum(text = c("S_Disa_ADHD_Inatt"))
+ReportFormula$`Ability to focus` <- 27-ReportFormula$`Ability to focus`
+
+# Organization
+ReportFormula$Organization <- report_mean(text = "S_Lear_Orga_Organ")%>%
+  report_mean(text = "S_Lear_Orga_Organ")
+# Time Management
+ReportFormula$`Time Management` <- report_mean(text = c("S_Lear_Orga_L_Tim","S_Lear_Orga_S_Tim"))%>%
+  report_mean(text = c("S_Lear_Orga_L_Tim","S_Lear_Orga_S_Tim"))
+
+# Grit 
+ReportFormula$Grit <- report_mean(text = "S_Pers_GRIT_GRIT")%>%
+  report_mean(text = "S_Pers_GRIT_GRIT")
+# Resilience
+ReportFormula$Resilience <- report_mean(text = "S_Pers_Resi_Resil")%>%
+  report_mean(text = "S_Pers_Resi_Resil")
+# Growth Mindset
+ReportFormula$`Growth Mindset` <- report_mean(text = c("S_Know_Mind_Growt","S_Know_Mind_Fixed"))%>%
+  report_mean(text = c("S_Know_Mind_Growt","S_Know_Mind_Fixed"))
+# Motivations
+ReportFormula$Motivations <- report_mean(text = c("S_Moti_Acad_Extri","S_Moti_Acad_Intri","S_Moti_Acad_N_Amo1")) %>%
+  report_mean(text = c("S_Moti_Acad_Extri","S_Moti_Acad_Intri","S_Moti_Acad_N_Amo1")) 
+# Self Confidence
+ReportFormula$`Self Confidence` <- report_mean(text = "S_Care_Voc_C")%>%
+  report_mean(text = "S_Care_Voc_C")
+
+# Work Ethic
+ReportFormula$`Work Ethic` <- report_mean(text = c ("S_Pers_Big5_Consc1" , "S_Pers_Big5_Consc2" , "S_Pers_Big5_Consc3" , "S_Pers_Big5_Consc4" , "S_Know_cult_Filia5" , "S_Know_cult_Non_c1" , "S_Comm_Coll_Parti1" , "S_Comm_Coll_Parti3"))%>%
+  report_mean(text = c ("S_Pers_Big5_Consc1" , "S_Pers_Big5_Consc2" , "S_Pers_Big5_Consc3" , "S_Pers_Big5_Consc4" , "S_Know_cult_Filia5" , "S_Know_cult_Non_c1" , "S_Comm_Coll_Parti1" , "S_Comm_Coll_Parti3"))
+# Positive Attitude
+ReportFormula$`PositiveAttitude`<- report_mean(text = c("S_Pers_Resi_Resil1","S_Pers_Resi_Resil2","S_Pers_Resi_Resil3","S_Pers_Resi_Resil4","S_Pers_Resi_Resil9"))%>%
+  report_mean(text = c("S_Pers_Resi_Resil1","S_Pers_Resi_Resil2","S_Pers_Resi_Resil3","S_Pers_Resi_Resil4","S_Pers_Resi_Resil9"))
+
+# Communication
+ReportFormula$Communication <- report_mean(text = c("S_Comm_Coll_Engag1","S_Comm_Coll_Manag1","S_Comm_Coll_Manag2"))%>%
+  report_mean(text = c("S_Comm_Coll_Engag1","S_Comm_Coll_Manag1","S_Comm_Coll_Manag2"))
+# Empathy
+ReportFormula$Empathy <- report_mean(text = c("S_Comm_Coll_Brain1","S_Comm_Coll_Colle1","S_Comm_Coll_Colle2","S_Comm_Coll_Colle3","S_Comm_Coll_Using1","S_Comm_Comm_Useo1"))%>%
+  report_mean(text = c("S_Comm_Coll_Brain1","S_Comm_Coll_Colle1","S_Comm_Coll_Colle2","S_Comm_Coll_Colle3","S_Comm_Coll_Using1","S_Comm_Comm_Useo1"))
+# Relationship Management
+ReportFormula$`Relationship Management` <- report_mean(text = c("S_Comm_Comm_Activ1" , "S_Comm_Comm_Activ2" , "S_Comm_Comm_Commu1" , "S_Comm_Comm_Commu2" , "S_Comm_Comm_Useo1" , "S_Comm_Comm_Useo2", "S_Comm_Comm_Useo3" , "S_Comm_Comm_Useo4"))%>%
+  report_mean(text = c("S_Comm_Comm_Activ1" , "S_Comm_Comm_Activ2" , "S_Comm_Comm_Commu1" , "S_Comm_Comm_Commu2" , "S_Comm_Comm_Useo1" , "S_Comm_Comm_Useo2", "S_Comm_Comm_Useo3" , "S_Comm_Comm_Useo4"))
+# Flexibility&Adaptability
+ReportFormula$`Flexibility&Adaptability` <- report_mean(text = c("S_Pers_Big5_Openn2" , "S_Pers_Big5_Openn1", "S_Pers_Big5_Openn3","S_Pers_Big5_Openn4"))%>%
+  report_mean(text = c("S_Pers_Big5_Openn2" , "S_Pers_Big5_Openn1", "S_Pers_Big5_Openn3","S_Pers_Big5_Openn4"))
+# Team Work
+ReportFormula$`Team Work` <- report_mean(text = c("S_Comm_Coll_Brain1" , "S_Comm_Coll_Colle1" , "S_Comm_Coll_Colle2" , "S_Comm_Coll_Colle3" , "S_Comm_Coll_Engag1" , "S_Comm_Coll_Manag1" , "S_Comm_Coll_Manag2" , "S_Comm_Coll_Parti1" , "S_Comm_Coll_Parti2" , "S_Comm_Coll_Parti3" , "S_Comm_Coll_Using1"))%>%
+  report_mean(text = c("S_Comm_Coll_Brain1" , "S_Comm_Coll_Colle1" , "S_Comm_Coll_Colle2" , "S_Comm_Coll_Colle3" , "S_Comm_Coll_Engag1" , "S_Comm_Coll_Manag1" , "S_Comm_Coll_Manag2" , "S_Comm_Coll_Parti1" , "S_Comm_Coll_Parti2" , "S_Comm_Coll_Parti3" , "S_Comm_Coll_Using1"))
+# Coping with Pressure
+ReportFormula$`Coping with Pressure` <- report_mean(text = c("S_Pers_Resi_Resil4" ,  "S_Pers_Resi_Resil5" ,  "S_Pers_Resi_Resil6" ,  "S_Pers_Resi_Resil7" ,  "S_Pers_Resi_Resil8"))%>%
+  report_mean(text = c("S_Pers_Resi_Resil4" ,  "S_Pers_Resi_Resil5" ,  "S_Pers_Resi_Resil6" ,  "S_Pers_Resi_Resil7" ,  "S_Pers_Resi_Resil8"))
+# Negotiation
+ReportFormula$`Negotiation` <- report_mean(text = c("S_Comm_Coll_Parti2","S_Comm_Comm_Activ1", "S_Comm_Comm_Activ2" , "S_Comm_Comm_Commu1" , "S_Comm_Comm_Commu2" , "S_Comm_Comm_Useo3"))%>%
+  report_mean(text = c("S_Comm_Coll_Parti2","S_Comm_Comm_Activ1", "S_Comm_Comm_Activ2" , "S_Comm_Comm_Commu1" , "S_Comm_Comm_Commu2" , "S_Comm_Comm_Useo3"))
+# Conflict Resolution
+ReportFormula$`Conflict Resolution` <- report_mean(text = c("S_Comm_Coll_Manag1" , "S_Comm_Coll_Manag2" ,"S_Care_Voc_CSoci1" , "S_Care_Voc_CSoci2" , "S_Care_Voc_CSoci3" , "S_Care_Voc_CSoci4" , "S_Care_Voc_CSoci5"))%>%
+  report_mean(text = c("S_Comm_Coll_Manag1" , "S_Comm_Coll_Manag2" ,"S_Care_Voc_CSoci1" , "S_Care_Voc_CSoci2" , "S_Care_Voc_CSoci3" , "S_Care_Voc_CSoci4" , "S_Care_Voc_CSoci5"))
+
+
+ReportFormula[1,]
+ReportFormula$Artconfidence <- ifelse(ReportFormula$SVocConfidenceArt>4,1,-1)
+ReportFormula$Artinterest <- ifelse(ReportFormula$SVocInterestArt>4,1,-1)
+
+ReportFormula$Reaconfidence <- ifelse(ReportFormula$SVocConfidenceRea>4,1,-1)
+ReportFormula$Reainterest <- ifelse(ReportFormula$SVocInterestRea>4,1,-1)
+
+ReportFormula$Socconfidence <- ifelse(ReportFormula$SVocConfidenceSoc>4,1,-1)
+ReportFormula$Socinterest <- ifelse(ReportFormula$SVocInterestSoc>4,1,-1)
+
+ReportFormula$Conconfidence <- ifelse(ReportFormula$SVocConfidenceCon>4,1,-1)
+ReportFormula$Coninterest <- ifelse(ReportFormula$SVocInterestCon>4,1,-1)
+
+ReportFormula$Entconfidence <- ifelse(ReportFormula$SVocConfidenceEnt>4,1,-1)
+ReportFormula$Entinterest <- ifelse(ReportFormula$SVocInterestEnt>4,1,-1)
+
+ReportFormula$Invconfidence <- ifelse(ReportFormula$SVocConfidenceInv>4,1,-1)
+ReportFormula$Invinterest <- ifelse(ReportFormula$SVocInterestInv>4,1,-1)
+```
+
+```{r}
+# identifying the criteria ----------------------------------------------------
+# R
+Rc <- mean(c(ReportFormula$SConscientiousness[which(is.na(str_match(rawsurvey[,2],"yuchi"))==FALSE)],
+       ReportFormula$SConscientiousness[which(is.na(str_match(rawsurvey[,2],"alex"))==FALSE)]
+       ))/7*100
+Re <- mean(c(
+       ReportFormula$SExtraversion[which(is.na(str_match(rawsurvey[,2],"alex"))==FALSE)],
+       ReportFormula$SExtraversion[which(is.na(str_match(rawsurvey[,2],"alex"))==FALSE)]
+       ))/7*100
+# I
+Io <- mean(c(ReportFormula$SOpenness[which(is.na(str_match(rawsurvey[,2],"yuchi"))==FALSE)],
+       ReportFormula$SOpenness[which(is.na(str_match(rawsurvey[,2],"alex"))==FALSE)]
+       ))/7*100
+In <- mean(c(
+       ReportFormula$`SEmotional Stability`[which(is.na(str_match(rawsurvey[,2],"yuchi"))==FALSE)],
+       ReportFormula$`SEmotional Stability`[which(is.na(str_match(rawsurvey[,2],"alex"))==FALSE)]
+       ))/7*100
+# A
+Ao <- mean(c(ReportFormula$SOpenness[which(is.na(str_match(rawsurvey[,2],"yuchi"))==FALSE)],
+       ReportFormula$SOpenness[which(is.na(str_match(rawsurvey[,2],"evelyn"))==FALSE)],
+       ReportFormula$SOpenness[which(is.na(str_match(rawsurvey[,2],"kylie"))==FALSE)]
+       ))/7*100
+# S
+So <- mean(c(ReportFormula$SOpenness[which(is.na(str_match(rawsurvey[,2],"linli"))==FALSE)],
+       ReportFormula$SOpenness[which(is.na(str_match(rawsurvey[,2],"miyoki"))==FALSE)],
+       ReportFormula$SOpenness[which(is.na(str_match(rawsurvey[,2],"lorena"))==FALSE)]
+       ))/7*100
+Se <- mean(c(
+       ReportFormula$SExtraversion[which(is.na(str_match(rawsurvey[,2],"linli"))==FALSE)],
+       ReportFormula$SExtraversion[which(is.na(str_match(rawsurvey[,2],"miyoki"))==FALSE)],
+       ReportFormula$SExtraversion[which(is.na(str_match(rawsurvey[,2],"lorena"))==FALSE)]
+       ))/7*100
+Sa <- mean(c(
+       ReportFormula$SAgreeableness[which(is.na(str_match(rawsurvey[,2],"linli"))==FALSE)],
+       ReportFormula$SAgreeableness[which(is.na(str_match(rawsurvey[,2],"miyoki"))==FALSE)],
+       ReportFormula$SAgreeableness[which(is.na(str_match(rawsurvey[,2],"lorena"))==FALSE)]
+       ))/7*100
+# E
+Ec <- mean(c(ReportFormula$SConscientiousness[which(is.na(str_match(rawsurvey[,2],"chris"))==FALSE)],
+       ReportFormula$SConscientiousness[which(is.na(str_match(rawsurvey[,2],"yuchi"))==FALSE)],
+       ReportFormula$SConscientiousness[which(is.na(str_match(rawsurvey[,2],"katherine"))==FALSE)]
+       ))/7*100
+Ee <- mean(c(
+       ReportFormula$SExtraversion[which(is.na(str_match(rawsurvey[,2],"chris"))==FALSE)],
+       ReportFormula$SExtraversion[which(is.na(str_match(rawsurvey[,2],"yuchi"))==FALSE)],
+       ReportFormula$SExtraversion[which(is.na(str_match(rawsurvey[,2],"katherine"))==FALSE)]
+       ))/7*100
+En <- mean(c(
+       ReportFormula$`SEmotional Stability`[which(is.na(str_match(rawsurvey[,2],"chris"))==FALSE)],
+       ReportFormula$`SEmotional Stability`[which(is.na(str_match(rawsurvey[,2],"yuchi"))==FALSE)],
+       ReportFormula$`SEmotional Stability`[which(is.na(str_match(rawsurvey[,2],"katherine"))==FALSE)]
+       ))/7*100
+# C
+Cc <- mean(c(ReportFormula$SConscientiousness[which(is.na(str_match(rawsurvey[,2],"nian"))==FALSE)],
+       ReportFormula$SConscientiousness[which(is.na(str_match(rawsurvey[,2],"tyler"))==FALSE)],
+       ReportFormula$SConscientiousness[which(is.na(str_match(rawsurvey[,2],"gidien"))==FALSE)],
+       ReportFormula$SConscientiousness[which(is.na(str_match(rawsurvey[,2],"oliver"))==FALSE)],
+       ReportFormula$SConscientiousness[which(is.na(str_match(rawsurvey[,2],"mark"))==FALSE)]
+       ))/7*100
+Cn <- mean(c(
+       ReportFormula$`SEmotional Stability`[which(is.na(str_match(rawsurvey[,2],"nian"))==FALSE)],
+       ReportFormula$`SEmotional Stability`[which(is.na(str_match(rawsurvey[,2],"tyler"))==FALSE)],
+       ReportFormula$`SEmotional Stability`[which(is.na(str_match(rawsurvey[,2],"gidien"))==FALSE)],
+       ReportFormula$`SEmotional Stability`[which(is.na(str_match(rawsurvey[,2],"oliver"))==FALSE)],
+       ReportFormula$`SEmotional Stability`[which(is.na(str_match(rawsurvey[,2],"mark"))==FALSE)]
+       ))/7*100
+criteria <- c(Rc,Re,Io,In,Ao,So,Se,Sa,Ec,Ee,En,Cc,Cn)
+names(criteria) <- c("Rc","Re","Io","In","Ao",'So','Se','Sa','Ec','Ee','En','Cc','Cn')
+criteria
+
+mean(ReportFormula$SOpenness)/7*100
+mean(ReportFormula$SConscientiousness)/7*100
+mean(ReportFormula$SExtraversion)/7*100
+mean(ReportFormula$SAgreeableness)/7*100
+mean(ReportFormula$`SEmotional Stability`)/7*100
+```
+
+# Personality Report: e.g. for one person
+# change the index number to expand them into several parts
+```{r}
+# 6 Success completness
+lapply(1:nrow(survey),function(i){
+# lapply(9,function(i){
+  
+re <- rbind(
+  `Emotional Stability` <- ReportFormula$`SEmotional Stability`,
+  Agreeableness <- ReportFormula$SAgreeableness,
+  Extraversion <- ReportFormula$SExtraversion,
+  Conscientiousness <- ReportFormula$SConscientiousness,
+  Openness <- ReportFormula$SOpenness)
+# i <- 1
+a <- c(order(re[1,])[i],order(re[2,])[i],order(re[3,])[i],order(re[4,])[i],order(re[5,])[i])
+b <- ncol(re)
+re <- cbind(re[,i])
+
+rownames(re) <- c("Openness","Conscientiousness","Extraversion",
+                  "Agreeableness", "Neurotism")
+rownames(re) <- c("Neurotism","Agreeableness","Extraversion","Conscientiousness","Openness")
+colnames(re) <- "score"
+
+theme_set(theme_bw())  
+re <- as.data.frame(re)
+# Data Prep
+re$name <- rownames(re)
+# re$score[which(re$score<4)] <- -re$score[which(re$score<4)]
+set.seed(i)
+re$score <- c(qnorm((a/b-0.001)[1],50,10),((re$score /7)*100)[2:5]) #+rnorm(5)
+re$score
+
+# re$score <- pnorm(a/b)*100
+# re$score <- (a/b)*100
+
+# this criteria needs to be changed accordingly
+re$per_type <- ifelse(re$score < c(50,55,53,54,55), "below average", "above average")  # above / below avg flag
+                      
+re$name <- factor(re$name, levels = re$name)  # convert to factor to retain sorted order in plot.
+
+# Diverging Barcharts
+options(decimal = 2)
+ggplot(re, aes(x=name, y=score, label=score)) + 
+  geom_bar(stat='identity', aes(fill=per_type), width=.5)  +
+  scale_fill_manual(name="Big Five",
+                    labels = c("Above Average", "Below Average"),
+                    values = c("above average"="#014d64", "below average"="#6794a7")) +
+  labs(x="",
+       subtitle = rawsurvey[,2][i]) + 
+  coord_flip()+
+  ylim(c(0,100))+
+  geom_text(aes(label=round(score,1)))
+# ggsave(str_c("./figures/personality/",rawsurvey[,2][i],"_personality",".png"))
+ggsave(do.call(str_c,lapply(c(params$WorkingDirectory,rawsurvey[,2][i],params$SuffixPer,params$Fileformat),function(x){
+  str_replace_na(x,"")
+})))
+})
+
+
+```
+
+```{r}
+# 7 Success Character ---------------------------------------------------------
+lapply(1:nrow(survey),function(i){
+  suc <- rbind(
+    ReportFormula$PositiveAttitude,
+    ReportFormula$`Work Ethic`,
+    ReportFormula$`Self Confidence`,
+    ReportFormula$Motivations,
+    ReportFormula$`Growth Mindset`,
+    ReportFormula$Resilience,
+    ReportFormula$Grit
+  )
+  # i = 9 # chris
+  a <- c(order(suc[1,])[i],order(suc[2,])[i],order(suc[3,])[i],order(suc[4,])[i],order(suc[5,])[i],order(suc[6,])[i],order(suc[7,])[i])
+  b <- ncol(suc)
+  suc <- cbind(suc[,i])
+  
+  rownames(suc) <- c("Positive Attitude","Work Ethic","Self Confidence","Motivations","Growth Mindset","Resilience","Grit")
+  colnames(suc) <- "score"
+  
+  theme_set(theme_bw())  
+  suc <- as.data.frame(suc)
+  # Data Prep
+  suc$name <- rownames(suc)
+  # re$score[which(re$score<4)] <- -re$score[which(re$score<4)]
+  set.seed(1000+i)
+  suc$score <- (suc$score /7)*100 # + rnorm(7)
+  # random error 
+  # suc$score <- qnorm((suc$score /7))*100
+  # re$score <- (a/b)*100
+  
+  suc$per_type <- ifelse(suc$score < c(53,55,53,54,65,53,53), "below average", "above average")  # above / below avg flag
+  
+  suc$name <- factor(suc$name, levels = suc$name)  # convert to factor to retain sorted order in plot.
+  
+  # Diverging Barcharts
+  options(decimal = 2)
+  ggplot(suc, aes(x=name, y=score, label=score)) + 
+    geom_bar(stat='identity', aes(fill=per_type), width=.5)  +
+    scale_fill_manual(name="7 Key Success Characters",
+                      labels = c("Above Average", "Below Average"),
+                      values = c("above average"="#014d64", "below average"="#6794a7")) +
+    labs(x="",
+         subtitle = rawsurvey[,2][i]) + 
+    coord_flip()+
+    ylim(c(0,100))+
+    geom_text(aes(label=round(score,1)))
+  ggsave(do.call(str_c,lapply(c(params$WorkingDirectory,rawsurvey[,2][i],params$SuffixSCha,params$Fileformat),function(x){
+    str_replace_na(x,"")
+  })))
+})
+
+```
+
+```{r}
+# 6 Key Success Competencies ---------------------------------------------------------
+lapply(1:nrow(survey),function(i){
+  suc <- rbind(
+    ReportFormula$`Time Management`,
+    ReportFormula$Organization,
+    ReportFormula$`Ability to focus`,
+    ReportFormula$Creativity,
+    ReportFormula$`Reflective Thinking`,
+    ReportFormula$`Critical Thinking`
+  )
+  # i = 9 # chris
+  a <- c(order(suc[1,])[i],order(suc[2,])[i],order(suc[3,])[i],order(suc[4,])[i],order(suc[5,])[i],order(suc[6,])[i])
+  b <- ncol(suc)
+  suc <- cbind(suc[,i])
+  
+  rownames(suc) <- c("Time Management","Organization","Ability to focus","Creativity","Reflective Thinking","Critical Thinking")
+  colnames(suc) <- "score"
+  
+  theme_set(theme_bw())  
+  suc <- as.data.frame(suc)
+  # Data Prep
+  suc$name <- rownames(suc)
+  # re$score[which(re$score<4)] <- -re$score[which(re$score<4)]
+  set.seed(1000+i)
+  suc$score <- (suc$score /7)*100 # + rnorm(7)
+  # random error 
+  # suc$score <- qnorm((suc$score /7))*100
+  # re$score <- (a/b)*100
+  
+  suc$per_type <- ifelse(suc$score < c(53,55,53,54,65,53), "below average", "above average")  # above / below avg flag
+  
+  suc$name <- factor(suc$name, levels = suc$name)  # convert to factor to retain sorted order in plot.
+  
+  # Diverging Barcharts
+  options(decimal = 2)
+  ggplot(suc, aes(x=name, y=score, label=score)) + 
+    geom_bar(stat='identity', aes(fill=per_type), width=.5)  +
+    scale_fill_manual(name="7 Key Success Characters",
+                      labels = c("Above Average", "Below Average"),
+                      values = c("above average"="#014d64", "below average"="#6794a7")) +
+    labs(x="",
+         subtitle = rawsurvey[,2][i]) + 
+    coord_flip()+
+    ylim(c(0,100))+
+    geom_text(aes(label=round(score,1)))
+  ggsave(do.call(str_c,lapply(c(params$WorkingDirectory,rawsurvey[,2][i],params$SuffixSCom,params$Fileformat),function(x){
+    str_replace_na(x,"")
+  })))
+  })
+
+
+```
+
+```{r}
+# 8 Key EQ Skills ---------------------------------------------------------
+lapply(1:nrow(survey),function(i){
+  suc <- rbind(
+    ReportFormula$`Conflict Resolution`,
+    ReportFormula$Negotiation,
+    ReportFormula$`Coping with Pressure`,
+    ReportFormula$`Team Work`,
+    ReportFormula$`Flexibility&Adaptability`,
+    ReportFormula$`Relationship Management`,
+    ReportFormula$Empathy,
+    ReportFormula$Communication
+    
+  )
+  # i = 9 # chris
+  a <- c(order(suc[1,])[i],order(suc[2,])[i],order(suc[3,])[i],order(suc[4,])[i],order(suc[5,])[i],order(suc[6,])[i],order(suc[7,])[i],order(suc[8,])[i])
+  b <- ncol(suc)
+  suc <- cbind(suc[,i])
+  
+  rownames(suc) <- c("Conflict Resolution","Negotiation","Coping with Pressure","Team Work","Flexibility & Adaptability","Relationship Management","Empathy","Communication")
+  colnames(suc) <- "score"
+  
+  theme_set(theme_bw())  
+  suc <- as.data.frame(suc)
+  # Data Prep
+  suc$name <- rownames(suc)
+  # re$score[which(re$score<4)] <- -re$score[which(re$score<4)]
+  set.seed(1000+i)
+  suc$score <- (suc$score /7)*100 # + rnorm(7)
+  # random error 
+  # suc$score <- qnorm((suc$score /7))*100
+  # re$score <- (a/b)*100
+  
+  suc$per_type <- ifelse(suc$score < c(53,55,53,54,65,53,53,53), "below average", "above average")  # above / below avg flag
+  
+  suc$name <- factor(suc$name, levels = suc$name)  # convert to factor to retain sorted order in plot.
+  
+  # Diverging Barcharts
+  options(decimal = 2)
+  ggplot(suc, aes(x=name, y=score, label=score)) + 
+    geom_bar(stat='identity', aes(fill=per_type), width=.5)  +
+    scale_fill_manual(name="7 Key Success Characters",
+                      labels = c("Above Average", "Below Average"),
+                      values = c("above average"="#014d64", "below average"="#6794a7")) +
+    labs(x="",
+         subtitle = rawsurvey[,2][i]) + 
+    coord_flip()+
+    ylim(c(0,100))+
+    geom_text(aes(label=round(score,1)))
+  ggsave(do.call(str_c,lapply(c(params$WorkingDirectory,rawsurvey[,2][i],params$SuffixKeyEQ,params$Fileformat),function(x){
+    str_replace_na(x,"")
+  })))
+  })
+
+
+```
