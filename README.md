@@ -1,2 +1,2 @@
-# R-scripts-
-R scripts from past working experience 
+# R-scripts
+A repo for R-scripts for now
