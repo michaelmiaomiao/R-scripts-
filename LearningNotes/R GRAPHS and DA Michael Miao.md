@@ -378,6 +378,118 @@ data(package = .packages(all.available = TRUE))
 # And lapply returns list and sapply returns a vector. Marko Smiljanic, Dabbles in R for few years now :-) I assume that you already know what *apply function do :-). Main difference between lapply and sapply is that sapply will try to simplify as much as it can the output of lapply.
 
 
+read_csv also offers many additional arguments for making adjustments to your data as you read it in:
+
+# specify the column class using col_types
+read_csv("mydata.csv", col_types = list(col_double(), 
+                                        col_character(), 
+                                        col_character()))
+##   variable 1 variable 2 variable 3
+## 1         10       beer       TRUE
+## 2         25       wine       TRUE
+## 3          8     cheese      FALSE
+
+# we can also specify column classes with a string
+# in this example d = double, _ skips column, c = character
+read_csv("mydata.csv", col_types = "d_c")
+##   variable 1 variable 3
+## 1         10       TRUE
+## 2         25       TRUE
+## 3          8      FALSE
+
+# set column names
+read_csv("mydata.csv", col_names = c("Var 1", "Var 2", "Var 3"), skip = 1)
+##   Var 1  Var 2 Var 3
+## 1    10   beer  TRUE
+## 2    25   wine  TRUE
+## 3     8 cheese FALSE
+
+# set the maximum number of lines to read in
+read_csv("mydata.csv", n_max = 2)
+##   variable 1 variable 2 variable 3
+## 1         10       beer       TRUE
+## 2         25       wine       TRUE
+
+
+df <- data.frame(var1 = c(10, 25, 8), 
+                 var2 = c("beer", "wine", "cheese"), 
+                 var3 = c(TRUE, TRUE, FALSE),
+                 row.names = c("billy", "bob", "thornton"))
+
+df
+##          var1   var2  var3
+## billy      10   beer  TRUE
+## bob        25   wine  TRUE
+## thornton    8 cheese FALSE
+
+
+# save() can be used to save multiple objects in you global environment,
+# in this case I save two objects to a .RData file
+x <- stats::runif(20)
+y <- list(a = 1, b = TRUE, c = "oops")
+save(x, y, file = "xy.RData")
+
+# save.image() is just a short-cut for ‘save my current workspace’,
+# i.e. all objects in your global environment
+save.image()
+
+# write rds file readr
+readr::write_rds(x, "x.rds")
+
+# save a single object to file
+saveRDS(x, "x.rds")
+
+# restore it under a different name
+x2 <- readRDS("x.rds")
+identical(x, x2)
+[1] TRUE
+
+
+# number of variables
+ncol(mtcars)
+## [1] 11
+
+# number of rows
+nrow(mtcars)
+## [1] 32
+
+# number of rows and variables
+dim(mtcars)
+## [1] 32 11
+
+# look at the last 10 rows
+tail(mtcars, 10)
+
+sapply(mtcars, class)
+
+# fivenum() function provides min, 25%, 50% (median), 75%, and max
+fivenum(mtcars$mpg)
+## [1] 10.40 15.35 19.20 22.80 33.90
+
+# default quantile() percentiles are 0%, 25%, 50%, 75%, and 100% 
+# provides same output as fivenum()
+quantile(mtcars$mpg)
+##     0%    25%    50%    75%   100% 
+## 10.400 15.425 19.200 22.800 33.900
+
+# we can customize quantile() for specific percentiles
+quantile(mtcars$mpg, probs = seq(from = 0, to = 1, by = .1))
+##    0%   10%   20%   30%   40%   50%   60%   70%   80%   90%  100% 
+## 10.40 14.34 15.20 15.98 17.92 19.20 21.00 21.47 24.08 30.09 33.90
+
+# we can quickly compute the difference between the 1st and 3rd quantile
+IQR(mtcars$mpg)
+## [1] 7.375
+
+library(moments)
+
+skewness(mtcars$mpg)
+## [1] 0.6404399
+kurtosis(mtcars$mpg)
+## [1] 2.799467
+
+tapply 对df更好
+
 
 
 
