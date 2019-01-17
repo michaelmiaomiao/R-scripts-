@@ -375,6 +375,7 @@ data(package ="MASS")
 data(package = .packages(all.available = TRUE))
 
 
+# And lapply returns list and sapply returns a vector. Marko Smiljanic, Dabbles in R for few years now :-) I assume that you already know what *apply function do :-). Main difference between lapply and sapply is that sapply will try to simplify as much as it can the output of lapply.
 
 
 
