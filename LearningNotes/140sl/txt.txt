@@ -1,0 +1,145 @@
+Stats 140SL - Task3: Basic Analysis
+========================================================
+# Formating data to make it easier to work with
+```{r}
+##Loading libraries for future use
+library(ggplot2)
+library(xtable)
+NYPD = read.csv("C:/Users/BrittanyBruin/Desktop/Stats140SL/Stats140SL/NYPD.csv")
+##Creating new variables to seperate MONTH, DAY, YEAR, TIME and HOUR
+datetime = paste(NYPD$DATE, NYPD$TIME)
+NYPD$DATETIME = strptime(datetime, format="%m/%d/%Y %H:%M")
+NYPD$HOUR = format(NYPD$DATETIME, format="%H")
+NYPD$MONTH = format(NYPD$DATETIME, format="%b")
+NYPD$DAY = format(NYPD$DATETIME, format="%d")
+NYPD$YEAR = format(NYPD$DATETIME, format="%Y")
+NYPD$MONTH2 = format(NYPD$DATETIME, format="%B")
+NYPD$DATE2 = format(NYPD$DATETIME, format="%m-%d-%Y")
+##Check new variables in dataset
+View(NYPD)
+##Making a subset of the NYPD data to include only the variables I need
+myvars = c("HOUR", "MONTH", "YEAR", "ON.STREET.NAME", "CROSS.STREET.NAME",
+"NUMBER.OF.PERSONS.INJURED", "NUMBER.OF.PERSONS.KILLED",
+"NUMBER.OF.PEDESTRIANS.INJURED", "NUMBER.OF.PEDESTRIANS.KILLED")
+newdata = NYPD[myvars]
+View(newdata)
+##Splitting data by year and checking that each new data set contains only one
+years worth of data.
+NYPD2014=newdata[c(1:56658), 1:9]
+tail(NYPD2014)
+NYPD2013=newdata[c(56659:212598), 1:9]
+head(NYPD2013)
+tail(NYPD2013)
+NYPD2012=newdata[c(212599:290229), 1:9]
+head(NYPD2012)
+```
+# QUESTION 1: What is The Most Dangerous Month of the Year?
+```{r}
+##Looking at just 2014
+qplot(MONTH, NUMBER.OF.PERSONS.KILLED+NUMBER.OF.PERSONS.INJURED, data=NYPD2014,
+geom="histogram", stat="identity")
+qplot(MONTH, NUMBER.OF.PERSONS.INJURED, data=NYPD2014, geom="histogram",
+stat="identity")
+qplot(MONTH, NUMBER.OF.PERSONS.KILLED, data=NYPD2014, geom="histogram",
+stat="identity")
+##Looking at just 2013
+qplot(MONTH, NUMBER.OF.PERSONS.KILLED+NUMBER.OF.PERSONS.INJURED, data=NYPD2013,
+geom="histogram", stat="identity")
+qplot(MONTH, NUMBER.OF.PERSONS.INJURED, data=NYPD2013, geom="histogram",
+stat="identity")
+qplot(MONTH, NUMBER.OF.PERSONS.KILLED, data=NYPD2013, geom="histogram",
+stat="identity")
+
+##Looking at just 2012
+qplot(MONTH, NUMBER.OF.PERSONS.KILLED+NUMBER.OF.PERSONS.INJURED, data=NYPD2012,
+geom="histogram", stat="identity")
+qplot(MONTH, NUMBER.OF.PERSONS.INJURED, data=NYPD2012, geom="histogram",
+stat="identity")
+qplot(MONTH, NUMBER.OF.PERSONS.KILLED, data=NYPD2012, geom="histogram",
+stat="identity")
+```
+# QUESTION 2: What is The Most Dangerous Time of the day?
+```{r}
+##Looking at just 2014
+qplot(HOUR, NUMBER.OF.PERSONS.INJURED+NUMBER.OF.PERSONS.KILLED, data=NYPD2014,
+geom="histogram", stat="identity")
+qplot(HOUR, NUMBER.OF.PERSONS.INJURED, data=NYPD2014, geom="histogram",
+stat="identity")
+qplot(HOUR, NUMBER.OF.PERSONS.KILLED, data=NYPD2014, geom="histogram",
+stat="identity")
+##Looking at just 2013
+qplot(HOUR, NUMBER.OF.PERSONS.INJURED+NUMBER.OF.PERSONS.KILLED, data=NYPD2013,
+geom="histogram", stat="identity")
+qplot(HOUR, NUMBER.OF.PERSONS.INJURED, data=NYPD2013, geom="histogram",
+stat="identity")
+qplot(HOUR, NUMBER.OF.PERSONS.KILLED, data=NYPD2013, geom="histogram",
+stat="identity")
+##Looking at just 2012
+qplot(HOUR, NUMBER.OF.PERSONS.INJURED+NUMBER.OF.PERSONS.KILLED, data=NYPD2012,
+geom="histogram", stat="identity")
+qplot(HOUR, NUMBER.OF.PERSONS.INJURED, data=NYPD2012, geom="histogram",
+stat="identity")
+qplot(HOUR, NUMBER.OF.PERSONS.KILLED, data=NYPD2012, geom="histogram",
+stat="identity")
+```
+# QUESTION 3: What is The Most Dangerous Street for Pedestrians in New York?
+(please use a combination of ON.STREET.NAME, OFF.STREET.NAME and
+CROSS.STREET.NAME )
+```{r}
+which.max(colSums(table(NYPD2014$NUMBER.OF.PEDESTRIANS.KILLED+NYPD2014$NUMBER.OF
+.PEDESTRIANS.INJURED, NYPD2014$ON.STREET.NAME)))
+which.max(colSums(table(NYPD2014$NUMBER.OF.PEDESTRIANS.INJURED,
+NYPD2014$ON.STREET.NAME)))
+which.max(colSums(table(NYPD2014$NUMBER.OF.PEDESTRIANS.KILLED,
+NYPD2014$ON.STREET.NAME)))
+which.max(colSums(table(NYPD2013$NUMBER.OF.PEDESTRIANS.KILLED+NYPD2013$NUMBER.OF
+.PEDESTRIANS.INJURED, NYPD2013$ON.STREET.NAME)))
+which.max(colSums(table(NYPD2013$NUMBER.OF.PEDESTRIANS.INJURED,
+NYPD2013$ON.STREET.NAME)))
+which.max(colSums(table(NYPD2013$NUMBER.OF.PEDESTRIANS.KILLED,
+NYPD2013$ON.STREET.NAME)))
+which.max(colSums(table(NYPD2012$NUMBER.OF.PEDESTRIANS.KILLED+NYPD2012$NUMBER.OF
+.PEDESTRIANS.INJURED, NYPD2012$ON.STREET.NAME)))
+which.max(colSums(table(NYPD2012$NUMBER.OF.PEDESTRIANS.INJURED,
+NYPD2012$ON.STREET.NAME)))
+which.max(colSums(table(NYPD2012$NUMBER.OF.PEDESTRIANS.KILLED,
+NYPD2012$ON.STREET.NAME)))
+###Previous code for graphs which produced unclear graphs.
+##Looking at just 2014
+
+#qplot(ON.STREET.NAME,
+NUMBER.OF.PEDESTRIANS.INJURED+NUMBER.OF.PEDESTRIANS.KILLED, data=NYPD2014,
+geom="histogram", stat="identity")
+#qplot(ON.STREET.NAME, NUMBER.OF.PEDESTRIANS.INJURED, data=NYPD2014,
+geom="histogram", stat="identity")
+#qplot(ON.STREET.NAME, NUMBER.OF.PEDESTRIANS.KILLED, data=NYPD2014,
+geom="histogram", stat="identity")
+##Looking at just 2013
+#qplot(ON.STREET.NAME,
+NUMBER.OF.PEDESTRIANS.INJURED+NUMBER.OF.PEDESTRIANS.KILLED, data=NYPD2013,
+geom="histogram", stat="identity")
+#qplot(ON.STREET.NAME, NUMBER.OF.PEDESTRIANS.INJURED, data=NYPD2013,
+geom="histogram", stat="identity")
+#qplot(ON.STREET.NAME, NUMBER.OF.PEDESTRIANS.KILLED, data=NYPD2013,
+geom="histogram", stat="identity")
+##Looking at just 2012
+#qplot(ON.STREET.NAME,
+NUMBER.OF.PEDESTRIANS.INJURED+NUMBER.OF.PEDESTRIANS.KILLED, data=NYPD2012,
+geom="histogram", stat="identity")
+#qplot(ON.STREET.NAME, NUMBER.OF.PEDESTRIANS.INJURED, data=NYPD2012,
+geom="histogram", stat="identity")
+#qplot(ON.STREET.NAME, NUMBER.OF.PEDESTRIANS.KILLED, data=NYPD2012,
+geom="histogram", stat="identity")
+```
+# QUESTION 4: Reproduction of the table
+```{r}
+mytable=matrix(c(55,125,73,113,20,11058,27609,13913,19550,3927,2981,6665,5260,43
+26,632,38,62,53,68,8),ncol=5,byrow=TRUE)
+colnames(mytable)=c("BRONX","BROOKLYN","MANHATTAN", "QUEENS","STATEN ISLAND")
+rownames(mytable)=c("PERSONS.KILLED","PERSONS.INJURED","PEDESTRIANS.INJURED","PE
+DESTRIANS.KILLED")
+mytable=as.table(mytable)
+mytable
+```
+
+
