@@ -455,6 +455,10 @@ print(result)
 
 
 
+# CONVERT FACTOR TO NUMERIC
+as.numeric(as.character())
+
+
 
 
 
