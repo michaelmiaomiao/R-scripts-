@@ -493,14 +493,164 @@ tapply 对df更好
 
 
 
+## dplyr 
+
+```
+re(list = ls())
 
 
 
+```
+
+
+```{r}
+load ("data")
+str(mydata)      # Provides the structure of the                  datasetsummary(mydata)  # Provides basic descriptive                  statistics and frequenciesnames(mydata) # Lists variables in the dataset head(mydata) # First 6 rows of dataset head(mydata, n=10)# First 10 rows of dataset head(mydata, n= -10) # All rows but the last 10 tail(mydata) # Last 6 rowstail(mydata, n=10) # Last 10 rowstail(mydata, n= -10) # All rows but the first 10 mydata[1:10, ] # First 10 rows of the mydata[1:10,1:3] # First 10 rows of data of the                 first 3 variablesedit(mydata)     # Open data editor
+
+```
+
+
+library(ggplot2)  # data visualization
+library(scales)   # date/time scales for plots
+
+library(dplyr)    # data wrangling
+library(tidyr)    # reshaping data
+library(stringr)  # tools for strings
+
+sum(is.na(mydata))# Number of missing in datasetrowSums(is.na(data))# Number of missing pervariablerowMeans(is.na(data))*length(data)# No. of missing                 per rowmydata[mydata$age=="&  ","age"] <- NA   # NOTE:     Notice hidden spaces.mydata[mydata$age==999,"age"] <- NAThe function complete.cases() returns a logical vector indicating which cases are complete.# list rows of data that have missing values mydata[!complete.cases(mydata),]The function na.omit() returns the object with listwise deletion of missing values.# create new dataset without missing 
+
+
+# Use factor() for nominal datamydata$sex <- factor(mydata$sex, levels = c(1,2),     labels = c("male", "female"))# Use ordered() for ordinal data```
+mydata$var2 <- ordered(mydata$var2, levels =     c(1,2,3,4), labels = c("Strongly agree",     "Somewhat agree", "Somewhat disagree",     "Strongly disagree"))mydata$var8 <- ordered(mydata$var2, levels = c(1,2,3,4), labels = c("Strongly agree", "Somewhat agree", "Somewhat disagree", "Strongly disagree")) # Making a copy of the same variable
+```
+
+
+# Recoding variables```
+library(car)mydata$Age.rec <- recode(mydata$Age,                  "18:19='18to19';                   20:29='20to29';                   30:39='30to39'")mydata$Age.rec <- as.factor(mydata$Age.rec)
+```
+
+# Dropping variables
+```
+mydata$Age.rec <- NULLmydata$var1 <- mydata$var2 <- NULL
+```
+
+# Save the commands used during the sessionsavehistory(file="mylog.Rhistory")# Load the commands used in a previous sessionloadhistory(file="mylog.Rhistory")# Display the last 25 commandshistory()# You can read mylog.Rhistory with any word   processor. Notice that the file has to have the   extension *.Rhistoryround(100* prop.table(readgender,2), 2)   # Round                  col % to 2 digitsround(100* prop.table(readgender,2))   # Round col                  % to whole numbersaddmargins(readgender)   # Adding row/col margins#install.packages("vcd")library(vcd)assocstats(majorgender)# NOTE: Chi-sqr = sum (obs-exp)^2/expDegrees of freedom for Chi-sqr are (r-1)*(c-1)# NOTE: Chi-sqr contribution = (obs-exp)^2/exp# Cramer's V = sqrt(Chi-sqr/N*min)Where N is sample size and min is a the
+
+
+Descriptive Statisticsinstall.packages("pastecs")library(pastecs)stat.desc(mydata)stat.desc(mydata[,c("Age","SAT","Score","Height","Read")])stat.desc(mydata[,c("Age","SAT","Score")],basic=TRUE, desc=TRUE, norm=TRUE, p=0.95)stat.desc(mydata[10:14], basic=TRUE, desc=TRUE,norm=TRUE, p=0.95)------------------------------------------------# Selecting the first 30 observations and first 14variablesmydata2 <- mydata2[1:30,1:14]# Selection using the --subset—```
+mydata3 <- subset(mydata2, Age >= 20 & Age <= 30)mydata4 <- subset(mydata2, Age >= 20 & Age <= 30,select=c(ID, First, Last, Age))mydata5 <- subset(mydata2, Gender=="Female" &Status=="Graduate" & Age >= 30)mydata6 <- subset(mydata2, Gender=="Female" &Status=="Graduate" & Age == 30)
+```
+
+# apply func
+```
+
+stderr <- function(x) sqrt(var(x)/length(x))incster <- tapply(incomes, statef, stderr)
+```
+
+
+# Descriptive statistics by groups using --```
+                  aggregate—aggregate(mydata[c("Age","SAT")],by=list(sex=mydat                  a$Gender), mean, na.rm=TRUE)aggregate(mydata[c("Age","SAT")],mydata["Gender"],                  mean, na.rm=TRUE)aggregate(mydata,by=list(sex=mydata$Gender), mean,                  na.rm=TRUE)aggregate(mydata,by=list(sex=mydata$Gender,                  major=mydata$Major,                  status=mydata$Status), mean,                  na.rm=TRUE)aggregate(mydata$SAT,by=list(sex=mydata$Gender,                  major=mydata$Major,                  status=mydata$Status), mean,                  na.rm=TRUE)aggregate(mydata[c("SAT")],by=list(sex=mydata$Gend                  er, major=mydata$Major,                  status=mydata$Status), mean,                  na.rm=TRUE)
+
+
+```
+## aggregate() how to use it
+`ss` 
+`
+par(mfrow=c(1, 1))`
 
 
 
+## scatter 
+```
+scatterplot(SAT~Age|Gender, data=mydata)scatterplot(SAT~Age|Gender, id.method="identify",                  data=mydata)
+```
 
 
+mydata = read.csv("http://www.princeton.edu/~otorres/quarterly.csv")# Increasingmydata = mydata[ order(mydata$unemp), ] mydata = mydata[ order(mydata$date), ]# Decreasingmydata = mydata[ order(mydata$date, decreasing = TRUE), ]# xtfrm() when variable is factor (decreasing) mydata = mydata[ order(-xtfrm(mydata$date)), ]# Increasing year but decreasing gdp```
+mydata = mydata[ order(mydata$year, -mydata$gdp), ]
+
+```
+
+## convert rank to a factor (categorical variable)
+mydata$rank <- factor(mydata$rank)
+
+## wtih function
+
+
+
+On a mac in RStudio: alt+cmd+i. It's under the "code" dropdown menu box if you forget it.
+
+
+
+*ss*'''
+
+
+`Insert %>% Ctrl+Shi +M`
+
+## match function
+as1$Values[match(as2$ID, as1$ID)] <- as2$Values
+
+as1
+  ID pID Values
+1  1  21    435
+2  2  22     33
+3  3  23     45
+4  4  24    544
+5  5  25    676
+6  6  26     12
+
+
+library(plyr)
+
+join(df1, df2,
+     type = "inner")
+
+#   CustomerId Product   State
+# 1          2 Toaster Alabama
+# 2          4   Radio Alabama
+# 3          6   Radio    Ohio
+```
+
+By using the merge function and its optional parameters:
+
+Inner join: merge(df1, df2) will work for these examples because R automatically joins the frames by common variable names, but you would most likely want to specify merge(df1, df2, by = "CustomerId") to make sure that you were matching on only the fields you desired. You can also use the by.x and by.y parameters if the matching variables have different names in the different data frames.
+
+Outer join: merge(x = df1, y = df2, by = "CustomerId", all = TRUE)
+
+Left outer: merge(x = df1, y = df2, by = "CustomerId", all.x = TRUE)
+
+Right outer: merge(x = df1, y = df2, by = "CustomerId", all.y = TRUE)
+
+Cross join: merge(x = df1, y = df2, by = NULL)
+
+
+```
+```{r}
+
+# NOT RUN {
+filter(starwars, species == "Human")
+filter(starwars, mass > 1000)
+
+# Multiple criteria
+filter(starwars, hair_color == "none" & eye_color == "black")
+filter(starwars, hair_color == "none" | eye_color == "black")
+
+# Multiple arguments are equivalent to and
+filter(starwars, hair_color == "none", eye_color == "black")
+
+
+```
+
+## Important dplyr Functions to remember
+
+dplyr Function	Description	Equivalent SQL
+select()	Selecting columns (variables)	SELECT
+filter()	Filter (subset) rows.	WHERE
+group_by()	Group the data	GROUP BY
+summarise()	Summarise (or aggregate) data	-
+arrange()	Sort the data	ORDER BY
+join()	Joining data frames (tables)	JOIN
+mutate()	Creating New Variables	COLUMN ALIAS
 
 
 
