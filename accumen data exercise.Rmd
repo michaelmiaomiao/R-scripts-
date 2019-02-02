@@ -1,0 +1,337 @@
+---
+title: "ACCUMEN DATA EXERCISE CODING"
+author: "JIASHU MIAO"
+date: "2019/1/20"
+output: html_document
+---
+
+
+
+```{r}
+library("readr")
+require("readxl")
+library("dplyr")
+library("ggplot2")
+```
+
+
+## Understanding the Data											
+a) Are all the values in the data reasonable? Are there missing values?											
+b) What are the characteristics of employees at Company A? Do these demographics change over time?											
+Use tables and charts to understand the data and demographic characteristics of employees at Company A. 											
+```{r}
+data_original <- read_excel("/Users/MichaelMiao/Documents/career/accument\ data\ excercise/Acumen_Data_Analysis_Exercise.xlsx", sheet = "Data")
+attach(data_original)
+#View(data_original)
+par(mfrow=c(2,5))
+for (i in 1:length(data_original)) {
+        boxplot(data_original[,i], main=names(data_original[i]), type="l")
+
+}
+
+# so there might be unreasonable variables in Age, Health Score
+detach(data_original)
+dataNEW1 <-  subset(data_original,`Health Score` >=0 & `Health Score` <=6)
+range(data_original$Age)
+dataNEW2 <- subset(dataNEW1, dataNEW1$Age >= 18 & dataNEW1$Age <= 63 )
+summary(dataNEW2)
+dataNEW2 <- na.omit(dataNEW2)
+colSums(is.na(dataNEW2))
+# filter out the observations that is not in correct score range 0:6, some of them 10!
+# filter out the observations that the employ is beyond age 18 or over 62. 
+# dataNEW2 becomes the new data
+
+
+```
+```{r}
+
+sum(is.na(data_original$`Sex (Male=1)`))
+table(data_original$Race)
+```
+# we could see there are 1973 missing values for the varible "Racec" at our new dataNEW2. 
+#z we could remove them or impuate with other numbers or NULL. 
+quartermeanhealth <- aggregate(dataNEW2$`Health Score`,by = list(dataNEW2$Quarter), FUN = mean)
+quartermeanhealth <- as.data.frame(quartermeanhealth)
+colnames(quartermeanhealth) <- c("Quarter","QuarterMeanHealthScore")
+quartermeanhealth
+summary(dataNEW2)
+ggplot(quartermeanhealth,aes(x=quartermeanhealth$Quarter,y=quartermeanhealth$QuarterMean))+geom_point(size=2)+geom_smooth(method = lm)
+
+
+saqmean <- aggregate(dataNEW2$Salary, by = list(dataNEW2$Quarter), FUN = mean) %>% as.data.frame()
+colnames(saqmean) <- c("Quarter", "QuarterMeanSalaries")
+saqmean
+
+# We can see as the time goes by, which is when quartr goes from 1 to 12, the salaries increases and the health score increases based on the means from each quarters as we calculated above.
+
+
+
+
+
+
+2. Exploring Relationships
+a) Which characteristics are associated with the health score? 
+Use tables and charts (suggestion: scatter plots for continuous variables) to determine which characteristics are associated with the health score.
+
+```{r}
+datapair <- dataNEW2[sample(nrow(dataNEW2),80),] %>% as.data.frame()
+pairs(datapair)
+colSums(is.na(dataNEW2))
+dim(dataNEW2)
+dataNEW2$`Sex (Male=1)` <- as.factor(dataNEW2$`Sex (Male=1)`) 
+dataNEW2$Race <- as.factor(dataNEW2$Race)
+dataNEW2$`Hospital Visit This Quarter (1=Yes)` <- as.factor(dataNEW2$`Hospital Visit This Quarter (1=Yes)`)
+str(dataNEW2)
+model1 <- lm(data = dataNEW2,formula = dataNEW2$`Health Score` ~ dataNEW2$Quarter+dataNEW2$Age+dataNEW2$Salary+dataNEW2$`Sex (Male=1)`+dataNEW2$Race+dataNEW2$`Hospital Visit This Quarter (1=Yes)`)
+summary(model1)
+
+# Based on the plot Age, SEX, RACE, HOSPITAL VISITS matters with HEALTH SCORE.
+
+model2 <- lm(dataNEW2$`Health Score`~ dataNEW2$Age+dataNEW2$`Sex (Male=1)`+dataNEW2$Race+dataNEW2$`Hospital Visit This Quarter (1=Yes)`)
+summary(model2)
+par(mfrow=c(2,2))
+plot(model2) 
+# follow the model assumption. 
+
+plotage <- plot(dataNEW2$Age,dataNEW2$`Health Score`)
+plotage
+abline(model2)
+plot(dataNEW2$Quarter,dataNEW2$`Health Score`) 
+
+```
+```{r}
+as.data.frame(table(dataNEW2$`Employee Id`))
+as.data.frame(table(dataNEW1$Quarter))
+dataNEW3 <- subset(dataNEW1, dataNEW1$Quarter == 1) %>% as.data.frame()
+range(dataNEW3$`Employee Id`)
+
+as.data.frame(table(data_original$Quarter))
+dim(data_original)
+plot(table(data_original$Quarter))
+```
+
+
+
+
+```{r}
+
+
+attach(data_original)
+mydata <- data_original
+#Example 1 : Selecting Random N Rows
+sample_n(data_original,3)
+#Example 2 : Selecting Random Fraction of Rows
+sample_frac(mydata,0.001)
+attach(mydata)
+typeof(mydata$Race)
+table(Race)
+colSums(is.na(mydata))
+summary(mydata)
+
+
+#Example 3 : Remove Duplicate Rows based on all the variables (Complete Row)
+
+#The distinct function is used to eliminate duplicates.
+#x11 = distinct(mydata)
+
+# Example 4 : Remove Duplicate Rows based on a variable
+# 
+# The .keep_all function is used to retain all other variables in the output data frame.
+#x22 = distinct(mydata, race, .keep_all= TRUE)
+#x22
+# 
+# quarter_selected <- select(mydata,mydata$`Sex (Male=1)`)
+
+
+# Helpers	Description
+# starts_with()	Starts with a prefix
+# ends_with()	Ends with a prefix
+# contains()	Contains a literal string
+# matches()	Matches a regular expression
+# num_range()	Numerical range like x01, x02, x03.
+# one_of()	Variables in character vector.
+# everything()	All variables.
+```
+
+
+```{r}
+# learn different type of packages. 
+
+# lubridate package that makes you date effient 
+#install.packages("lubridate")
+#install.packages("rvest")
+library("lubridate")
+library("rvest")
+
+
+# mydate1 <- "6aug2005"
+# as.data
+# mdy(mydate1)
+# use rvest to scrape down important info from a web. 
+mydata <- as.data.frame(mydata) 
+
+as.data.frame(matrix(unlist(mydata)))
+
+
+
+```
+```{r}
+mydata <- airquality
+testdata <- mydata
+class(airquality)
+mydata <- airquality
+mydataozone <- subset(mydata, mydata$Month == 9 | mydata$Month == 5)
+mydata2 <- subset(mydata[,1:3])
+mydata4 = select(mydata, contains("day")) # this is cool
+mydata5 = select(mydata, Day) # this neng yong le 
+# 
+# Example 10 : Reorder Variables
+# 
+# The code below keeps variable 'State' in the front and the remaining variables follow that.
+# mydata5 = select(mydata, State, everything())
+
+mydata5 <- select(mydata,Day,everything())
+head(mydata5,0)
+
+# rename() syntax : rename(data , new_name = old_name)
+# data : Data Frame
+# new_name : New variable name you want to keep
+# old_name : Existing Variable Name
+mydata6 <- rename(mydata5, daysssss=Day)
+head(mydata6,1)
+
+# EG filter
+
+mydata7 <- filter(mydata, Day %in% (5:9))
+mydata7 <- filter(mydata, Temp == 90)
+
+# mydata7 = filter(mydata6, Index %in% c("A", "C"))
+
+# Example 17 : CONTAINS Condition
+
+# The grepl function is used to search for pattern matching. In the following code, we are looking for records wherein column state contains 'Ar' in their name.
+# mydata10 = filter(mydata6, grepl("Ar", State))
+
+#summarise_at(mydata, vars(Y2005, Y2006), funs(n(), mean, median))
+#summarise(mydata, Y2015_mean = mean(Y2015), Y2015_med=median(Y2015))
+summarise(mydata,n())
+
+#summarise_at(mydata, vars(Y2011, Y2012),
+#funs(n(), missing = sum(is.na(.)), mean(., na.rm = TRUE), median(.,na.rm = TRUE)))
+sample(1:100,4,replace = F)
+runif(4)
+
+
+## summarize all numerice
+
+summarise_all(mydata,funs(mean,median))
+summarize_if(mydata,is.numeric,funs(n(),min(.,na.rm = T))) #na.rm = T
+
+
+# alternative way
+
+numdata <- mydata[sapply(mydata, is.numeric)]
+summarise_all(numdata,funs(n(),mean(.,na.rm = F))) # na.rm = T
+
+
+# We are checking the number of levels/categories and count of missing observations in a categorical (factor) variable.
+# summarise_all(mydata["Index"], funs(nlevels(.), nmiss=sum(is.na(.))))
+mydata[c("Day","Ozone")][,1:2]
+
+
+#arrange function 
+# Syntax
+# arrange(data_frame, variable(s)_to_sort)
+# or
+# data_frame %>% arrange(variable(s)_to_sort)
+
+arrange(mydata,Month,Day)
+
+
+# pipe
+# dt = sample_n(select(mydata, Index, State),10)
+# or 
+# dt = mydata %>% select(Index, State) %>% sample_n(10)
+
+
+# t = summarise_at(group_by(mydata, Index), vars(Y2011, Y2012), funs(n(), mean(., na.rm = TRUE)))
+# The above code can also be written like
+# t = mydata %>% group_by(Index) %>%
+#   summarise_at(vars(Y2011:Y2015), funs(n(), mean(., na.rm = TRUE)))
+```
+
+The dot (.) denotes each variables specified in the second argument of the function.
+summarise_at(mydata, vars(Y2011, Y2012),
+funs(n(), missing = sum(is.na(.)), mean(., na.rm = TRUE), median(.,na.rm = TRUE)))
+
+
+
+
+
+
+ Evaluating the Claim
+a) Using the information from Questions 1 and 2, describe how you would evaluate InsurAHealth's claim that employees are getting sicker.
+First list how you would evaluate the claim. Then, time-permitting, implement the steps you suggested. 
+
+- I would agree with the claim, by fitting a regression model for the health score with variales age, sex, salary, race, quarters and hopitable visits we find the model2 works just fine and which tells the as ages goes up, the value of health score increases -- it means people become sicker, based on the scale :  0 denotes a very healthy person, and 6 denotes a very sick person. 
+
+
+
+
+
+
+
+
+<!-- let as clean out the NA in dataNEW2 for the race group, we do that by replace NA with NULL  -->
+<!-- dataUSE <- sapply(dataNEW2, as.character) -->
+<!-- dataUSE <- as.data.frame(dataUSE) -->
+<!-- colSums(is.na(dataUSE)) -->
+<!-- dataDraft <- dataUSE -->
+<!-- class(dataUSE) -->
+<!-- str(dataUSE) -->
+<!-- boxplot(dataUSE$`Sex (Male=1)`,as.numeric(as.character(dataUSE$`Health Score`))) -->
+<!-- #We would like to change all columns types to numeric -->
+<!-- dataUSE[,c(1,2,4,6,8,9)] <- sapply(dataUSE, function(x) as.numeric(as.character(x))) -->
+<!-- str(dataUSE) -->
+<!-- # get rid of the NAs because NULL becomes NA again.  -->
+
+<!-- colSums(is.na(dataUSE)) -->
+<!-- dim(dataUSE) -->
+
+<!-- model1 <- lm(data = dataUSE, formula = dataUSE$`Health Score` ~ dataUSE$Quarter+dataUSE$Age+dataUSE$Salary+dataUSE$`Hospital Visit This Quarter (1=Yes)`+dataUSE$`Sex (Male=1)`+dataUSE$`Hospital Visit This Quarter (1=Yes)`+dataUSE$Race) -->
+
+<!-- summary(model1) -->
+<!-- sum(is.na(dataUSE$`Sex (Male=1)`)) -->
+
+<!-- # Age, Salary -->
+
+<!-- dataUSE <- na.omit(dataUSE) -->
+<!-- colSums(is.na(dataUSE)) -->
+<!-- model1 <- lm(data = dataUSE, formula = dataUSE$`Health Score` ~ dataUSE$Quarter+dataUSE$Age+dataUSE$Salary+dataUSE$Race+dataUSE$`Sex(Male=1)`) -->
+
+
+
+
+
+
+<!-- #                dataUSE$Quarter+dataUSE$Age+dataUSE$Salary+factor(dataUSE$`Sex(Male=1)`)+factor(dataUSE$Race)+factor(dataUSE$`Hospital Visit This Quarter (1=Yes)`)) -->
+<!-- summary(model1) -->
+<!-- anova(model1) -->
+<!-- ``` -->
+
+<!-- #pairs(dataUSE$`Health Score` ~ dataUSE$`Employee Id`+`Sex (Male=1)`+Race+Age+`Hospital Visit This Quarter (1=Yes)`+Salary+Quarter) -->
+<!-- #pairs function not working well because of too many oberservations. -->
+
+<!-- #model1 <- lm(formula = dataUSE$`Health Score` ~ Quarter + Salary + dataUSE$`Sex (Male=1)`,data = dataUSE) -->
+<!-- # The dataset is too large to run the whole model in my laptop so I take a random sample here.  -->
+
+<!-- #datamodel1 <- dataUSE[sample(nrow(dataUSE),15000),] -->
+<!-- #as.data.frame(datamodel1) -->
+<!-- #str(datamodel1) -->
+
+
+<!-- model1 <- lm(data = datamodel1, formula = `Health Score`~ Quarter + Salary + Age + factor(`Sex (Male=1)`)+factor(`Hospital Visit This Quarter (1=Yes)`) ) -->
+<!-- summary(model1) -->
+<!-- par(mfrow=c(1,2)) -->
+<!-- boxplot(datamodel1$`Sex (Male=1)`, datamodel1$`Health Score`) -->
+<!-- boxplot(datamodel1$`Hospital Visit This Quarter (1=Yes)`,datamodel1$`Health Score`) -->
