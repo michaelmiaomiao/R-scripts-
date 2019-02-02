@@ -258,6 +258,37 @@ arrange(mydata,Month,Day)
 # The above code can also be written like
 # t = mydata %>% group_by(Index) %>%
 #   summarise_at(vars(Y2011:Y2015), funs(n(), mean(., na.rm = TRUE)))
+
+do()
+
+# max 3
+
+
+# t = mydata %>% select(Index, Y2015) %>%
+#   filter(Index %in% c("A", "C","I")) %>%
+#   group_by(Index) %>%
+#   do(arrange(.,desc(Y2015))) %>%  slice(3)
+
+mydata8 <- mydata %>% select(Day,Month,Temp) %>%
+  filter(Day %in% (1:20) | Month >= 6) %>% 
+  group_by(Month) %>% do(arrange(.,desc(Day))) %>% slice(.,2) # 第二名  
+mydata8 # do 加不加
+
+```
+```{r}
+# put
+# Using Window Functions
+# 
+# Like SQL, dplyr uses window functions that are used to subset data within a group. It returns a vector of values. We could use min_rank() function that calculates rank in the preceding example,
+# t = mydata %>% select(Index, Y2015) %>%
+#   filter(Index %in% c("A", "C","I")) %>%
+#   group_by(Index) %>%
+#   filter(min_rank(desc(Y2015)) == 3)
+
+
+#(min_rank(desc(Y2015)) == 3) 这时候 filter function要用
+
+
 ```
 
 The dot (.) denotes each variables specified in the second argument of the function.
