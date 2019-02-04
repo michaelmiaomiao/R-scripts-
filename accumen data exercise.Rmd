@@ -12,6 +12,7 @@ library("readr")
 require("readxl")
 library("dplyr")
 library("ggplot2")
+library("data.table")
 ```
 
 
@@ -272,7 +273,8 @@ do()
 mydata8 <- mydata %>% select(Day,Month,Temp) %>%
   filter(Day %in% (1:20) | Month >= 6) %>% 
   group_by(Month) %>% do(arrange(.,desc(Day))) %>% slice(.,2) # 第二名  
-mydata8 # do 加不加
+mydata8 
+# do 加不加
 
 ```
 ```{r}
@@ -288,8 +290,394 @@ mydata8 # do 加不加
 
 #(min_rank(desc(Y2015)) == 3) 这时候 filter function要用
 
+# create function
+mydata9 <- mutate(mydata,ratio= Temp/Day)
+
+
+# Example 29 : multiply all the variables by 1000
+
+mydata10 <- mutate_all(mydata,funs("new"=.*1000))
+mydata10
+
+
+
+# Solution : See Example 45 - Apply multiplication on only numeric variables
+# 
+# Example 30 : Calculate Rank for Variables
+# 
+# Suppose you need to calculate rank for variables Y2008 to Y2010.
+# mydata12 = mutate_at(mydata, vars(Y2008:Y2010), funs(Rank=min_rank(.)))
+# 
+# Output
+# By default, min_rank() assigns 1 to the smallest value and high number to the largest value. In case, you need to assign rank 1 to the largest value of a variable, use min_rank(desc(.))
+# mydata13 = mutate_at(mydata, vars(Y2008:Y2010), funs(Rank=min_rank(desc(.))))
+
+
+# index cumulative sum
+#cumsum(mydata$Temp) 
+
+
+# join 
+#inner_join(x,y,by="ID")
+# left, right, full, semi, anti
+
+# Combine data vertically 
+# rows in both x and y 
+mydata11 <- intersect(mydata10,mydata2)
+
+# rows in either or both x, y
+mydata12 <- union(mydata10,mydata2) %>%  as.data.frame()
+
+# rows in x but NOT in y
+mydata13 <- setdiff(mydata11,mydata)
+
+
+## Example 38
+
+# if_else(condition,true,flase,missing = NULL)
+# if_else(df<0, "negative","positive",missing = "missing vcalue")
+```
+
+
+
+```{r}
+
+df <- data.frame(x = c(1,5,6,NA))
+df %>%  mutate(.,newvar = if_else(x<5,x+1,x+2,0))
+
+
+# Nested IF ELSE
+# 
+# Multiple IF ELSE statement can be written using if_else() function. See the example below -
+# mydf =data.frame(x = c(1:5,NA))
+# mydf %>% mutate(newvar= if_else(is.na(x),"I am missing",
+# if_else(x==1,"I am one",
+# if_else(x==2,"I am two",
+# if_else(x==3,"I am three","Others")))))
+
+
+
+# SQL-Style CASE WHEN Statement
+# 
+# We can use case_when() function to write nested if-else queries. In case_when(), you can use variables directly within case_when() wrapper. TRUE refers to ELSE statement. 
+# mydf %>% mutate(flag = case_when(is.na(x) ~ "I am missing",
+#                                   x == 1 ~ "I am one",
+#                                   x == 2 ~ "I am two",
+#                                   x == 3 ~ "I am three",
+#                                  TRUE ~ "Others"))
+
+# Example 39 :  Apply ROW WISE Operation 
+# 
+# Suppose you want to find maximum value in each row of variables 2012, 2013, 2014, 2015. The rowwise() function allows you to apply functions to rows.
+
+# df = mydata %>%
+  # rowwise() %>% mutate(Max= max(Y2012,Y2013,Y2014,Y2015)) %>%
+  # select(Y2012:Y2015,Max)
 
 ```
+```{r}
+# Example 40 : Combine Data Frames
+# 
+# Suppose you are asked to combine two data frames. Let's first create two sample datasets.
+
+df1=data.frame(ID = 1:6,  x=letters[1:6])
+df2=data.frame(ID = 7:12, x=letters[7:12])
+
+# Input Datasets
+# The bind_rows() function combine two datasets with rows. So combined dataset would contain 12 rows (6+6) and 2 columns.
+xy1 = bind_rows(df1,df2)
+# It is equivalent to base R function rbind.
+
+xy2 = rbind(df1,df2)
+# The bind_cols() function combine two datasets with columns. So combined dataset would contain 4 columns and 6 rows.
+xy3 = bind_cols(df1,df2)
+#or
+xy4 = cbind(df1,df2)
+# The output is shown below-
+xy1
+xy2
+xy3
+xy4
+
+
+# Example 41 : Calculate Percentile Values
+# The quantile() function is used to determine Nth percentile value. In this example, we are computing percentile values by variable Index.
+# 
+# mydata %>% group_by(Index) %>%
+#   summarise(Pecentile_25=quantile(Y2015, probs=0.25),
+#             Pecentile_50=quantile(Y2015, probs=0.5),
+#             Pecentile_75=quantile(Y2015, probs=0.75),
+#             Pecentile_99=quantile(Y2015, probs=0.99))
+# The ntile() function is used to divide the data into N bins.
+# 
+# x= data.frame(N= 1:10)
+# x = mutate(x, pos = ntile(x$N,5))
+```
+
+```{r}
+
+by_cyl <- group_by(mtcars, cyl)
+models <- by_cyl %>% do(mod = lm(mpg ~ disp, data = .))
+summarise(models, rsq = summary(mod)$r.squared)
+models %>% do(data.frame(
+  var = names(coef(.$mod)),
+  coef(summary(.$mod)))
+)
+#group_by(data,col)!!!!
+
+
+# The select_if() function returns only those columns where logical condition is TRUE. The is.numeric refers to retain only numeric variables.
+# 
+# mydata2 = select_if(mydata, is.numeric)
+# Similarly, you can use the following code for selecting factor columns - 
+summarise_if(mydata, is.factor, funs(nlevels(.)))
+
+
+# Example 46 : Convert value to NA
+# 
+# In this example, we are converting "" to NA using na_if() function.
+k <- c("a", "b", "", "d")
+na_if(k, "")
+# Result : "a" "b" NA  "d"
+
+
+
+```
+```{r}
+
+nrow(mydata)
+ncol(mydata)
+names(mydata)
+names(mydata)
+head(mydata,3)
+
+mydata = fread("https://github.com/arunsrinivasan/satrdays-workshop/raw/master/flights_2014.csv")
+```
+```{r}
+# Suppose you need to select only 'origin' column. You can use the code below -
+dat1 = mydata[ , origin] # returns a vector
+#dat1
+
+
+# To get result in data.table format, run the code below :
+dat1 = mydata[ , .(origin)] # returns a data.table
+# It can also be written like data.frame way
+dat1 = mydata[, c("origin"), with=FALSE]
+
+
+
+#Keeping a column based on column position
+dat2 =mydata[, 2, with=FALSE]
+
+# The following code tells R to select 'origin', 'year', 'month', 'hour' columns.
+dat3 = mydata[, .(origin, year, month, hour)]
+
+# Keeping multiple columns based on column position
+# 
+# You can keep second through fourth columns using the code below -
+dat4 = mydata[, c(2:4), with=FALSE]
+
+
+# Dropping a Column
+
+# Dropping Multiple Columns
+dat6 = mydata[, !c("origin", "year", "month"), with=FALSE]
+
+# Keeping variables that contain 'dep'
+# 
+# You can use %like% operator to find pattern. It is same as base R's grepl() function, SQL's LIKE operator and SAS's CONTAINS function.
+# dat7 = mydata[,names(mydata) %like% "dep", with=FALSE]
+
+
+# grep(pattern, x, ignore.case = FALSE, perl = FALSE, value = FALSE,
+#      fixed = FALSE, useBytes = FALSE, invert = FALSE)
+# 
+# grepl(pattern, x, ignore.case = FALSE, perl = FALSE,
+#       fixed = FALSE, useBytes = FALSE)
+
+# Faster Data Manipulation with Indexing
+# 
+# data.table uses binary search algorithm that makes data manipulation faster.
+
+dat1.1 <- setkey(mydata,origin)
+
+
+# We can also set keys to multiple columns like we did below to columns 'origin' and 'dest'. See the example below.
+# setkey(mydata, origin, dest)
+# Filtering while setting keys on Multiple Columns
+# First key column 'origin' matches “JFK” and second key column 'dest' matches “MIA”
+mydata[.("JFK", "MIA")]
+# It is equivalent to the following code :
+mydata[origin == "JFK" & dest == "MIA"]
+
+```
+
+```{r}
+
+
+#review one more time
+sample(1:5,5,replace = F)
+mydata <- mtcars
+sample_n(mydata,2)
+sample_frac(mydata,0.2) # rows
+distinct(mydata) # remove duplicate rows
+distinct(mydata,carb, .keep_all= TRUE) # Remove duplicate rows of the dataframe using carb variable
+distinct(mydata, cyl,vs, .keep_all= TRUE) #Remove duplicate based on multiple variables.
+
+select(mydata,mpg,cyl,wt) # Select columns of the dataframe
+
+# Select 3rd and 4th columns of the dataframe
+select(mydata,3:4)
+# 各种 
+
+
+library(dplyr)
+mydata <- mtcars
+ 
+# Select everything
+select(mydata,everything())
+
+
+# Drop the columns of the dataframe
+select (mydata,-c(mpg,cyl,wt))
+
+# Drop 3rd,4th and 5th columns of the dataframe
+select(mydata,-c(3,4,5))
+select(mydata,-ends_with("cyl"))
+select(mydata,-contains("s"))
+Mydata1 = select(mydata, gear,hp,qsec,vs, everything())
+#Mydata1
+
+# Rename the column name of the dataframe
+Mydata1 = rename(mydata, displacement=disp, cylinder=cyl)
+
+# subset the rows of dataframe with condition
+Mydata1 = filter(mydata,cyl==6)
+Mydata1
+# subset the rows of dataframe with multiple conditions
+Mydata1 = filter(mydata, gear %in% c(4,5))
+# subset the rows of dataframe with with Contains condition
+Mydata1 = filter(mydata, grepl(0,hp))
+
+
+# summarise the columns of dataframe
+summarise(mydata, mpg_mean=mean(mpg,rm.na=T),mpg_median=median(mpg))
+# summarise the list of columns of dataframe
+summarise_at(mydata, vars(mpg, hp), funs(n(), mean, median))
+# summarise all the column of dataframe
+summarise_all(mydata,funs(n(),mean,median))
+# summarise all the list of numeric variable of dataframe
+summarise_if(mydata, is.numeric, funs(n(),mean,median))
+#library(dplyr)
+mydata2 <- iris
+summarise_all(mydata2["Species"], funs(nlevels(.), nmiss=sum(is.na(.))))
+#### vars!!!
+
+# sort the dataframe in R
+arrange(mydata,mpg)
+# Groupby function for dataframe in R
+summarise_at(group_by(mydata2,Species),vars(Sepal.Length),funs(mean(.,na.rm=TRUE)))
+
+
+
+mydata2 <-iris 
+# Group by function for dataframe in R using pipe operator 
+mydata2 %>% group_by(Species) %>% summarise_at(vars(Sepal.Length),funs(sum(.,na.rm=TRUE)))
+
+
+# Groupby in R without dplyr using aggregate function:
+# 
+# In this example we will be using aggregate function in R to do group by operation as shown below
+
+mydata2 <-iris 
+ 
+# Group by in R using aggregate function
+ 
+aggregate(mydata2$Sepal.Length, by=list(Species=mydata2$Species), FUN=sum)
+
+
+# library(dplyr)
+mydata2 <-iris # windows function in R using Dplyr 
+mydata2 %>% 
+select(Species,Sepal.Length) %>%
+    group_by(Species) %>% # 只是让你看一个gourp都在一起
+    filter(min_rank(desc(Sepal.Length))<=5) # top five of each group
+
+# By the way, I’m using ‘min_rank()’ function here but there is another rank function called ‘dense_rank()’ from dplyr. Both functions return the ranking number based on a given measure column (e.g. Sepal.Length), and only the difference is when there are ties like below.
+
+
+# dense_rank() 的时候 俩并列算作一个位置 接下来的排名顺序不变to 
+
+#a.agg <- aggregate(X.2 ~ X.1, a, function(x) sort(x, decreasing=T)[2])
+# (df.second <- merge(a.agg, a))
+## S3 method for class 'formula'
+# aggregate(formula, data, FUN, ...,
+#           subset, na.action = na.omit)
+
+library(dplyr)
+ iris %>%
+      group_by(Species) %>%
+      distinct(Sepal.Length)%>% 
+      arrange(.,desc(Sepal.Length)) %>% 
+      slice(1:2) %>% 
+      select(Sepal.Length)
+
+
+ 
+ 
+ 
+ # mutate(data_frame, expression(s) )
+# or
+# data_frame %>% mutate(expression(s)
+ 
+ # Mutate_all function for creating new variable to the dataframe in R
+ 
+mydata3 = mutate_all(mydata2[,-5], funs("percent"= ./100))
+head(mydata3) #yong all!!!
+# mutate_at() function for creating new variable to the dataframe in R
+mydata4 = mutate_at(mydata2, vars(Sepal.Length,Sepal.Width), funs(Rank=min_rank(desc(.))))
+head(mydata4)
+
+
+
+
+
+df1 = data.frame(CustomerId = c(1:6), Product = c(rep("Oven", 3), rep("Television", 3)))
+df2 = data.frame(CustomerId = c(4:7), Product = c(rep("Television", 2), rep("Air conditioner", 2)))
+#  union two dataframes  without duplicates
+union(df1,df2)
+
+#  union two dataframes  with duplicates
+union_all(df1,df2)
+
+intersect(df1,df2)
+
+#  difference of two dataframes  
+setdiff(df1,df2)
+
+
+
+# We will be creating additional variable species_new using mutate function and case when statement.TRUE equivalent to ELSE statement
+mydata2 %>% mutate(species_new = case_when(is.na(Species) ~ "missing",
+                                           Species=="setosa" ~ "setosa_new",
+                                           Species=="versicolor" ~ "versicolor_new",
+                                           Species=="virginica" ~ "virginica_new",
+                                           TRUE ~ "others"))
+
+# 
+# We will be creating additional variable row_max using mutate function and rowwise() function to store the row wise maximum variable.
+
+df1 = mydata2 %>%
+  rowwise() %>% mutate(row_max= max(Sepal.Length:Petal.Width))
+ 
+head(df1)
+mydata<-mtcars
+df1 = mutate(mydata, percentile_rank = ntile(mydata$mpg,100))
+df1
+ 
+```
+
+
 
 The dot (.) denotes each variables specified in the second argument of the function.
 summarise_at(mydata, vars(Y2011, Y2012),
