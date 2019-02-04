@@ -70,5 +70,56 @@ square <- function(x){
 print(square()) # 这时候 square变成了一个function 括号里面可以添加参数
 
 ```
+```{r}
+#read.table() read.csv 
+mydat <- read_xlsx("/Users/MichaelMiao/Documents/GitHub/R-scripts-/Acumen_Data_Analysis_Exercise.xlsx",sheet = "Data")
+
+
+# as.logical()
+# as.array()
+# as.factor()
+# as.character()
+# as.numeric()
+
+x <- c(2,4,6,8,10,12)
+y <- x +c(1,2)
+y
+log(x)
+exp(x)
+max(x)
+min(x)
+round(x,5)
+sign(x)
+cor(x,y)
+sum(x)
+mean(x)
+median(x)
+quantile(x)
+var(x)
+sd(x)
+rank(x)
+summary(lm(y~x))
+
+```
+
+```{r}
+#ls()
+#rm(x)
+# rm(list = ls())
+
+mat1 <- matrix(1:9,nrow = 3,byrow = F)
+mat1
+mat2 <- matrix(1:9,nrow = 3,byrow = T)
+mat2
+# print(c(mat1,mat2)) 是不对的
+mat1 * mat2
+mat1 %*% mat2
+#solve(mat1,mat2) how to use solve func. 
+
+
+
+```
+
+
 
 
