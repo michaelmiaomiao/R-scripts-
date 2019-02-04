@@ -115,10 +115,53 @@ mat2
 mat1 * mat2
 mat1 %*% mat2
 #solve(mat1,mat2) how to use solve func. 
+```
+```{r}
+l <- list(x=1:5,y=c("a","b"))
+l[[2]]
+l[1]
+l[[2]][2]
+l['y']
 
 
 
 ```
+
+```{r}
+
+df <- data.frame(x=1:3,y=letters[1:3]) # 牛逼
+df
+nrow(df) #ncol, dim, cbind, rbind
+
+```
+```{r}
+#strings 
+paste(x,y,sep = "")
+paste(x,collapse = "")
+grepl(x,x) # find the patter in the expression 
+grep(x,x)
+#  look at the grep function and the grelp function
+
+# repalce the matcheds in x with a string
+# gsub(pattern,replace, x)
+# toupper / tolower 大写小切换
+
+nchar(x)
+x
+# 12 有俩characters
+
+cut(x,breaks = 4 ) #Turn a numeric vector into a factor by ‘cutting’ into sections. ????????
+
+
+# check ggplot2 and lubridate package
+
+
+```
+```{r}
+
+```
+
+
 
 
 
