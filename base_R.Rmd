@@ -1,0 +1,74 @@
+---
+title: "base r learning note"
+author: "JIASHU MIAO"
+date: "2019/2/4"
+output: html_document
+---
+```{r}
+?mean # help of function 
+str(iris)
+class(iris)
+typeof(iris)
+par(mfrow=c(2,2))
+data(mtcars)
+x <- c(2,4,6,8,10,NA)
+seq(2,3,by = 0.1)
+rep(1:2, times=3)
+rep(1:2,each=3)
+sort(x,decreasing = TRUE)
+table(x)
+unique(x)
+rev(x)
+mean(x, na.rm = F)
+x <- na.omit(x)
+```
+```{r}
+x
+x[4]
+x[-c(1,2)]
+x[-(2:4)]
+
+ #x[‘apple’]
+# element with name apple
+
+ 
+# for and while , if else loop
+
+for (i in 1:4){
+   j <- i + 10
+print(j)
+ }
+```
+
+```{r}
+while (i<5 & i > 0 ) {
+  
+  i= i+25
+  print(i)
+}
+i
+# 没搞明白
+
+```
+```{r}
+i= 1
+if (i >3){
+  print("yes")
+} else {
+  print("no")}
+
+# global environment
+
+
+
+square <- function(x){
+  x <- 8
+  square <- x*x
+  return(square)
+  e
+}
+print(square()) # 这时候 square变成了一个function 括号里面可以添加参数
+
+```
+
+
