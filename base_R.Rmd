@@ -155,9 +155,32 @@ cut(x,breaks = 4 ) #Turn a numeric vector into a factor by ‘cutting’ into se
 
 # check ggplot2 and lubridate package
 
+x <- 10
+if(x > 0)
+{
+print("This is Positive number")
+}
 
 ```
+
 ```{r}
+x <- 10
+if(x > 0)
+{
+print("This is Positive number")
+}
+
+```
+
+```{r}
+# statement function 
+x <- -10
+if(x >= 0)
+{
+print("This is Non-negative number")
+} else {
+print("This is Negative number")
+}
 
 ```
 
