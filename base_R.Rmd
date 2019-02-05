@@ -5,6 +5,10 @@ date: "2019/2/4"
 output: html_document
 ---
 ```{r}
+library("dplyr")
+library("readxl")
+```
+```{r}
 ?mean # help of function 
 str(iris)
 class(iris)
@@ -194,10 +198,16 @@ there is a bunch of dataset at kaggle
 for example the gradudate admission datasets (should not be a probably in after 101c)
 also review the stats knowledge for modelling, validation etc. traning
 review the code in 101c
+archive.ics.uci.eud/ml/datasets.html
 
 ```{r}
 library(haven)
-
+library(dplyr)
+#summarise_all(mydata,funs(n(),mean(.,na.rm = T)))
+# drop is not as mean or median 
+summarise_all(mydata,funs(median))
+head(mydata$vs)
+# sample_frac(): Randomly select a fraction of rows
 ```
 
 
