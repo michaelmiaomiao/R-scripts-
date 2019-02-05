@@ -323,10 +323,56 @@ seq(from=0, to=20, length.out=5)
 
 
 # apply function 
-
+## an aggregating function, like for example the mean, or the sum (that return a number or scalar);
+other transforming or sub-setting functions;
+and other vectorized functions, which return more complex structures like list, vectors, matrices and arrays.
 ```{r}
+#Apply(x,1,sum) 
+Age<-c(56,34,67,33,25,28)
+Weight<-c(78,67,56,44,56,89)
+Height<-c(165, 171,167,167,166,181)
+ 
+BMI_df<-data.frame(Age,Weight,Height)
+BMI_df
+# row wise sum up of dataframe using apply function in R
+apply(BMI_df,1,sum)
+apply(BMI_df,2,sum)
+```
+Where the first Argument X is a data frame or matrix
+Second argument 1 indicated Processing along rows .if it is 2 then it indicated processing along the columns
+Third Argument is some aggregate function like sum, mean etc or some other user defined functions.
+
+
+
+- 2. lapply function in R:
+
+lapply function takes list, vector or Data frame  as input and returns only list as output.
+
+We will be using same dataframe for depicting example on lapply function
+```{r}
+lapply(BMI_df, function(BMI_df) BMI_df/2)
+s <- function(x)x^2
+s(3)
+ss <- lapply(BMI_df, mean)
+ss <- ss  %>%  as.data.frame()
 
 ```
+
+
+- 3. Sapply function in R
+
+sapply function takes list, vector or Data frame  as input. It is similar to lapply function but returns only vector as output.
+
+We will be using same dataframe for depicting example on sapply function
+
+```{r}
+ss <- sapply(BMI_df, function(BMI_df) BMI_df/2) %>% as.data.frame()
+ss
+ss <- sapply(BMI_df, function(BMI_df) BMI_df/2)
+ss
+```
+
+
 
 
 
