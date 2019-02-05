@@ -98,8 +98,20 @@ plotage <- plot(dataNEW2$Age,dataNEW2$`Health Score`)
 plotage
 abline(model2)
 plot(dataNEW2$Quarter,dataNEW2$`Health Score`) 
+attach(dataNEW2)
+tapply(dataNEW2$`Health Score`, race, length)
+```
+
+```{r}
+# rapply function in R
+x=list(3,list(4,5),6,list(7,list(8,9)))
+str(x)
+rapply(x,function(x) x^2,class=c("numeric"))
 
 ```
+- rapply function in R is nothing but recursive apply, as the name suggests it is used to apply a function to all elements of a list recursively.
+- rapply function is applied even for the sublists and output will be
+
 ```{r}
 as.data.frame(table(dataNEW2$`Employee Id`))
 as.data.frame(table(dataNEW1$Quarter))
