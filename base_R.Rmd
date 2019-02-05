@@ -184,6 +184,21 @@ print("This is Negative number")
 
 ```
 
+note for stats 140sl 
+
+ca take the exam anywhere 
+no json file 
+probably not spss/stata
+prob excel / Rdata
+there is a bunch of dataset at kaggle 
+for example the gradudate admission datasets (should not be a probably in after 101c)
+also review the stats knowledge for modelling, validation etc. traning
+review the code in 101c
+
+```{r}
+library(haven)
+
+```
 
 
 
