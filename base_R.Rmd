@@ -199,16 +199,140 @@ for example the gradudate admission datasets (should not be a probably in after 
 also review the stats knowledge for modelling, validation etc. traning
 review the code in 101c
 archive.ics.uci.eud/ml/datasets.html
+reviw about the ggplot2 
+trunc() function
 
 ```{r}
 library(haven)
 library(dplyr)
 #summarise_all(mydata,funs(n(),mean(.,na.rm = T)))
 # drop is not as mean or median 
+mydata
 summarise_all(mydata,funs(median))
-head(mydata$vs)
+#head(mydata$vs)
 # sample_frac(): Randomly select a fraction of rows
+dd <- c(1.5,1.6,1.8)
+# dd
+# dd <- trunc(dd)
+# 不懂区别
+#dd <- floor(dd)
+# dd <- ceiling(dd)
+# dd trunc 总是去 0
+
+
 ```
+```{r}
+x <- 5
+if (x < 0) 
+{
+ print("This is Negative number")
+} else if (x > 0) {
+print("This is Positive number")
+} else {
+print("This is Zero")
+}
+
+for(i in 1:5)
+{
+for(j in 1:2)
+{
+print(i*j);
+}
+}
+# R for loop with break statement
+ 
+
+x <- 1:5
+for (i in x) {
+    if (i == 3){
+        break
+    }
+    print(i)
+}
+i <- 1
+while (i <=6) {
+print(i*i)
+i = i+1
+}
+
+```
+```{r}
+# Syntax for Replicate Function in R:
+# 
+# rep(value,number_of_times)
+# rep(sequence,each,number_of_times)
+
+rep(3:4, time = 3
+    )
+rep(3:4, each = 3)
+
+```
+```{r}
+sapply(mydata,mode)
+
+
+# Create two lists.
+list1 <- list(1,2,3)
+list2 <- list("Jan","Feb","Mar")
+ 
+# Merge the two lists.
+merged.list <- c(list1,list2)
+ 
+# Print the merged list.
+print(merged.list)
+
+merged.list[[2]][1]
+
+```
+```{r}
+df1 = data.frame(CustomerId = c(1:6), Product = c(rep("Oven", 3), rep("Television", 3)))
+df1
+# data frame 2
+df2 = data.frame(CustomerId = c(2, 4, 6), State = c(rep("California", 2), rep("Texas", 1)))
+df2
+df<-merge(x=df1,y=df2,by="CustomerId")
+df<-merge(x=df1,y=df2,by="CustomerId",all=TRUE)
+df<-merge(x=df1,y=df2,by="CustomerId",all.x=TRUE)
+df<-merge(x=df1,y=df2,by="CustomerId",all.y=TRUE)
+df <- merge(df1,df2,by = "CustomerId", all.x = T)
+
+# Cross join in R: A Cross Join (also sometimes known as a Cartesian Join) results in every row of one table being joined to every row of another table
+
+
+df<-merge(x = df1, y = df2, by = NULL)
+
+```
+```{r}
+# with function in R
+ df <- data.frame(a=1:5,b=2:6)
+ df
+ df$c<-with(df, c <- a + b)
+ df
+ 
+ # within function in R
+ 
+within(df, {c <- a + b; df;} ) ##花括号干嘛的
+```
+```{r}
+# Generate sequence from 0 to 20 with length.out=5 with R seq function
+ 
+seq(from=0, to=20, length.out=5)
+
+
+```
+
+
+# apply function 
+
+```{r}
+
+```
+
+
+
+
+
+
 
 
 
