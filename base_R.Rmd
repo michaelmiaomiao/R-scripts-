@@ -370,7 +370,118 @@ ss <- sapply(BMI_df, function(BMI_df) BMI_df/2) %>% as.data.frame()
 ss
 ss <- sapply(BMI_df, function(BMI_df) BMI_df/2)
 ss
+class(ss)
+random <- c("This","is","random","vector")
+sapply(random,nchar)
 ```
+
+
+- 4 mapply function in R:
+
+mapply is a multivariate version of sapply. mapply applies FUN to the first elements of each (…) argument, the second elements, the third elements, and so on.
+
+i.e. For when you have several data structures (e.g. vectors, lists) and you want to apply a function to the 1st elements of each, and then the 2nd elements of each, etc., coercing the result to a vector/array as in sapply
+
+This is multivariate in the sense that your function must accept multiple arguments.
+
+```{r}
+# mapply function in R
+mapply(sum, 1:4, 1:4, 1:4)
+
+# mapply sums up all the first elements(1+1+1) ,sums up all the
+# 
+# second elements(2+2+2) and so on so the result will be
+
+
+# !!!!
+
+# mapply function in R
+mapply(rep,1:4,1:4)
+mapply(FUN = rep, 1:8, 8)
+
+```
+
+- 5. tapply function in R:
+
+For when you want to apply a function to subsets of a vector and the subsets are defined by some other vector, usually a factor.
+
+Lets go back to the famous iris data. Species is a factor with 3 values namely Setosa, versicolor and virginica. If we want to find the mean of sepal length of these 3 species(subsets). we can use tapply function
+```{r}
+# tapply function in R
+attach(iris)
+# mean sepal length by species
+tapply(iris$Sepal.Length, Species, mean)
+# irst argument of tapply function takes the vector for which we need to perform the function. second argument is a vector by which we need to perform the function and third argument is the function, here it is mean. So the output will be
+data_original <- read_excel("/Users/MichaelMiao/Documents/career/accument\ data\ excercise/Acumen_Data_Analysis_Exercise.xlsx", sheet = "Data")
+dataNEW2 <- subset(dataNEW1, dataNEW1$Age >= 18 & dataNEW1$Age <= 63 )
+# summary(dataNEW2)
+dataNEW2 <- na.omit(dataNEW2)
+attach(dataNEW2)
+tapply(dataNEW2$`Health Score`, Race, length)
+
+```
+
+- rapply function in R is nothing but recursive apply, as the name suggests it is used to apply a function to all elements of a list recursively.
+- rapply function is applied even for the sublists and output will be
+
+
+```{r}
+# rapply function in R
+x=list(3,list(4,5),6,list(7,list(8,9)))
+str(x)
+rapply(x,function(x) x^2,class=c("numeric"))
+
+```
+
+- vapply function in R is similar to sapply, but has a pre-specified type of return value, so it can be safer (and sometimes faster) to use.
+
+1
+2
+# vapply function in R
+vapply(1:5, sqrt, 1i)
+output will be
+
+   [1] 1.000000 0i      1.414214 0i     1.732051 0i         2.000000 0i         2.236068 0i
+   
+  
+- sub() and gsub() function in R
+sub() and gsub() function in R are replacement functions, which replaces the occurrence of a substring with other substring.
+
+sub() Function in R replaces the first instance of a substring
+gsub() function in R replaces all the instances of a substring
+
+```{r}
+# sub function in R only the first occurrence 
+ 
+mysentence <- "England is Beautiful. England is not the part of EU"
+sub("England", "UK", mysentence)
+
+# gsub function in R global 全部替换
+ 
+mysentence <- "England is Beautiful. England is not the part of EU"
+gsub("England", "UK", mysentence)
+```
+
+- Aggregate() Function in R Splits the data into subsets, computes summary statistics for each subsets and returns the result in a group by form. Aggregate function in R is similar to group by in SQL.
+
+- aggregate(x, by, FUN, simplify = TRUE)
+
+```{r}
+# Aggregate function in R with mean summary statistics
+agg_mean <- aggregate(iris[,1:4],by=list(iris$Species),FUN=mean, na.rm=TRUE)
+agg_mean
+
+
+# Aggregate function in R with sum summary statistics
+agg_sum<-aggregate(iris[,1:4],by=list(iris$Species),FUN=sum, na.rm=TRUE)
+agg_sum
+
+```
+
+
+
+
+
 
 
 
