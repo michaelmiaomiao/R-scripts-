@@ -472,11 +472,137 @@ agg_mean <- aggregate(iris[,1:4],by=list(iris$Species),FUN=mean, na.rm=TRUE)
 agg_mean
 
 
-# Aggregate function in R with sum summary statistics
+# Aggregate function in R with sum summary statistics # na.rm !!!
 agg_sum<-aggregate(iris[,1:4],by=list(iris$Species),FUN=sum, na.rm=TRUE)
 agg_sum
 
 ```
+```{r}
+# return whether the value is matched or not
+ 
+df1 %in% df2
+v1 <- c(2,5,6,3,7)
+v2 <- c(15,16,7,3,2,7,5)
+# match function in R with nomatch=0
+ 
+match(v1,v2,nomatch=0)
+v2[match(v1,v2,nomatch = )]
+match(v2,v1,incomparables=2)
+```
+
+
+- Intersection of two data frames in R can be easily achieved by using merge() function. Lets see with an example. First lets create two data frames
+```{r}
+#  Create two data frames
+ 
+
+x <- c(1:4)
+y <- c(2:7)
+intersect(x,y)
+
+df1 = data.frame(CustomerId = c(1:6), Product = c(rep("Oven", 3), rep("Television", 3)))
+df2 = data.frame(CustomerId = c(4:7), Product = c(rep("Television", 2), rep("Air conditioner", 2)))
+
+merge(df1,df2, all = T )
+merge(df1,df2, all = T, by = "Product" ,sort=T )
+
+
+df1["Product"]
+
+```
+
+```{r}
+# rowmeans
+
+rowMeans(iris[,1:3])
+
+mydata13[,-c(1,2)]
+
+```
+
+
+- rank() function in R returns the ranks of the values in a vector. rank function in R also handles Ties and missing values in several ways.
+
+```{r}
+# NAs are ranked first
+
+1
+2
+x <- c(2,7,1,-17,NA,Inf,35,21)
+rank(x,na.last = FALSE) #NA FIRST position rank of vectors
+
+# NAs are neglectled by rank function
+
+1
+2
+x <- c(2,7,1,-17,NA,Inf,35,21)
+rank(x,na.last = NA) #NA removed
+
+x <- c(2,7,1,-17,NA,Inf,35,21)
+rank(x,na.last = "keep") #NA is kept with rank NA
+
+
+
+```
+
+- Which function in R, returns the indices of the logical object when it is TRUE. In other words, which() function in R returns the position of value when it satisfies the specified condition.
+
+```{r}
+
+
+
+length(which(is.na(data_original$Race)))
+data_original[is.na(data_original$Race),]
+colSums(is.na(data_original))
+rs <- rowSums(is.na(data_original))
+any(rs > 2) 
+  
+rs <- which(!data_original$Race == 1 & 2 & 3) # bu hao
+length(rs)
+#sort() only vector
+# order() df ok
+
+# order(data_original, method = "Race")
+
+# df[order(df$State,df$Mortality.Rate,df$Hospital.Name),]
+
+identical(2,2)
+
+df
+attach(df)
+df[order(a,b,c, decreasing = T),]
+df$c <- df$c[order(c,decreasing = F)]
+df
+df[order(c, decreasing = T),]
+df$c <- df$c %>% as.factor(.)
+class(df$c)
+aggregate(a,by=list(df$c),FUN = sum) #???
+
+prop.table(table(data$Race[data$Quarter==1])) ## see the propo
+
+
+
+```
+
+Generalized Linear Models
+Generalized linear models are fit using the glm( ) function. The form of the glm function is
+
+glm(formula, family=familytype(link=linkfunction), data=)
+
+Family	Default Link Function
+binomial	(link = "logit")
+gaussian	(link = "identity")
+Gamma	(link = "inverse")
+inverse.gaussian	(link = "1/mu^2")
+poisson	(link = "log")
+quasi	(link = "identity", variance = "constant")
+quasibinomial	(link = "logit")
+quasipoisson	(link = "log")
+
+
+
+
+
 
 
 
