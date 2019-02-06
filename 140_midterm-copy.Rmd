@@ -1,0 +1,163 @@
+---
+title: "140_midterm"
+author: "Sherry Yu"
+date: "10/31/2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+options(width = 10)
+library(readxl)
+data1 <- read_excel("~/Desktop/Enrollment2016Fall.xlsx")
+data2 <- read_excel("~/Desktop/Enrollment2017Winter.xlsx")
+names(data1)
+names(data2)
+```
+
+```{r}
+head(data1)
+head(data2)
+summary(data1)
+summary(data2)
+```
+
+
+### Question 1: Provide a demographic profile of all the new students in Fall 2016 and use the information contained in the Winter 2017 enrollment data to categorize the new Fall 2016 students as 0 = not enrolled in Winter 2017 ; 1 = enrolled in Winter 2017.
+
+```{r}
+data1new <- data1 %>%  filter(`New or Returning`=="New" )
+data1new$Rentention 
+data1new$Rentention <- (!data1new$`Student Number` %in% data2$`Student Number`) %>% as.numeric()
+data1new$Rentention
+#View(data1new)
+```
+```{r}
+data1new <- data1 %>% filter(.,`New or Returning`=="New")
+data1new <- data1new %>% mutate(Rentention = data1new$`Student Number` %in% data2$`Student Number`)
+dim(data1new)
+
+dt1 <- data1new 
+
+dt1$Rentention %>% as.numeric() %>% print()
+
+
+# data1new$Rentention <- ifelse(Rentention,T,F) %>% print()
+ data1new %>% mutate_at(.,vars(Rentention),funs(ifelse(.,1,2)))
+
+# data1new$Rentention
+# class(data1new$Rentention)
+# as.factor(Rentention) goood
+
+
+dt1$Rentention[with(dt1,dt1$Rentention == T)] 
+
+
+
+
+# dt1$Rentention
+
+```
+```{r}
+data1new
+haha <- function(x)
+  if (x == TRUE) 
+  {x = 1
+  print(x)
+  }else {
+  x = 0
+  print(x)
+  }
+ data1new$Rentention <- sapply(data1new$Rentention, haha)
+ tapply(iris$Sepal.Length, iris$Species, sum)
+
+
+```
+
+```{r}
+# replace(data1new$Rentention,data1new$Rentention[1:166],)
+# for (i in 1:166){
+#   if (data1new$Rentention[i] == T) 
+#  { data1new$Rentention[i] == 1
+# }else(data1new$Rentention[i] == F)
+#   data1new$Rentention[i] == 0
+# }
+# class(data1new$Rentention)
+# as.numeric(data1new$Rentention)
+# data1new$`Student Number`[1] %in% data_2017$`Student Number` 
+```
+
+
+
+
+
+
+
+# for (i in 1:166) {
+# if (data1$`Student Number` %in% data2$`Student Number`)
+# {new_2016$Rentention[i]=1
+# }else(data1$`Student Number` %in% data2$`Student Number`)
+#   
+#   new_2016$Rentention[i]=0
+#  
+# }
+# dim(new_2016)
+
+# View(new_2016)
+
+
+```{r}
+# new_2016 <- subset(data1, data1$`New or Returning`=="New" & data1$`Student Number` %in% data2$`Student Number`)
+# dim(new_2016)
+# new_2016 <- new_2016 %>% mutate(.,Rentention = 1 )
+# dim(new_2016)
+
+
+data1new <- data1[data1$`New or Returning`=='New',]
+dim(data1new)
+# View(data1new)
+
+data1new$Retention <- as.numeric(data1new$`Student Number` %in% data2$`Student Number`)
+sum(data1new$Retention)
+```
+
+### Question 2: Please create a graphic/visualization which reveals the association between student retention and other variable(s) in the data set.
+
+# I tried to see the Age variable
+```{r}
+library(ggplot2)
+
+data1new$Age <- as.numeric(data1new$Age)
+ggplot(data1new,aes(x=factor(Retention),y=Age))+geom_boxplot(fill=c("blue","yellow")) +labs(x="Enrollment in Winter 2017 (1 = Yes, 0 = No)",title= "Age boxplot by student rentention")+theme_classic()
+```
+
+> This boxplot shows that more younger students get enrolled in 2017 than older students. We can see the association between the variable age and the variable Retention.
+
+
+### Question 3: If you were to attempt to model student retention as a dependent variable please describe the process and set up a model. If you have time to actually estimate a model, please do so and provide an interpretation of the results.
+
+```{r}
+model1 <- glm(data1new$Retention ~  data1new$Age + as.numeric(data1new$Score), family = binomial(link = 'logit'))
+summary(model1)
+```
+
+
+> I think that the student retention is closely related to the age since the p-value is les than 0.05.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
