@@ -10,7 +10,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ```{r}
-options(width = 10)
+options(width = 110)
 library(readxl)
 data1 <- read_excel("~/Desktop/Enrollment2016Fall.xlsx")
 data2 <- read_excel("~/Desktop/Enrollment2017Winter.xlsx")
@@ -108,7 +108,7 @@ haha <- function(x)
 
 # View(new_2016)
 
-
+——
 ```{r}
 # new_2016 <- subset(data1, data1$`New or Returning`=="New" & data1$`Student Number` %in% data2$`Student Number`)
 # dim(new_2016)
