@@ -6,9 +6,32 @@ output: html_document
 ---
 
 ```{r}
-pkg <- c("readr","readxl","dplyr","stringr","ggplot2","data.table","tidyr")
+pkg <- c("readr","readxl","dplyr","stringr","ggplot2")
 lapply(pkg, require, character.only = TRUE)
+
+
 ```
+
+```{r}
+data_original <- read_excel("/Users/MichaelMiao/Documents/career/accument\ data\ excercise/Acumen_Data_Analysis_Exercise.xlsx", sheet = "Data")
+attach(data_original)
+data_original <- data_original %>% mutate(., RH = replace(`Health Score`, `Health Score`> 6,NA)) %>% as.data.frame()
+data_original <- data_original %>% select_at(.,vars(-c(`Health Score`))) 
+
+dim(data_original)
+data_original <- data_original %>% mutate(., Newage =replace(Age, Age>100 | Age <16 ,NA)) %>% select_at(.,vars(-c(Age)))
+dim(data_original)
+detach(data_original)
+datause <- data_original
+datause <- datause[!is.na(datause$RH),]
+dim(datause)
+prop.table(table(datause$`Sex (Male=1)`[datause$Quarter==1]))
+
+colnames(datause)[3] <- "ss"
+datause
+
+```
+
 - load data
 ```{r}
 data_original <- read_excel("/Users/MichaelMiao/Documents/career/accument\ data\ excercise/Acumen_Data_Analysis_Exercise.xlsx", sheet = "Data")
@@ -25,6 +48,7 @@ for (i in 1:length(data_original)) {
 detach(data_original)
 dataNEW1 <-  subset(data_original,`Health Score` >=0 & `Health Score` <=6)
 # range(data_original$Age)
+
 dataNEW2 <- subset(dataNEW1, dataNEW1$Age >= 18 & dataNEW1$Age <= 63 )
 # summary(dataNEW2)
 dataNEW2 <- na.omit(dataNEW2)
@@ -37,12 +61,30 @@ colSums(is.na(dataNEW2))
 matx <- matrix(1:16, nrow = 4, byrow = T)
 rowSums(matx)
 apply(matx, 1, sum)
+
+# Auto
+# data(Auto)
+# sapply(Auto,class)
+
+# qplot(x=sqft,y= price,data = LArealstate,color=type,na.rm=T) + geom_point(na.rm = T)
+
+# rop.table(table(data$Race[data$Quarter==1])) ## see the proportion of the race
+# ## 
+# ##         1         2         3 
+# ## 0.5598007 0.2774086 0.1627907
+# prop.table(table(data$`Sex (Male=1)`[data$Quarter==1]))  ## see the proportion of the sex
+
+# agg = aggregate(data,
+#                 by = list(data$Role),
+#                 FUN = mean)
+
 ```
 
 
 
 - some basic needs syntax: 
 ```{r}
+# data2016new2 <- sapply(data2016new, as.numeric)
 par(mfrow=c(2,5))
 quartermeanhealth <- aggregate(dataNEW2$`Health Score`,by = list(dataNEW2$Quarter), FUN = mean)
 quartermeanhealth2 <- tapply(dataNEW2$`Health Score`,INDEX = dataNEW2$Quarter, FUN = mean) %>%  as.data.frame()
@@ -401,6 +443,23 @@ ggplot(data = dataNEW2,mapping = aes( factor(`Hospital Visit This Quarter (1=Yes
 
 #！！！！！！ factor
 ```
+
+```{r}
+library(tidyr)
+df %>% drop_na()
+#              gene hsap mmul mmus rnor cfam
+# 2 ENSG00000199674    0    2    2    2    2
+# 6 ENSG00000221312    0    1    2    3    2
+df %>% drop_na(rnor, cfam)
+#              gene hsap mmul m
+```
+
+
+```{r}
+
+```
+
+
 
 
 
