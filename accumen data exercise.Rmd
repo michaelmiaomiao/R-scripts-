@@ -12,7 +12,7 @@ library("readr")
 require("readxl")
 library("dplyr")
 library("ggplot2")
-library("data.table")
+
 ```
 
 
@@ -29,6 +29,25 @@ for (i in 1:length(data_original)) {
         boxplot(data_original[,i], main=names(data_original[i]), type="l")
 
 }
+```
+```{r}
+data_original$HealthScore <- 
+replace(data_original$`Health Score`,data_original$`Health Score`>6,NA) %>% as.data.frame()
+range(data_original$HealthScore,na.rm = T)
+data_original <- select_at(data_original, vars(-c(`Health Score`))) %>% as.data.frame()
+# data2016new$re[data2016new$re==TRUE]=2
+# mutate(datao,dd = replace(Age, (Age>100 | Age < 16),NA))
+
+
+# data_original %>% select_at(.,vars(c("Age","HealthScore")))
+# data_original$`Health Score`[replace(data_original$`Health Score`,data_original$`Health Score`>6,NA)]
+
+
+# data_original <- data_original %>% mutate(.,rr=replace(data_original$`Health Score`,data_original$`Health Score` > 6,NA))
+# data_original
+
+```
+```{r}
 
 # so there might be unreasonable variables in Age, Health Score
 detach(data_original)
