@@ -1,0 +1,1163 @@
+---
+title: "Untitled"
+author: "JIASHU MIAO"
+date: "2019/2/5"
+output: html_document
+---
+
+```{r}
+pkg <- c("readr","readxl","dplyr","stringr","ggplot2")
+lapply(pkg, require, character.only = TRUE)
+
+
+```
+
+```{r}
+data_original <- read_excel("/Users/MichaelMiao/Documents/career/accument\ data\ excercise/Acumen_Data_Analysis_Exercise.xlsx", sheet = "Data")
+attach(data_original)
+data_original <- data_original %>% mutate(., RH = replace(`Health Score`, `Health Score`> 6,NA)) %>% as.data.frame()
+data_original <- data_original %>% select_at(.,vars(-c(`Health Score`))) 
+
+dim(data_original)
+data_original <- data_original %>% mutate(., Newage =replace(Age, Age>100 | Age <16 ,NA)) %>% select_at(.,vars(-c(Age)))
+dim(data_original)
+detach(data_original)
+datause <- data_original
+datause <- datause[!is.na(datause$RH),]
+dim(datause)
+prop.table(table(datause$`Sex (Male=1)`[datause$Quarter==1]))
+
+colnames(datause)[3] <- "ss"
+datause
+
+```
+
+- load data
+```{r}
+data_original <- read_excel("/Users/MichaelMiao/Documents/career/accument\ data\ excercise/Acumen_Data_Analysis_Exercise.xlsx", sheet = "Data")
+attach(data_original)
+#View(data_original)
+names(data_original)
+par(mfrow=c(2,5))
+for (i in 1:length(data_original)) {
+        boxplot(data_original[,i], main=names(data_original[i]), type="l")
+
+}
+
+# so there might be unreasonable variables in Age, Health Score
+detach(data_original)
+dataNEW1 <-  subset(data_original,`Health Score` >=0 & `Health Score` <=6)
+# range(data_original$Age)
+
+dataNEW2 <- subset(dataNEW1, dataNEW1$Age >= 18 & dataNEW1$Age <= 63 )
+# summary(dataNEW2)
+dataNEW2 <- na.omit(dataNEW2)
+colSums(is.na(dataNEW2))
+# filter out the observations that is not in correct score range 0:6, some of them 10!
+# filter out the observations that the employ is beyond age 18 or over 62. 
+# dataNEW2 becomes the new data
+
+
+matx <- matrix(1:16, nrow = 4, byrow = T)
+rowSums(matx)
+apply(matx, 1, sum)
+
+# Auto
+# data(Auto)
+# sapply(Auto,class)
+
+# qplot(x=sqft,y= price,data = LArealstate,color=type,na.rm=T) + geom_point(na.rm = T)
+
+# rop.table(table(data$Race[data$Quarter==1])) ## see the proportion of the race
+# ## 
+# ##         1         2         3 
+# ## 0.5598007 0.2774086 0.1627907
+# prop.table(table(data$`Sex (Male=1)`[data$Quarter==1]))  ## see the proportion of the sex
+
+# agg = aggregate(data,
+#                 by = list(data$Role),
+#                 FUN = mean)
+
+```
+
+
+
+- some basic needs syntax: 
+```{r}
+# data2016new2 <- sapply(data2016new, as.numeric)
+par(mfrow=c(2,5))
+quartermeanhealth <- aggregate(dataNEW2$`Health Score`,by = list(dataNEW2$Quarter), FUN = mean)
+quartermeanhealth2 <- tapply(dataNEW2$`Health Score`,INDEX = dataNEW2$Quarter, FUN = mean) %>%  as.data.frame()
+mydata <- dataNEW2
+quartermeanhealth2 %>% dim() %>% as.double()
+typeof(quartermeanhealth2)
+typeof(quartermeanhealth)
+quartermeanhealth <- quartermeanhealth[,2] %>% as.data.frame()
+quartermeanhealth %>% dim()
+identical(quartermeanhealth,quartermeanhealth2)
+as.data.frame(matrix(unlist(mydata)))
+s <- traning_data <- mydata[sample(mydata,1:nrow(mydata)), 50]
+ss <- traning_data <- mydata[sample(1:nrow(mydata)), 50]
+identical(ss,s)
+
+# grep(pattern, x, ignore.case = FALSE, perl = FALSE, value = FALSE,
+#      fixed = FALSE, useBytes = FALSE, invert = FALSE)
+# 
+# grepl(pattern, x, ignore.case = FALSE, perl = FALSE,
+#       fixed = FALSE, useBytes = FALSE)
+# 
+# sub(pattern, replacement, x, ignore.case = FALSE, perl = FALSE,
+#     fixed = FALSE, useBytes = FALSE)
+# 
+# gsub(pattern, replacement, x, ignore.case = FALSE, perl = FALSE,
+#      fixed = FALSE, useBytes = FALSE)
+
+
+
+
+# dunif(x, min = 0, max = 1, log = FALSE)
+# punif(q, min = 0, max = 1, lower.tail = TRUE, log.p = FALSE)
+# qunif(p, min = 0, max = 1, lower.tail = TRUE, log.p = FALSE)
+# runif(n, min = 0, max = 1)
+
+```
+
+```{r}
+# select()
+# filter()
+# group_by()
+# summarise()
+# arrange()
+# join()
+# mutate()
+```
+
+starts_with()	Starts with a prefix
+ends_with()	Ends with a prefix
+contains()	Contains a literal string
+matches()	Matches a regular expression
+num_range()	Numerical range like x01, x02, x03.
+one_of()	Variables in character vector.
+everything()	All variables.
+
+```{r}
+write.csv(df,file = "df_sample.csv",col.names = T)
+
+par(mfrow=c(1,2))
+library("dplyr")
+# select func.
+mydata <- airquality
+class(mydata)
+mydataozone <- subset(mydata, mydata$Month == 9 | mydata$Month == 5)
+mydata33 <- select(mydata, contains("day")) # case insensitve # literal
+mydata33
+mydata34 <- select(mydata, matches("day")) # any regular expression
+mydata34
+mydata34 <- select(mydata, Day, everything()) # dplyr 里面 每一个 variable前面不能加data名字dollar sign
+select(df, -c)#`: Exclude C from the dataset from df dataset
+select(iris, one_of(c("Species", "Genus")))
+# Select columns whose names are in a group of names.
+ 
+#The select_if() function returns only those columns where logical condition is TRUE. The is.numeric refers to retain only numeric variables.
+mydata35 = select_if(mydata[,2:3], is.numeric)
+
+# select_all 
+# select_all(.tbl, .funs = list(), ...)
+
+select_all(mydata,funs(toupper(.)))
+# summarise(mydata,Day,funs(mean()))
+select_all(mydata,"toupper")
+select_all(mydata,toupper)
+select_all(mydata, funs())
+
+select_at(mydata,vars(-c("Day","Month")))
+
+# returns the result for logical is true
+
+# select_if(mydata,vars(Ozone,quote(Solar.R)),is.numeric)
+select_if(mydata,is.numeric)
+# select(mydata,vars(Day,Ozone))    # vars is not for select 
+s <- select_if(mydata[c("Day","Month")],is.factor)
+floor(s)
+is.whole <- function(x) all(floor(x) == x)
+class(mydata)
+haah <- function(x) all(floor(x) == x) 
+#cp <- select_if(select_if(airquality,is.numeric), haah)
+
+s <- select_if(mydata,is.numeric)
+#select_if(mydata,is.whole)
+#ss <- select_if(s,is.whole)
+# select_vars(mydata,vars == "Day")  for charcter variables only
+
+ is_whole <- function(x) all(floor(x) == x)
+    select_if(mtcars, is.whole)
+select(mydata,Day,Month,everything()) # reordering
+
+
+```
+
+
+```{r}
+# rename() syntax : rename(data , new_name = old_name)
+# data : Data Frame
+# new_name : New variable name you want to keep
+# old_name : Existing Variable Name
+
+ mydata6 <- rename(mydata5, daysssss=Day)
+head(mydata6,1)
+select_at(mydata,c("Day","Month"))
+rename_if(mtcars,is.whole,toupper)
+mydata[order(mydata$Ozone),] # 正负号决定顺序
+
+
+
+
+```
+```{r}
+s <- filter(mydata[,3:ncol(mydata)],Day == 1)
+s <- s[1:3]
+mydata37 <- filter(mydata,Temp %in% c(67,91)) %>%  print()
+mydata37 <- filter(mydata) %>%  print()
+# filter(mydata, funs(rowMeans(.)== 5))
+# You can take the intersection of the replicated expressions:
+filter_all(mtcars, any_vars(. > 150)) # filter 也可以用func logic!!!
+filter(mtcars, mean(mpg) > 10)
+
+filter_at(mtcars, vars(starts_with("d")), any_vars((. %% 2) == 0))
+
+filter_at(mtcars, vars(starts_with("d")),any_vars(. >10))
+filter_at(mtcars,vars(c("mpg","cyl")),all_vars(. >7)) #filter at 可以 vars
+select_if(mtcars[,2:3],is.numeric)
+filter_at(mtcars,vars(contains("mpg")),all_vars(. >23))
+filter_if(mtcars, ~ all(floor(.) == .), all_vars(. != 0))  # ~ 很他妈关键
+filter_if(mtcars, ~ all(is.numeric(.)== T), any_vars(. > 240))
+mtcars %>% filter_at(vars(hp, vs), any_vars(. %% 2 == 0))
+mydata10 = filter(mtcars, grepl("110", hp)) %>% print() # chracter 的时候贼tm好用
+with(mtcars, hp == 110)
+runif(4)
+# filter 不用 contains
+```
+
+```{r}
+# summarize 会给我一个新table这时候创建里的 和原数据table不一样  创建新的var
+
+
+summarise_all(mydata,funs(n(),sum(.,na.rm = T),mean))
+
+summarise(mydata,Daymean = mean(Day))
+# sample_n(mydata,size = 10, replace = F)
+summarise_at(mydata, vars(Day, Month, Temp), funs(n(), mean, median, length))
+
+summarize_if(mydata,is.numeric,funs(n(),min(.,na.rm = T)))
+# summarize_if(mydata,~ )any_vars(.>10,funs(n(),min(.,na.rm = T)))
+
+ # alternative way
+
+numdata <- mydata[sapply(mydata, is.numeric)] %>% summarise_all(funs(n(),mean(.,na.rm = F))) # na.rm = T
+# We are checking the number of levels/categories and count of missing observations in a categorical (factor) variable.
+
+summarise_all(mydata["Day"], funs(nlevels(.), nmiss=sum(is.na(.))))
+summarise_all(mydata["Day"], funs(nlevels(.), nmiss=mean(.)))
+
+summarise_at(mydata, vars(Temp, Day),
+funs(n(), missing = sum(is.na(.)), mean(., na.rm = TRUE), median(.,na.rm = TRUE))) #结果会按照顺序
+
+
+# create summarise using your own function
+
+# set.seed(222)
+# mydata <- data.frame(X1=sample(1:100,100), X2=runif(100))
+# summarise_at(mydata,vars(X1,X2), function(x) var(x - mean(x)))
+
+mydata 
+
+summarise_all(mtcars, function(x) var(x))
+
+select_if(mtcars,function(x)max(x)>400)
+max(mtcars$disp)
+summarise_at(mtcars,vars(disp), funs(max(.,na.rm = T)) )
+
+# summarize all num
+summarise_if(mydata, is.numeric, funs(n(),mean,median))
+
+# group by summarize 喜欢用
+
+summarize_at(group_by(mydata,Temp),vars(Day,Month),funs(n(),mean(.,na.rm = T)))
+
+summarise_at(group_by(iris,Species),vars(Sepal.Width),funs(n()))
+dim(iris)
+#group_by() for cate
+attach(iris)
+group_by_if(mtcars, is.factor)
+
+# summarise_at(group_by_if(iris,Species %in% "setosa"),vars(Sepal.Width))
+
+# NOT RUN {
+# Group a data frame by all variables:
+group_by_all(mtcars)
+
+# Group by variables selected with a predicate:
+group_by_if(iris, is.factor)
+
+# Group by variables selected by name:
+group_by_at(mtcars, vars(vs, am))
+
+# Like group_by(), the scoped variants have optional mutate
+# semantics. This provide a shortcut for group_by() + mutate():
+group_by_all(mtcars, as.factor)
+group_by_if(iris, is.factor, as.character)
+```
+```{r}
+tapply(dataNEW2$Age, dataNEW2$Quarter, sum) 
+dataNEW2
+
+dataNEW2 %>%  group_by_at(.,vars(Quarter, `Sex (Male=1)` )) %>% 
+  summarise_at(.,vars(`Health Score`, Age), funs(mean(.,na.rm = T))) #cool
+
+s <- sapply(mtcars, function(x) x*1000) %>% as.data.frame() %>% print() #so cool
+
+mydata2 <- iris
+summarise_at(group_by(mydata2,Species),vars(Sepal.Length),funs(mean(.,na.rm=TRUE)))
+```
+
+```{r}
+rename()
+```
+
+
+```{r}
+# arrange 
+# mydata <- airquality
+# arrange(mydata, desc(Month), Temp, Solar.R) # 后面的条件弱了
+
+# s <- mydata %>% group_by(.,Ozone) 
+# s
+
+mydata8 <- mydata %>% select(Day,Month,Temp) %>%
+  filter(Day %in% (1:20) | Month >= 6) %>% 
+  group_by(Month) %>% do(arrange(.,desc(Day))) %>% slice(.,1:2) %>% print()
+
+# group by 和 slice关联
+
+t = mydata %>% select(Day, Month) %>%
+   filter(Day %in% c("1", "2","3","4")) %>%
+   group_by(Month) %>%
+   filter(min_rank(desc(Day)) == 2 | Day == 4 ) %>% print()
+
+#(min_rank(desc(Y2015)) == 3) 这时候 filter function要用
+
+```
+
+
+```{r}
+mydata39 <- mutate(mydata,ratio= Temp/Day) %>% 
+  select(.,ratio,everything()) %>% print() 
+mydata40 <- mutate_all(mydata,funs("new"=.*1000))
+names(mydata40) # 这个思路好流弊
+ 
+ mydata12 = mutate_at(mydata, vars(Month,Temp), funs(Rank=min_rank(.))) %>% print()
+ mydata42 <- mutate(mydata, ratio = Month/3, funs(Rank=min_rank(.))) %>% print()
+ # arrange(mydata42,desc(ratio))
+ # range(mydata42$ratio)
+ # table(mydata42$Month)
+ 
+ dff <- data.frame(x = c(1,5,6,NA))
+ dff %>%  mutate(.,newvar = if_else(x<5,x+1,x+2,0))  #!!!cool
+ # if_else(condition = ,true = ,false = ,missing = )
+
+ mydf =data.frame(x = c(1:5,NA))
+mydf %>% mutate(newvar= if_else(is.na(x),"I am missing",
+if_else(x==1,"I am one",
+if_else(x==2,"I am two",
+if_else(x==3,"I am three","Others"))))) # cool太烧脑
+
+# The rowwise() function allows you to apply functions to rows.
+# df = mydata %>%
+  # rowwise() %>% mutate(Max= max(Y2012,Y2013,Y2014,Y2015)) %>%
+  # select(Y2012:Y2015,Max)
+```
+```{r}
+mydata %>% rowwise() %>%  group_by(Month)%>% mutate(.,Max = max(Day,Month)) %>% select(Day,Month,Max) %>% arrange(desc(Max)) %>%  print()
+
+# the order of pipe operator really matters
+
+# mydata %>% rowwise() %>% mutate(.,Max=max(mydata$Day,mydata$Month)) %>% select(.,Day,Month,Max) %>% print()
+
+# max(1,2,3)
+```
+```{r}
+
+# 必须logical funct
+is.biggerten <- function(x)all(x > 50)
+is.biggerten(1)
+
+
+
+summarise_if(mtcars,is.numeric,funs(nlevels(.)))
+# summarise_all(mtcars,any_vars(.>10),funs(nlevels(.)))
+
+
+class(mtcars$hp)
+#summarise_at(mtcars, vars(mpg,hp), any_vars(.>10),funs(n())) # only for filter
+# summarise_if(mtcars, is.whole,funs(n())) %>% print()
+select_if(mtcars,is.whole) %>% print()
+
+
+select_if(mtcars,is.biggerten)
+
+#!!!!!!
+# ifelse(Rentention,1,0)
+# ifelse(test, yes, no)
+
+# !!!!
+```
+```{r}
+# index cumulative sum
+#cumsum(mydata$Temp) 
+
+
+# join 
+#inner_join(x,y,by="ID")
+# left, right, full, semi, anti
+
+# Combine data vertically 
+# rows in both x and y 
+# mydata11 <- intersect(mydata10,mydata2)
+
+# rows in either or both x, y
+# mydata12 <- union(mydata10,mydata2) %>%  as.data.frame()
+
+# rows in x but NOT in y
+# mydata13 <- setdiff(mydata11,mydata)
+```
+
+```{r}
+names(mydata)
+ggplot(data = dataNEW2,mapping = aes(floor(Age), `Health Score`)) + geom_point(aes(color = "red" )) + geom_smooth(method = "glm")+coord_cartesian()+theme_classic()+xlab("shit")
+
+ggplot(data = dataNEW2,mapping = aes( factor(`Hospital Visit This Quarter (1=Yes)`),`Health Score`,colour=factor(Quarter)))+geom_boxplot()+ facet_wrap(~Quarter)
+# t + ggtitle("New Plot Title") Add a main title above the plot
+# t + xlab("New X label") Change the label on the X axis
+# t + ylab("New Y label") Change the label on the Y axis
+
+
+#！！！！！！ factor
+```
+
+```{r}
+library(tidyr)
+df %>% drop_na()
+#              gene hsap mmul mmus rnor cfam
+# 2 ENSG00000199674    0    2    2    2    2
+# 6 ENSG00000221312    0    1    2    3    2
+df %>% drop_na(rnor, cfam)
+#              gene hsap mmul m
+```
+
+
+```{r}
+as.double("one")
+as.integer("1l")
+typeof(NA+1)
+0/0 # not a number 
+Inf + -Inf ## [1] NaN
+c(1, NA+1L, "C") 
+c(1L / 0, NA) 
+c(1:3, 5)
+c(3L, NaN+1L) 
+typeof(c(NA, TRUE)) # logical 第一个 coercess
+class(NA+1)
+typeof(NA+1)
+c(3L, NaN+1L) %>% typeof()
+
+
+1:4*2:3 ##1,2,3,4*2,3,2,3
+##[1] 2 6 612
+1:4*2:4 ##1,2,3,4*2,3,4,2
+## Warning in 1:4 * 2:4: longer object length is not a multiple of shorter ## object length
+
+
+```
+```{r}
+# R uses NA to represent missing values. There are different NA for the different vector types.
+typeof(NA)
+## [1] "logical" NA+1
+## [1] NA 
+typeof(NA + 1) ## [1] "double"
+
+typeof(NA_real_) ## [1] "double"  
+
+
+NA_real_
+
+NA_real_
+
+# There are also constants NA_integer_, NA_real_, NA_complex_ and NA_character_ of the other atomic vector types which support missing values
+```
+```{r}
+# R uses NULL to represent the NULL object. typeof(NULL)
+## [1] "NULL"
+is.null(NULL)
+## [1] TRUE
+is.na(NULL)
+is.numeric(NULL)
+## Warning in is.na(NULL): is.na() applied to non-(list or vector) of type ## 'NULL'
+ logical(0)
+ 
+? logical(0)
+ 
+ is.logical(NULL) ## [1]  FALSE 
+ NULL + FALSE
+## integer(0) 
+ c(4, 5, NULL, 3) ##[1]453
+ integer(0)
+ typeof(is.na(1))
+class(mean("a"))
+
+```
+```{r}
+# Lists can be nested within lists. The list will not be flat. These are called recursive lists.
+b <- list(5, 12) 
+c <- list(13)
+a <- list(b,c)
+str(a)
+```
+```{r}
+x <- list(list(1,2),c(3,4)) %>% print()  %>% str()
+
+
+```
+```{r}
+# c will make it all same tipe
+y <- c(list(1,2),c(3,4)) %>% print() %>% str()
+
+
+examp<-list(A=1,B=list(C=2,D=3),E=c(4,5,6)) 
+str(examp)
+examp$B$C
+examp$C
+examp$E
+
+```
+```{r}
+# identical(attr(x),attributes(x))
+
+(x = c(L=1,M=2,N=3)) 
+##LMN
+##123
+attributes(x)
+typeof(x)
+attributes(x)
+# x$names Error in x$names : $ operator is invalid for atomic vectors
+
+str(attributes(x))
+
+attr(x,"names")
+names(dataNEW2)
+attr(dataNEW2,"Race") 
+# store as list
+
+s <- attr(dataNEW2,"Race") <- c(1:4) %>% print()
+# dataNEW2$Race
+
+table(dataNEW2$Race)
+attr(dataNEW2,"class")
+class(dataNEW2)
+dataNEW2 %>% str()
+dataNEW2 %>% as.data.frame() %>% class()
+
+attr(x, "names") <- letters[1:3]
+attr(x,"Myattrrrris") <- "This is shit"
+x
+attributes(x[])
+class(x)
+typeof(x)
+x
+
+# x=c(1,2,3,2,12,1) %>% as.double()
+# x
+attributes(x[1])
+
+```
+```{r}
+setNames(x,"penis")
+x
+names(x)
+attributes(x)
+```
+
+```{r}
+x <- factor(c("a", "b", "b", "c", "a")) 
+x
+class(x)
+## [1] "factor"
+typeof(x)
+## [1] "integer"
+levels(x)
+## [1] "a" "b" "c"
+
+
+x[2] <- "d"
+## Warning in `[<-.factor`(`*tmp*`, 2, value = "d"): invalid factor level, NA
+## generated
+x
+x
+# [1] a    <NA> b    c    a   
+# Levels: a b c
+
+levels(x)[3] <- "california" 
+x
+x
+# cannot 
+c(factor("a"), factor("b"))
+
+
+```
+
+```{r}
+sex_char <- c("m", "m", "m")
+sex_factor <- factor(sex_char, levels = c("m", "f"))
+table(sex_char)
+## sex_char ##m
+##3
+table(sex_factor)
+## sex_factor ##mf ##30
+
+
+# Instead, use the argument stringsAsFactors = FALSE to suppress this behavior, and then manually convert character vectors to factors using your knowledge of the data.
+
+```
+
+```{r}
+b <- array(1:12, c(2, 3, 2)) 
+b
+##,,1
+##
+## [,1] [,2] [,3] ##[1,] 1 3 5 ##[2,] 2 4 6 ##
+##,,2
+##
+## [,1] [,2] [,3] ##[1,] 7 9 11 ##[2,] 8 10 12
+
+
+# You can also modify an object in place by setting dim()
+c<-1:6
+dim(c) <- c(3, 2) 
+c
+
+# c() generalizes to cbind() and rbind() for matrices. Yo
+? array
+x <- array(1:4,3)
+x
+
+str(x)
+
+good <- data.frame(a = 1:2, b = c("a", "b"), stringsAsFactors = FALSE)
+good
+
+
+
+```
+
+```{r}
+good1 <- good[,1] %>% print()
+good2 <- good[,2] %>% print()
+cbind(good1,good2)
+rbind(good1,good2)
+
+df1 <- data.frame(aa=c(1,22,1),b=c("a,b,c","ss","sss"),stringsAsFactors = F) %>% print()
+# dfr <- rbind(good1,df1, row.names(dfr)=c("s","sd","sdd","ssddd")) %>% print() 
+
+
+```
+```{r}
+x <- c(2.1, 4.2, 3.3, 5.4)
+x[c(1,4)]
+order(x)# give the position index 
+x[order(x)]
+x[sort(x)]#?
+x[c(rep.int(1,time=5))]
+x[c(rep(1:2,each = 10))]
+?rep
+x[-c(3,1)]
+names(dataNEW2)
+dataNEW3 <- dataNEW2[,-c(1:3)] 
+dataNEW3 %>% names()
+x[0]
+is.na(NULL)
+is.na(NA)
+logical(1)
+ 
+# logical(TRUE)  Error in logical(TRUE) : invalid 'length' argument()
+
+
+
+```
+
+```{r}
+x[c(TRUE, TRUE, FALSE, FALSE)]
+# TRUE 就是要这个位置得东西
+
+x[x>NA]
+dataNEW3$Race
+attach(dataNEW3)
+sum(is.na(data_original$Race))
+data_original$Race[is.na(data_original$Race)]= 0.1
+
+```
+```{r}
+# If the logical vector is shorter than the vector being subsetted, it will be to be the same length.
+x[c(TRUE, FALSE)]
+## [1] 2.1 3.3
+# Equivalent to
+x[c(TRUE, FALSE, TRUE, FALSE)] ## [1] 2.1 3.3
+
+```
+```{r}
+# A missing value in the index always yields a missing value in the output:s
+```
+
+```{r}
+y <- setNames(x, letters[1:4])
+(yy=y)
+# s  # NAs introduced by coercionNAs introduced by coercionError in "a":"c" : NA/NaN argument
+y["a"] %>% class()
+
+x[1] %>% class()
+typeof(y)
+x %>% typeof()
+y %>% class()
+
+attr(x,"shabi") <- letters[1:4]
+
+attributes(x)
+
+y
+
+x <- as.list(x)
+x
+as.numeric(x)
+## kuohao ???
+```
+```{r}
+a <- matrix(1:9, nrow = 3) 
+colnames(a) <- c("A", "B", "C") 
+a[1:2, ]
+is.vector(a)
+is.vector(a[1,])
+
+(vals <- outer(1:6, 1:5, FUN = "paste", sep = ","))
+
+select <- matrix(ncol = 2, byrow = TRUE, c( 1, 1,
+3, 1,
+2,4 ))
+vals[select]
+## [1] "1,1" "3,1" "2,4"
+
+(ar <- array(1:12, c(2,3,2)))
+```
+
+```{r}
+# ccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+select_ar <- matrix(ncol = 3, byrow = TRUE, c( 1,2,1,
+2,3,2)) 
+ar[select_ar]
+## [1] 3 12
+
+mtcars[mtcars$cyl == 4, ] # need double equal for logical test
+```
+```{r}
+x <- list(a=list(1,2,3),b=2)
+a[[2]][1]
+
+
+```
+```{r}
+# Preserving is the same for all data types: you get the same type of output as input. Simplifying behaviour varies slightly between different data types, as described on the next slides
+
+# Atomic vector: removes names.
+a <- c(a=1,b=2)
+a[1]
+a[[1]]
+
+#!!!!
+# List: return the object inside the list, not a single element list.
+
+str(x[1])
+str(x[[1]])
+
+y <- list(a=1, b=2)
+str(y[1])
+str(y[[1]])
+```
+
+```{r}
+# Factor: drops any unused levels. 
+z <- factor(c("a", "b"))
+z[1] 
+##[1]a
+## Levels: a b
+z[1, drop = TRUE]
+##[1]a
+## Levels: a
+```
+
+```{r}
+# Matrix or array: if any of the dimensions has length 1, drops that dimension. 
+a <- matrix(1:4, nrow = 2)
+a[1, , drop = FALSE] ## [,1] [,2]
+## [1,]
+a[1, ] ##[1]13 drop the dimension
+
+
+
+a[1,1:2] # 照样drop
+# Data frame: if output is a single column, returns a vector instead of a data frame.
+# 
+df <- data.frame(a = 1:2, b = 1:2) 
+str(df[1])
+## 'data.frame': ## $a:int 12
+str(df[[1]])
+## int[1:2]12
+#2 obs. of 1 variable:
+
+
+x<-1:4
+x[5]
+## [1] NA
+x[NA_real_] 
+##
+ NA 
+ 
+ 
+ 
+#111111
+ 
+ 
+ x[NULL]
+## integer(0)
+```
+```{r}
+
+x<-1:5
+x[c(1, 2)] <- 2:3 
+x
+##[1]23345
+# The length of the LHS needs to match the RHS
+
+x[-1] <- 4:1
+x
+##[1]24321
+```
+```{r}
+# You can't combine integer indices with NA
+#x[c(1, NA)] <- c(1, 2)
+## Error in x[c(1, NA)] <- c(1, 2): NAs are not allowed in subscripted assignments
+```
+
+```{r}
+ # But you can combine logical indices with NA (where they're treated as false).
+x[c(T, F, NA)] <- 1 
+x
+x[NA]
+##[1]14311  ?????????
+```
+```{r}
+df <- data.frame(a = c(1, 10, NA)) %>% print()
+ df$a[df$a<5]=10 
+df$a
+```
+```{r}
+# In the first, mtcars will remain as a data frame. In the second, mtcars will become a list.
+(mtcars[ ] <- lapply(mtcars, as.integer)) 
+(mtcars <- lapply(mtcars, as.integer))
+mtcars
+
+```
+```{r}
+
+# With lists, you can use subsetting + assignment + NULL to remove components from a list. To add a literal NULL to a list, use [ ] and list(NULL):s
+
+x<-list(a=1,b=2) 
+x[["b"]] <- NULL 
+# x[[-c("b")]] wrong
+str(x)
+
+x <- x[1]
+x
+##Listof1 ## $a:num1
+y<-list(a=1)
+y["b"] <- list(NULL) 
+str(y)
+##Listof2 ## $a:num1 ## $b:NULL
+y
+
+y <- y[2] %>% print()
+
+```
+```{r}
+
+## 这也太酷了
+x <- c("m", "f", "u", "f", "f", "m", "m") 
+lookup <- c(m = "Male", f = "Female", u = NA) 
+lookup[x]
+x[lookup] #把lookp用x的value 
+
+
+grades <- c(1, 2, 2, 3, 1)
+info <- data.frame(
+grade = 3:1,
+desc = c("Excellent", "Good", "Poor"), fail = c(F, F, T)
+)
+
+
+grades
+##[1]12231
+# Using match
+id <- match(grades, info$grade) 
+info[id, ]
+class(info)
+
+```
+```{r}
+# Using rownames
+rownames(info) <- info$grade 
+info[as.character(grades), ]
+```
+
+```{r}
+sample(nrow(df))
+sample(1:100,5,prob = )
+
+
+df <- data.frame(x = rep(1:3, each = 2), y = 6:1, z = letters[1:6])
+set.seed(10) 
+# for reproducibility
+# Randomly reorder
+
+
+df[sample(nrow(df)), ]
+
+
+# ## Select 3 random rows
+df[sample(nrow(df), 3), ]
+"
+"
+ "\n"
+
+## xyz ##215b ##631f ##324c
+```
+```{r}
+x <- c("b", "c", "a") 
+order(x)
+##[1]312
+x[order(x)]
+## [1] "a" "b" "c"
+# To break ties, you can supply additional variables to order(), and you can change from ascending to descending order using decreasing = TRUE. By default, any missing values will be put at the end of the vector; however, you can remove them with na.last = NA or put at the front with na.last = FALSE.
+```
+```{r}
+df[setdiff(names(df), "z")]
+setdiff(1,2)
+
+```
+```{r}
+# · !(X&Y)isthesameas!X|!Y · !(X|Y)isthesameas!X&!Y
+```
+
+```{r}
+set.seed(1.2)
+x <- sample(10)<4 #直接可以给 condition！！！
+which(x)
+```
+```{r}
+#X & !Y <-> setdiff(x, y)
+# x1&!y1
+
+
+```
+
+```{r}
+
+#双剪头干啥的
+```
+
+```{r}
+?base::Logic
+
+# For ||, && and isTRUE, a length-one logical vector.
+# lengthone logical 
+
+# #& and && indicate logical AND and | and || indicate logical OR.
+# The short form & and | are 'Vectorized,' meaning the operations perform
+# elementwise comparisons (as well as recycling).
+# The 'non-vector' || and && evaluates left to right examining only the first element of each vector. This longer form is appropriate for programming control-flow and typically preferred in if clauses.
+# ! indicates logical negation (NOT).
+# # Numeric vectors will be coerced to logical values, with zero being false and all non-zero values being true.
+
+x <- c(TRUE, TRUE, FALSE, FALSE) 
+y <- c(FALSE, TRUE, FALSE, TRUE) 
+x|y
+## [1] TRUE TRUE FALSE TRUE
+x||y
+## [1] TRUE
+x&y
+## [1] FALSE TRUE FALSE FALSE
+x&&y
+## [1] FALSE
+
+```
+```{r}
+# is only one expression to execute, the curly braces are optional.
+x=3
+if (any(x >= 2))
+print("Can you hear me now?")
+x=3 
+zz <- function(x )if(x<0){
+print("Negative") 
+  }else if(x>0){
+print("Positive") 
+    }else{
+print("Zero") }
+
+n <- ifelse(x==5, "yes", "no")
+```
+```{r}
+for(x in 1:10) {
+  cat(x^2," ", sep="")
+} #cat 都能打出来
+```
+```{r}
+l = list(1:3, LETTERS[1:7], c(TRUE,FALSE)) 
+for(y in l) {
+cat(length(y),"你妈",sep="shab") }
+##372
+
+
+
+```
+
+```{r}
+
+#？？？
+library(datasets)
+state.name[1:5]
+for(state in state.name[1:5]) {
+cat(state,"has", nchar(state),"letters in it.\n")
+}
+
+# Bad!!!
+res <- c()
+for (x in 1:10) {
+res <- c(res,x^2) 
+}# each iteration copies res into a redefined res }
+res
+##[1] 1 4 9162536496481100
+## Alabama has 7 letters in it.
+## Alaska has 6 letters in it.
+## Arizona has 7 letters in it.
+## Arkansas has 8 letters in it. ## California has 10 letters in it.
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+```{r}
+dat<- data.frame(t=seq(0, 2*pi, by=0.1) )
+ xhrt <- function(t) 16*sin(t)^3
+ yhrt <- function(t) 13*cos(t)-5*cos(2*t)-2*cos(3*t)-cos(4*t)
+ dat$y=yhrt(dat$t)
+ dat$x=xhrt(dat$t)
+ with(dat, plot(x,y, type="l"))
+ with(dat, polygon(x,y, col="hotpink"))   
+ points(c(10,-10, -15, 15), c(-10, -10, 10, 10), pch=169, font=5)
+```
+
+```{r}
+# install.packages("Cairo")
+library(Cairo)
+
+# clubs <- expression(symbol('\247'))
+hearts <- expression(symbol('\251'))
+# diamonds <- expression(symbol('\250'))
+# spades <- expression(symbol('\252'))
+# csymbols <- c(clubs, hearts, diamonds, spades)
+
+plot( 0, xlim=c(0,5), ylim=c(0,2), type="n" )
+clr <- c("black", "red", "red", "black") 
+for (i in 2) {
+  hline <- function( yloc, ... ) 
+         for (i in 1:length(yloc)) 
+             lines( c(-1,6), c(yloc[i],yloc[i]), col="gray")  
+                # hline(0.9); 
+                # hline(1.0);
+                # hline(1.1);
+                # hline(1.2)  
+ text( i, 1, csymbols[i], col=clr[i], cex=5 )  
+ text( i, 0.5, csymbols[i], col=clr[i] ) }
+
+
+```
+```{r}
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
