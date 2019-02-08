@@ -1044,7 +1044,7 @@ for(state in state.name[1:5]) {
 cat(state,"has", nchar(state),"letters in it.\n")
 }
 
-# Bad!!!
+# Bad!!! 
 res <- c()
 for (x in 1:10) {
 res <- c(res,x^2) 
@@ -1057,6 +1057,121 @@ res
 ## Arkansas has 8 letters in it. ## California has 10 letters in it.
 ```
 
+
+
+
+```{r}
+i<-1
+res <- rep(NA, 10)
+while (i <= 10) {
+res[i]<-i^2
+i<-i+1 }
+res
+```
+```{r}
+# Repeat until break is executed
+i<-1
+res <- rep(NA, 10) 
+repeat 
+  {
+
+    res[i]<-i^2
+
+    i<-i+1 
+
+    if(i>10)
+  break
+} 
+res
+
+# next ends current 
+
+for(i in 1:10) { if(i%%2==0)
+next
+cat(i,"") }
+
+# res = rep(NA, length(l))   
+```
+
+```{r}
+yy
+seq_along(yy)
+length(yy)
+1:length(yy)
+seq_len(length(yy))
+```
+```{r}
+
+# name <- function(argument_1, argument_2, ...){ expression_1
+# expression_2
+# ...
+# return(output) }
+
+
+# If the function has only one line the curly braces can be left off. If return() is not used, the value returned is the last expression in the function.
+# In R, functions are objects, this means we can work with them like any other object in R.
+
+
+
+
+
+
+# Explicit - includes one or more returns f = function(x)
+#   f = return(x * x)
+# #Implicit - value from last statement is returned.
+# f = function(x) x*x
+
+f = function(x)
+  c(x, x^2, x^3)
+f(2) ##[1]248
+
+f = function(x)
+return(list(x = x, square = x^2, cube = x^3))
+f(2)
+## $x ##[1]2 ##
+## $square ##[1]4 ##
+## $cube ##[1]8
+
+
+
+f(2:4)
+
+
+
+```
+```{r}
+
+
+f = function(x, y, z){
+cat("x=",x, " y=", y, "z=",z, " ") #paste0
+
+}
+f(1, 2, 3)
+## [1] "x=1 y=2 z=3"
+f(z=1, x=2, y=3)
+## [1] "x=2 y=3 z=1"
+?paste0()
+
+# f(1, 2, 3, m=1)
+## Error in f(1, 2, 3, m = 1): unused argument (m = 1)
+```
+```{r}
+# In R it is possible to give function arguments default values,
+
+f = function(x=1, y=1, z=1){ paste0("x=", x, " y=", y, " z=", z)
+} 
+f()
+
+```
+
+```{r}
+# Scoping
+# R has generous scoping rules, if it can't find a variable in the functions body's scope, it will look for it in the next higher scope, and so on.
+y<-1
+f <- function(x){
+x + y # can't find y in this environment, searched higher one }
+f(3) ##[1]4
+```
 
 
 
