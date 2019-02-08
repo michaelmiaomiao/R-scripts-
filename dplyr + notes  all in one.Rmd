@@ -456,8 +456,279 @@ df %>% drop_na(rnor, cfam)
 
 
 ```{r}
+as.double("one")
+as.integer("1l")
+typeof(NA+1)
+0/0 # not a number 
+Inf + -Inf ## [1] NaN
+c(1, NA+1L, "C") 
+c(1L / 0, NA) 
+c(1:3, 5)
+c(3L, NaN+1L) 
+typeof(c(NA, TRUE)) # logical 第一个 coercess
+class(NA+1)
+typeof(NA+1)
+c(3L, NaN+1L) %>% typeof()
+
+
+1:4*2:3 ##1,2,3,4*2,3,2,3
+##[1] 2 6 612
+1:4*2:4 ##1,2,3,4*2,3,4,2
+## Warning in 1:4 * 2:4: longer object length is not a multiple of shorter ## object length
+
 
 ```
+```{r}
+# R uses NA to represent missing values. There are different NA for the different vector types.
+typeof(NA)
+## [1] "logical" NA+1
+## [1] NA 
+typeof(NA + 1) ## [1] "double"
+
+typeof(NA_real_) ## [1] "double"  
+
+
+NA_real_
+
+NA_real_
+
+# There are also constants NA_integer_, NA_real_, NA_complex_ and NA_character_ of the other atomic vector types which support missing values
+```
+```{r}
+# R uses NULL to represent the NULL object. typeof(NULL)
+## [1] "NULL"
+is.null(NULL)
+## [1] TRUE
+is.na(NULL)
+is.numeric(NULL)
+## Warning in is.na(NULL): is.na() applied to non-(list or vector) of type ## 'NULL'
+ logical(0)
+ 
+? logical(0)
+ 
+ is.logical(NULL) ## [1]  FALSE 
+ NULL + FALSE
+## integer(0) 
+ c(4, 5, NULL, 3) ##[1]453
+ integer(0)
+ typeof(is.na(1))
+class(mean("a"))
+
+```
+```{r}
+# Lists can be nested within lists. The list will not be flat. These are called recursive lists.
+b <- list(5, 12) 
+c <- list(13)
+a <- list(b,c)
+str(a)
+```
+```{r}
+x <- list(list(1,2),c(3,4)) %>% print()  %>% str()
+
+
+```
+```{r}
+# c will make it all same tipe
+y <- c(list(1,2),c(3,4)) %>% print() %>% str()
+
+
+examp<-list(A=1,B=list(C=2,D=3),E=c(4,5,6)) 
+str(examp)
+examp$B$C
+examp$C
+examp$E
+
+```
+```{r}
+# identical(attr(x),attributes(x))
+
+(x = c(L=1,M=2,N=3)) 
+##LMN
+##123
+attributes(x)
+typeof(x)
+attributes(x)
+# x$names Error in x$names : $ operator is invalid for atomic vectors
+
+str(attributes(x))
+
+attr(x,"names")
+names(dataNEW2)
+attr(dataNEW2,"Race") 
+# store as list
+
+s <- attr(dataNEW2,"Race") <- c(1:4) %>% print()
+# dataNEW2$Race
+
+table(dataNEW2$Race)
+attr(dataNEW2,"class")
+class(dataNEW2)
+dataNEW2 %>% str()
+dataNEW2 %>% as.data.frame() %>% class()
+
+attr(x, "names") <- letters[1:3]
+attr(x,"Myattrrrris") <- "This is shit"
+x
+attributes(x[])
+class(x)
+typeof(x)
+x
+
+# x=c(1,2,3,2,12,1) %>% as.double()
+# x
+attributes(x[1])
+
+```
+```{r}
+setNames(x,"penis")
+x
+names(x)
+attributes(x)
+```
+
+```{r}
+x <- factor(c("a", "b", "b", "c", "a")) 
+x
+class(x)
+## [1] "factor"
+typeof(x)
+## [1] "integer"
+levels(x)
+## [1] "a" "b" "c"
+
+
+x[2] <- "d"
+## Warning in `[<-.factor`(`*tmp*`, 2, value = "d"): invalid factor level, NA
+## generated
+x
+x
+# [1] a    <NA> b    c    a   
+# Levels: a b c
+
+levels(x)[3] <- "california" 
+x
+x
+# cannot 
+c(factor("a"), factor("b"))
+
+
+```
+
+```{r}
+sex_char <- c("m", "m", "m")
+sex_factor <- factor(sex_char, levels = c("m", "f"))
+table(sex_char)
+## sex_char ##m
+##3
+table(sex_factor)
+## sex_factor ##mf ##30
+
+
+# Instead, use the argument stringsAsFactors = FALSE to suppress this behavior, and then manually convert character vectors to factors using your knowledge of the data.
+
+```
+
+```{r}
+b <- array(1:12, c(2, 3, 2)) 
+b
+##,,1
+##
+## [,1] [,2] [,3] ##[1,] 1 3 5 ##[2,] 2 4 6 ##
+##,,2
+##
+## [,1] [,2] [,3] ##[1,] 7 9 11 ##[2,] 8 10 12
+
+
+# You can also modify an object in place by setting dim()
+c<-1:6
+dim(c) <- c(3, 2) 
+c
+
+# c() generalizes to cbind() and rbind() for matrices. Yo
+? array
+x <- array(1:4,3)
+x
+
+str(x)
+
+good <- data.frame(a = 1:2, b = c("a", "b"), stringsAsFactors = FALSE)
+good
+
+
+
+```
+
+```{r}
+good1 <- good[,1] %>% print()
+good2 <- good[,2] %>% print()
+cbind(good1,good2)
+rbind(good1,good2)
+
+df1 <- data.frame(aa=c(1,22,1),b=c("a,b,c","ss","sss"),stringsAsFactors = F) %>% print()
+# dfr <- rbind(good1,df1, row.names(dfr)=c("s","sd","sdd","ssddd")) %>% print() 
+
+
+```
+```{r}
+x <- c(2.1, 4.2, 3.3, 5.4)
+x[c(1,4)]
+order(x)# give the position index 
+x[order(x)]
+x[sort(x)]#?
+x[c(rep.int(1,time=5))]
+x[c(rep(1:2,each = 10))]
+?rep
+x[-c(3,1)]
+names(dataNEW2)
+dataNEW3 <- dataNEW2[,-c(1:3)] 
+dataNEW3 %>% names()
+x[0]
+is.na(NULL)
+is.na(NA)
+logical(1)
+ 
+# logical(TRUE)  Error in logical(TRUE) : invalid 'length' argument()
+
+
+
+```
+
+```{r}
+x[c(TRUE, TRUE, FALSE, FALSE)]
+# TRUE 就是要这个位置得东西
+
+x[x>NA]
+dataNEW3$Race
+attach(dataNEW3)
+sum(is.na(data_original$Race))
+data_original$Race[is.na(data_original$Race)]= 0.1
+
+```
+```{r}
+# If the logical vector is shorter than the vector being subsetted, it will be to be the same length.
+x[c(TRUE, FALSE)]
+## [1] 2.1 3.3
+# Equivalent to
+x[c(TRUE, FALSE, TRUE, FALSE)] ## [1] 2.1 3.3
+
+```
+```{r}
+# A missing value in the index always yields a missing value in the output:s
+```
+
+```{r}
+
+```
+
+
+
+
+
+
+
+
+
+
 
 
 
