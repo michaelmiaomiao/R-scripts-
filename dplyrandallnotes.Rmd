@@ -1488,11 +1488,97 @@ S3 method dispatch is relatively simple. UseMethod() creates a vector of functio
 ```
 
 ```{r}
+# ".^$*+?{}[]\|()"
+text = c("The","quick","brown","fox","jumps","over","the","lazy","dog") 
+str_detect(text,"quick")
 
+str_detect(text,"row")
+
+
+"11111111111111"
+
+# 俩[1] 对于俩output
+"|\""
+"\\["
+
+# str_detect("abc[def","[")
+# Error in stri_detect_regex(string, pattern, opts_regex = opts(pattern)): Missing closing br
+str_detect("abc[def","\\[")
+## [1] TRUE
+
+
+# !!!knit 时候 俩 ## "!!!!"
+
+
+## pizza
+```
+
+```{r}
+"\b"
+```
+Pattern
+^ or \A $ or \Z \b
+\B
+Meaning
+Start of string
+End of string
+Word boundary Not word boundary
+
+```{r}
+text = "The quick brown fox jumps over the lazy dog" 
+str_replace(text,"^The","-")
+## [1] "- quick brown fox jumps over the lazy dog"
+str_replace(text,"^quick","-")
+
+## STRING output  "" 
+
+str_replace(text,"$dog","-")
+str_replace(text,"$dog","-")
+
+## [1] "The quick brown fox jumps over the lazy dog" 
+str_replace(text,"The$","-")
+## [1] "The quick brown fox jumps over the lazy dog" 
+str_replace(text,"dog$","-")
+## [1] "The quick brown fox jumps over the lazy -"
+
+str_replace(text,"lazy$","-")
+
+str_replace(text,"\\AThe","-")
+## [1] "- quick brown fox jumps over the lazy dog" 
+str_replace(text,"\\Aquick","-")
+## [1] "The quick brown fox jumps over the lazy dog" 
+str_replace(text,"dog\\Z","-")
+## [1] "The quick brown fox jumps over the lazy -"
+"\n"
+
+# 小 b 大词  ： 大bi 一小段
+str_replace(text,"\\bjumps\\b","-")
+## [1] "The quick brown fox - over the lazy dog" 
+str_replace(text,"\\bjump\\b","-")
+## [1] "The quick brown fox jumps over the lazy dog" 
+str_replace(text,"\\Bump\\B","-")
+## [1] "The quick brown fox j-s over the lazy dog"
+str_replace(text,"\\Bjump\\B","-")
+## [1] "The quick brown fox jumps over the lazy dog"
 ```
 
 
 
+
+function
+str_detect(string,
+pattern)
+str_locate(string,
+pattern)
+str_extract(string,
+pattern)
+str_match(string, pattern)
+str_split(string, pattern)
+description
+Detect the presence or absence of a pattern in a string. returns TRUE if it is found
+Locate the first position of a pattern and return a matrix with start and end.
+Extracts text corresponding to the first match.
+Extracts capture groups formed by () from the first match. Splits string into pieces and returns a list of character vectors.
 
 
 
