@@ -6,7 +6,7 @@ output: html_document
 ---
 
 ```{r}
-pkg <- c("readr","readxl","dplyr","stringr","ggplot2","pryr")
+pkg <- c("readr","readxl","dplyr","stringr","ggplot2","pryr","stringr")
 lapply(pkg, require, character.only = TRUE)
 
 
@@ -1352,8 +1352,145 @@ otype(1)
 ```
 
 ```{r}
+pkg
+
+# In S3, methods belong to functions, called generic functions, or generics for short. S3 methods do not belong to objects or classes. This is different from most other programming languages, but is a legitimate OO style.
+# To determine if a function is an S3 generic, you can inspect its source code for a call to UseMethod(): that's the function that figures out the correct method to call, the process of method dispatch. Similar to otype(), pryr also provides ftype() which describes the object system, if any, associated with a function:
+
+
+
+"!!!!!!!"
+
+#是s3 也可以base
+
+ftype(mean)
+is.object(mean)
+otype(mean)
+pryr::ftype(is.data.frame(1))
+otype(is.data.frame(1))
+"@@@@@@@"
+
+# yao bei bei
 
 ```
+```{r}
+
+ftype(t.data.frame)
+# data frame method for t()
+
+otype(t.data.frame)
+ftype(as.factor)
+
+ftype(t.test)
+
+methods("mean")
+methods(class = "ts")
+```
+
+```{r}
+"!!!!"
+
+# S3 is a simple and ad hoc system; it has no formal definition of a class. To make an object an instance of a class, you just take an existing base object and set the class attribute. You can do that during creation with structure(), or after the fact with class<-():
+# Create and assign class in one step
+foo <- structure(list(), class = "foo")
+# Create, then set class
+foo <- list() 
+class(foo) <- "foo"
+
+# S3 objects are usually built on top of lists, or atomic vectors with attributes. You can also turn functions into S3 objects. Other base types are either rarely seen in R, or have unusual semantics that don't work well with attributes.
+# You can determine the class of any object using class(x), and see if an object inherits from a specific class using inherits(x, "classname").
+
+
+
+class(foo)
+inherits(foo,"foos")
+inherits(foo,"foo")
+
+inherits("mean","sum")
+class(mean)
+
+
+```
+```{r}
+foo <- function(x) {if (!is.numeric(x)) 
+  stop("X must be numeric") 
+  structure(list(x), class = "foo")
+}
+
+# foo("s")
+# Error in foo("s") : X must be numeric
+
+
+foo(s)
+
+# [[1]]
+# [1] 1 2 3 4
+# 
+# attr(,"class")
+# [1] "foo"
+```
+```{r}
+# Apart from developer supplied constructor functions, S3 has no checks for correctness. This means you can change the class of existing objects:
+
+
+```
+# Create a linear model
+mod <- lm(log(mpg) ~ log(disp), data = mtcars) class(mod)
+## [1] "lm"
+print(mod)
+##
+## Call:
+## lm(formula = log(mpg) ~ log(disp), data = mtcars) ##
+## Coefficients:
+## (Intercept) log(disp)
+## 5.3810 -0.4586
+# Turn it into a data frame (?!)
+class(mod) <- "data.frame"
+# But unsurprisingly this doesn't work very well print(mod)
+## [1] coefficients residuals
+## [6] assign qr
+## [11] terms model
+## <0 rows> (or 0-length row.names)
+# However, the data is still there
+mod$coefficients
+## (Intercept) log(disp) ## 5.3809725 -0.4585683
+effects rank fitted.values df.residual xlevels call
+
+
+```{r}
+
+"!!!!!"
+# A generic isn't useful without some methods. To add a method, you just create a regular function with the correct (generic.class) name:
+# f.a <- function(x) "Class a"
+# a <- structure(list(), class = "a")
+# class(a)
+# ## [1] "a"
+# f(a)
+# # [1] "Class a"
+
+# Adding a method to an existing generic works in the same way:
+# mean.a <- function(x) "a" mean(a)
+# ## [1] "a"
+# As you can see, there's no check to make sure that the method returns the class compatible with the generic. It's up to you to make sure that your method doesn't violate the expectations of existing code.
+```
+S3 method dispatch is relatively simple. UseMethod() creates a vector of function names, like paste0("generic", ".", c(class(x), "default")) and looks for each in turn. The "default" class makes it possible to set up a fall back method for otherwise unknown classes.
+```{r}
+# f <- function(x) UseMethod("f")
+# f.a <- function(x) "Class a"
+# f.default <- function(x) "Unknown class"
+# f(structure(list(), class = "a"))
+# ## [1] "Class a"
+# # No method for b class, so uses method for a class
+# f(structure(list(), class = c("b", "a")))
+# ## [1] "Class a"
+# # No method for c class, so falls back to default
+# f(structure(list(), class = "c")) ## [1] "Unknown class"
+```
+
+```{r}
+
+```
+
 
 
 
