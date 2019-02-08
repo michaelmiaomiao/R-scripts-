@@ -6,7 +6,7 @@ output: html_document
 ---
 
 ```{r}
-pkg <- c("readr","readxl","dplyr","stringr","ggplot2")
+pkg <- c("readr","readxl","dplyr","stringr","ggplot2","pryr")
 lapply(pkg, require, character.only = TRUE)
 
 
@@ -1314,8 +1314,49 @@ x
 
 ```
 ```{r}
+# R's three OO systems differ in how classes and methods are defined:
+# · S3 implements a style of OO programming called generic-function OO.
+# This is different from most programming languages, like Java, C++, which implement message-passing OO. With message-passing, messages (methods) are sent to objects and the object determines which function to call.
+# S3 is different. While computations are still carried out via methods, a special type of function called a generic function decides which method to call.
+# S3 is a very casual system. It has no formal definition of classes.
+```
+```{r}
+
+#!!!!!!!!!!
+"!!!!!!!"
+# The type of a function is "closure"
+f <- function() {} 
+typeof(f)
+## [1] "closure"
+is.function(f)
+## [1] TRUE
+# The type of a primitive function is "builtin"
+typeof(sum)
+## [1] "builtin"
+is.primitive(sum)
+## [1] TRUE
+
 
 ```
+```{r}
+# To see if an object is a pure base type, i.e., it doesn't also have S3, S4, or RC behaviour, check that is.object(x) returns FALSE.
+
+is.object(1)  ###false 的时候base
+is.object(as.factor(x))
+is.object(df)
+?is.object
+
+
+otype(1)
+ # The closest you can come is is.object(x) & !isS4(x), i.e., it's an object, but not S4. An easier way is to use pryr::otype():
+```
+
+```{r}
+
+```
+
+
+
 
 
 
