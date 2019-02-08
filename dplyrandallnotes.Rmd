@@ -1169,9 +1169,163 @@ f()
 # R has generous scoping rules, if it can't find a variable in the functions body's scope, it will look for it in the next higher scope, and so on.
 y<-1
 f <- function(x){
-x + y # can't find y in this environment, searched higher one }
+x + y } # can't find y in this environment, searched higher one }
 f(3) ##[1]4
+
+
+y<-1
+danjif
+g <- function(x){
+y<-2
+x + y # finds y in the current environment 
+}
+g(3)
 ```
+```{r}
+
+' sssss' 
+x<-1
+y<-1
+z<-1
+f <- function(){
+y <- 2 # creates y inside the scope of f()
+g <- function(){ # this function is created inside f()
+z <- 3 # creates z inside the scope for g() 
+return(x + y + z)
+}
+return(g()) }
+f()
+# x
+# y
+# z 大环境不变
+```
+```{r}
+'1111111'
+
+
+x<-1;y<-1;z<-1 
+f <- function(){
+y <<- 2
+z <- 9
+# assigns the value of 2 to y in the scope higher up (global) 
+g <- function(){ # g() exists inside the environment of f()
+  #assignsthevalueof3tozinthescopehigherup:f,
+# but does not find y, so goes to the higher scope (global)
+return(x + y + z)
+} 
+return(g())
+} 
+f()
+
+'1111111!!!!!
+
+\n' 
+# return(x + y + z) # uses the values in the nearest scope
+
+```
+
+```{r}
+e <- new.env()
+e$a <- FALSE 
+e$b <- "a"
+e$c <- 2.3 
+e$d <- 1:3
+
+```
+
+```{r}
+"There are four special environments:
+
+
+- The globalenv(), or global environment, is the interactive workspace. This is the environment in which you normally work. The parent of the global environment is the last package that you attached with library() or require().
+
+########## - The baseenv(), or base environment, is the environment of the base package. Its parent is the empty environment.
+
+- The emptyenv(), or empty environment, is the ultimate ancestor of all environments, and the only environment without a parent. \n
+
+- The environment() is the current environment."
+
+search()
+```
+
+```{r}
+
+"!!!!!!!!!!!!!
+
+"
+# The Enclosing and Binding environments
+# When a function is created, it gains a reference to the environment where it was made. This is the enclosing environment and is used for lexical scoping.
+# When you name a function, the environment where the name exists, is the binding environment.
+# In most scenarios, the enclosing environment and binding environment is the same.
+```
+
+```{r}
+y<-1
+f <- function(x) x + y 
+environment(f)
+## <environment: R_GlobalEnv>
+# fig:
+# function f is created in the globalenv(). So that is the enclosing environment. The name f exists in the globalenv() so it is the binding environment.
+```
+
+```{r}
+
+
+"!!!!!!!"
+# Function Environments
+# Most environments are created as a consequence of using functions. This section discusses the four types of environments associated with a function: enclosing, binding, execution, and calling.
+# The enclosing environment is the environment where the function was created. Every function has one and only one enclosing environment. For the three other types of environment, there may be 0, 1, or many environments associated with each function:
+# · Binding a function to a name with <- defines a binding environment.
+# · Calling a function creates an ephemeral execution environment that stores
+# variables created during execution.
+# · Every execution environment is associated with a calling environment, which tells you where the function was called.
+```
+```{r}
+x=0
+if (x  == 0)
+{
+  x = TRUE
+  
+} 
+x
+{x = FALSE
+}
+x
+
+
+
+```
+```{r}
+# The parent of the execution environment is the enclosing environment of the function. Once the function has completed, this environment is thrown aways
+# R's scoping rules will use the enclosing environment, so if the function is looking for values, it looks in the enclosing environment.
+
+x= 1
+if (x>10){
+  x = x +1
+}
+{
+  
+  
+  x = x -1
+}
+
+
+x
+
+```
+```{r}
+
+```
+
+
+
+
+
+
+
+
+
+
 
 
 
