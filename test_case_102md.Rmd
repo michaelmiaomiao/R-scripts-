@@ -1,0 +1,82 @@
+---
+title: "Untitled"
+author: "JIASHU MIAO"
+date: "2/8/2019"
+output: html_document
+---
+-Atomic Vector: homogenous 
+
+cdil
+
+NaN
+Inf  都是double
+
+
+type of NULL IS
+
+[1] "NULL"
+typeof(NULL)
+
+- NULL + F
+
+integer(0)
+
+3:6 * 3:8
+longer object length is not a multiple of shorter object length[1]  9 16 25 36 21 32
+
+3:6 * 3:4 #no waring 
+[1]  9 16 15 24
+
+•	Typeof(x= c(L=1,M=2,N=3)) is double 
+•	Str(attributes(x) is a list of one 
+•	Typeof(x= c(L=1,M=2,N=3)) is double 
+•	Str(attributes(x) is a list of one 
+
+attr(s,"names") <- letters[1:3]
+
+attr(s,"names") 
+[1] "a" "b" "c" NA 
+
+
+
+attributes(s)
+$names
+[1] "a" "b" "c" NA 
+
+```{r}
+
+```
+
+
+
+
+
+
+```{r}
+library(tidyr)
+case1 <- data.frame(country=c("FR","DE"),year=list("2011"=c(7000,5800),"2012"=c(6900,6000),"2013"=c(7000,6200)))
+case1
+gather(case1,"year","n",2:4)
+gather(case1,"year","n",3:4)
+# install.packages("devtools")
+
+# devtools::install_github("rstudio/EDAWR")
+```
+```{r}
+library(EDAWR)
+cases1 <- cases[c(1,2),] %>% print()
+gather(cases1,"year","n",2:4)
+
+# 2:4 is the range (columns) of the data we are grabbing to use as the content of the table. If we grabbed 3:4, then the second column is treated as another variable, so the fourth column of the table would be 2011 and then recycling the two data 7000 and 5800 until the entire table is full.
+```
+
+```{r}
+library(stringr)
+greedy_pattern <- "[Aa]\\w*a" 
+ungreedy_pattern <- "[Aa]\\w*?a"
+string <- c("Alabama, Alaska, California") 
+str_extract_all(string, greedy_pattern)
+str_extract_all(string, ungreedy_pattern)
+```
+
+
