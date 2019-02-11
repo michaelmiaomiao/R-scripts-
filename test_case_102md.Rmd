@@ -6,9 +6,14 @@ output: html_document
 ---
 -Atomic Vector: homogenous 
 
-cdil
+cdil  
 
-NaN
+```{r}
+FALSE+NULL
+```
+
+
+NaN   
 Inf  都是double
 
 
@@ -27,36 +32,30 @@ longer object length is not a multiple of shorter object length[1]  9 16 25 36 2
 3:6 * 3:4 #no waring 
 [1]  9 16 15 24
 
-•	Typeof(x= c(L=1,M=2,N=3)) is double 
-•	Str(attributes(x) is a list of one 
-•	Typeof(x= c(L=1,M=2,N=3)) is double 
-•	Str(attributes(x) is a list of one 
-
-attr(s,"names") <- letters[1:3]
-
-attr(s,"names") 
-[1] "a" "b" "c" NA 
+```{r}
+x= c(L=1,M=2,N=3)
+x
+typeof(x)
+class(x)
 
 
 
-attributes(s)
-$names
-[1] "a" "b" "c" NA 
+#  •	Str(attributes(x) is a list of one 
+# •	Names(x) dim(x) class(x) won’t get losts
 
-s
-  a    b    c <NA> 
-   1    2    3    4  # 不循环
-   
-   attr(s,"something") <- "something"
-s
-attributes(s)
-s
- a    b    c <NA> 
-   1    2    3    4 
-attr(,"something")
-[1] "something"
+# names() return NULL if ALL MISSING!S
+# sex_char
+# sex_factor
+# table(sex_factor)
+# sex_factor
 
-•	Names(x) dim(x) class(x) won’t get lost
+# •	factors are actually integer vector
+# typeof(sex_factor)
+# "integer"
+```
+
+
+
 
 o	X <- c(a=1, b=2, c=3) 
 o	Names(x) <- c(“a”,”b”,”c”)
@@ -281,9 +280,723 @@ print(typeof(i))
 typeof(NaN)# [1] "double"
 x # 不同的list 可以保持不同的type
 # NA is logical
+
+f()
+```
+```{r}
+d <- c(1,2,NULL,4)
+ g <- function(a)
+    {
+if (a %%2 == 0){
+  even <- TRUE
+} else {
+  even <- FALSE
+}
+return(even) 
+    }
+ g(d)
+ 
+ # the condition has length > 1 and only the first element will be used[1] FALSE 
+ 
+ ## warinn 不大写
+```
+
+```{r}
+#  for 生成好几row
+for(i in d)
+{print(g(i))}
+ # [1] FALSE
+ # [1] TRUE
+
+# 这tm是错的： 
+
+ # Error in if (a %%2 == 0) { : missing value where TRUE/FALSE needed
+
+
+## NaN , Inf和 NA 一样
+
+# [1] FALSE
+# [1] TRUE
+# [1] FALSE
+# null 好好看看 不存在就不用跑
+
+##   ## !!!看下 各种na null nan 相加 type 以及 integer(0)
+# interger(1)?
+```
+```{r}
+x <- matrix(1:12, nrow=4) 
+x[3,]
+
+#  [1]  3  7 11 # by row = true
+
+x[3, 2, drop = FALSE] # keep as matrix
+
+```
+```{r}
+df <- data.frame( x = 1:3,
+y = c("a", "b", "c"),
+stringsAsFactors = FALSE)
+typeof(df)
+
+# [1] "list"
+
+class(df)
+
+# [1] "data.frame"
+
+df[1] 
+#keep the dataframe
+#    x
+#  <int>
+# 1  1
+# 2  2
+# 3  3      #bu完美
+
+# ！！！不用带括号
+
+typeof(df[1]) 
+# [1] "list"
+
+df[[1]] 
+
+# [1] 1 2 3 
+
+df[1,] 
+
+#    x     y
+#   <int> <chr>
+#  1  1     "a" # 不加yinhao！
+
+
+# x y 
+#1 1 a
+```
+```{r}
+df <- data.frame( x = 1:3,
+y = c("a", "b", "c"),
+stringsAsFactors = FALSE)
+typeof(df)
+df[[2]]  # [1] "a" "b" "c"
+df[1] 
+
+# yinhao 不用画出来
+```
+```{r}
+library(stringr)
+greedy_pattern <- "[Aa]\\w*a" 
+ungreedy_pattern <- "[Aa]\\w*?"
+string <- c("Alabama, A laskaCalifornia") 
+str_extract_all(string, greedy_pattern)
+
+#有空格就断开了
+# extract as a list 
+
+## 看看 str_几个 func！！！！
+
+str_extract_all(string, ungreedy_pattern)
+
+
+
+```
+
+```{r}
+x <- 1
+y <- 2
+z <- 3
+h <- function()
+  {
+  y <- 4
+  j <- function()
+    {
+      print(c(x,y,z)) # note this print statement return(x + y + z)
+    }
+return(j()) 
+  }
+ h()
+ 
+ # [1] 1 4 3
+```
+
+```{r}
+ x <- 1
+ y <- 2
+ z <- 3
+ h <- function()
+   {
+      j <- function()
+        { y <- 4
+          return(x + y + z)
+        } 
+    
+      print(c(x,y,z)) 
+      return(j())
+    }
+ h()
+ # [1] 1 2 3
+ # [1] 8
+```
+```{r}
+ x <- 1
+ y <- 2
+ z <- 3
+
+h <- function()
+  {
+    j <- function()
+          { 
+            y <<- 4
+              return(x + y + z)
+          }
+        result <- j() 
+        print(c(x,y,z)) 
+        return(result)
+  }
+ h() 
+
+# [1] 1 4 3 
+# [1] 8
+```
+
+```{r}
+x <- 1
+y <- 2
+z <- 3
+
+h <- function()
+   {
+# j <- function(){ 
+#   y <<- 4
+#                              
+#    return(x + y + z)
+# }
+print(c(x,y,z)) 
+return(x)
+  }
+ h()
+ 
+# [1] 1 2 3
+# [1] 8
+ 
+ # 先print  func 不call的时候不跑！ 所以一开始 yvalue还是 global！！！！！！
+ "!!!!!!!!!!!!!!!"
+```
+
+
+```{r}
+library(tidyr)
+cases1
+gather(cases1, "year", "n", 3:4)
+spread(case1,"2011","country") # 记住了了
+
+```
+
+```{r}
+rm()
+rm(f)
+rm(f.j)
+rm(f.k)
+rm(f.default)
+rm(f.l)
+rm(k)
+ f <- function(x) UseMethod("f")
+ f.j <- function(x) x + 3
+ f.k <- function(x) x + 4
+ k <- 2 # matters
+ 
+ f(k)
+ # Error in UseMethod("f") : 
+ #  no applicable method for 'f' applied to an object of class "c('double', 'numeric')"
+ 
+ "!!!!!"
+```
+```{r}
+ class(k) <- "j"
+f(k) 
+# [1] 5
+# attr(,"class")
+# [1] "j"
+```
+
+```{r}
+#### @！！！！！！
+##！！！！！！
+
+####！！！！
+f.default <- function(x) x + 100
+f.l <- function(x) x + 5
+l1 <- structure(10, class = c("l","k"))
+l2 <- structure(10, class = c("k","l"))
+l3 <- structure(10, class = c("j","l"))
+j1 <- structure(9)
+j2 <- structure(7, class = c("j"))
+f(l1)
+f(l2)
+f(l3)
+f(j1) #default
+f(j2) 
+# attr(,"class")
+# [1] "j"
+# [1] 10
+f.j(7)
+# [1] 10
+# class 先后matters
+# k base on j , l base on k
+f(7)
+# [1] 107    as default
+```
+
+
+
+
+
+
+
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#1.
+```{r}
+f <- function(y){
+  x <<- y + 1
+  3*x
+}
+x <- 7
+y <- 9
+f(x)
+x # 代进去留意位置
+```
+
+
+#2.
+```{r}
+a <- 1:4
+a* 2:4
+
+# longer object length is not a multiple of shorter object length[1]  2  6 12  8
+```
+
+
+#3.
+```{r}
+junk <- list(c(TRUE, "1964"), c(1974L,1994L))
+typeof(junk)
+typeof(junk[[1]])
+junk[1] %>% class()
+# cdil 变得更松
+junk[[2]]
+typeof(junk[[2]])
+```
+
+
+
+
+#4.
+```{r}
+x <- matrix(1:8, nrow = 4)
+x[,2] %>% class()
+typeof(x[3,] )
+
+##
+typeof(x[3, , drop = FALSE])
+class(x[3, , drop = FALSE])
+
+```
+
+
+#5.
+```{r}
+x <- c(-5, 3, FALSE, NA)
+for(i in 1:4){
+  if(x[i] > 0){
+    print("greater")
+  }else if(x[i] < 0){
+    print("less")
+  }else{
+    print("zero")
+  }
+}
+
+
+# [1] "less"
+# [1] "greater"
+# [1] "zero"
+# Error in if (x[i] > 0) { : missing value where TRUE/FALSE needed
+
+# 新的一行
+
+```
+
+
+#6.
+```{r}
+d <- c(-5, 4, 3)
+f7 <- function(a){
+  if(a > 0){
+    pos <- TRUE
+  }else{
+    pos <- FALSE
+  }
+  return(pos)
+}
+f7(d)
+
+# function keeps the 位置of input 
+# function 只read 第一个 
+
+
+# the condition has length > 1 and only the first element will be used[1] FALSE
+x=1:9
+func <- function(x) {
+  
+  if(x %% 2 == 0){
+    gg = T
+  } else {
+    gg = F
+  }
+  return(gg)
+  }
+
+func(x)
+#  if statement is not vectorized. 检查一下不可vectorized
+# 普通func可以的
+
+```
+
+#7.
+```{r}
+library(tidyr)
+country <- c("FR", "DE")
+x2 <- c(7000, 5800)
+x3 <- c(6900, 6000)
+x4 <- c(7000, 6200)   
+case1 <- cbind(country,x2)
+case1 <- cbind(case1, x3)
+case1 <- cbind(case1, x4)
+colnames(case1) <- c("country", "2011", "2012", "2013")
+case1 <- as.data.frame(case1)
+case1
+gather(case1, "year", "n", 1:2)
+gather(case1, "year", "n", 2:4)
+gather(case1, "year", "n", 3:4)
+spread(case1,"2013","2012") # 2013作为colums  代表2012 value
+
+# recycle the data
+# 2:4 is the range (columns) of the data we are grabbing to use as the content of the table. If we grabbed 3:4, then the second column is treated as another variable, so the fourth column of the table would be 2011 and then recycling the two data 7000 and 5800 until the entire table is full.
+```
+
+
+#8.
+```{r}
+df <- data.frame(
+  x = 1:3,
+  y = c("a","b","c"),
+  stringsAsFactors = FALSE
+)
+typeof(df)
+class(df)
+df[1]
+class(df[1])
+# [1] "data.frame"
+df[[1]]
+df[1,] %>% typeof() 
+class(df[1,])
+class(df[,2])
+
+case1[,2,drop = F]
+birth[1] ### 只给序号反df
+#default string as factor = T
+
+
+df[[1]][1]
+birth[[1]]
+class(df[[1]])
+class(df[,1,drop= F])
+class(df[1,1,drop=F])
+```
+
+
+#9.
+```{r}
+library(dplyr)
+v1 <- c("a","a", "a", "b", "b", "b")
+v2 <- c("x", "y", "x", "y", "x", "y")
+v3 <- c(1:6)
+df9 <- cbind(v1,v2) #cbind 不会变成df 这时候是数列是matrix
+typeof(cbind(v1,v2)) #[1] "character"
+class(cbind(v1,v2)) #[1] "matrix"
+df9 <- cbind(df9,v3)
+df9 <- as.data.frame(df9)
+df9$v3 <- as.numeric(df9$v3)
+df9
+
+# df9
+#   v1 v2 v3
+# 1  a  x  1
+# 2  a  y  2
+# 3  a  x  3
+# 4  b  y  4
+# 5  b  x  5
+# 6  b  y  6
+
+
+df9 %>% group_by(v1,v2) %>% summarise(total = sum(v3)) %>% print()
+
+
+# # A tibble: 4 x 3
+# # Groups:   v1 [?]
+#   v1    v2    total
+#   <fct> <fct> <dbl>
+# 1 a     x         4
+# 2 a     y         2
+# 3 b     x         5
+# 4 b     y        10
+```
+
+#10.
+```{r}
+x <- 1
+y <- 2
+z <- 3
+f <- function(){
+  y <- 4
+  g <- function(){
+    print(c(x, y, z))
+    return(x + y + z)
+  }
+  return(g())
+}
+f()
+
+# [1] 1 4 3
+# [1] 8    lianghang
+```
+
+```{r}
+x <- 1
+y <- 2
+z <- 3
+h <- function(){
+  y <- 4
+  j <- function(){
+    return(x + y + z)
+  }
+  print(c(x, y, z))
+  return(j())
+}
+h()
+
+[1] 1 4 3
+[1] 8
+```
+
+
+#11.
+```{r}
+f <- function(x) UseMethod("f")
+f.j <- function(x) print("Class J")
+j <- structure(list(), class = "j")
+k <- structure(list(), class = "k")
+l <- structure(list(), class = c("l","j"))
+f(j)
+#f(k) # Error in UseMethod("f") : 
+  # no applicable method for 'f' applied to an object of class "k"
+f(l)
+
+f.default <- function(x) "Unknown class"
+f.l <- function(x) "Class L"
+f(k)
+f.j(k)
+f(l)
+f.l(k)
+f(k)
+
+# [1] "Class J"
+# [1] "Unknown class"
+# [1] "Class L"
+# [1] "Unknown class"
+# [1] "Class J"
+# [1] "Class L"
+```
+
+```{r}
+f <- function(y){
+   x<<- y+1 
+   3*x
+   
+}
+x <- 7
+y <- 9
+f(x)
+x
+
+
+```
+```{r}
+junk <- list(c(1960,"1964"),c(1976,1994))
+typeof(junk[2])
+typeof(junk[[1]])
+
+x <- matrix(1:8,nrow = 4) #byrow = F
+x
+x[3,,drop = F]
+#  [,1] [,2]
+# [1,]    3    7
+
+# 不需要括号
+#  有 for 就if可以
+```
+
+```{r}
+# 切记啥时候 打
+# [1] 14
+# attr(,"class")
+# [1] "j"
 ```
 ```{r}
 
+x <- list(list(1,2), c(3,4))
+x
+y <-c(list(1), c(3,4),5)
+y
+examp2 <- list(A = 1, B = list(C = 2, D = 3), E = c(4, 5, 6))
+examp2[2]
+
+# [[1]]
+# [[1]][[1]]
+# [1] 1
+# 
+# [[1]][[2]]
+# [1] 2    
+# list 套路list 双双括号
+```
+```{r}
+l1 <- list(list(1:3, letters[1:4]), 1:5)
+
+class(l1)
+l1[1]
+l1[[1]][2]
+l1[[1]][2][2] #[1] NULL
+l1[[1]][[2]]
+l1[[1]][[2]][2]
+
+#fordatafram, x[1] preserves 
+#ifoutput is a single column, returns a vector
+```
+
+```{r}
+x <-c(a=1,b=2)
+x[1]
+x[[1]]
+
+# a 
+# 1 
+# [1] 1
+```
+
+
+```{r}
+x <- factor(c("a", "b", "b", "c", "a"))
+x
+class(x)
+typeof(x)  # type of factor = integer
+levels(x) # 带引号
+x[2] <- "d" 
+#  invalid factor level, NA generated
+x   
+# [1] a    <NA> b    c    a   
+# Levels: a b c
+ba <- data.frame(x=c(1,2,NA),y=1:3)
+ba[1] # data.frame 记得写序号 一列
+
+``` 
+
+```{r}
+x <- 8:12
+
+x
+#gets the second one
+x[c(1, 1)]
+x[c(1, 2)] <- 4:7
+x
+x[c(1, 1)]
+
+x[c(1, 1)] 
+#x[c(1, NA)] <- c(1, 2) #error 
+# Error in x[c(1, NA)] <- c(1, 2) : 
+  # NAs are not allowed in subscripted assignments
+x # [1]  4  5 10 11 12
+x[c(T, F,T)] <- 1:5
+x  #[1]  1  2 10  3  4  !!! # F 过得去 NULL也是
+x[c(T, F, NA)]
+x[F] <- 3
+x[F] #numeric(0)
+x[c(T,T)]
+x[T] # True 代表所有
+x[F]
+x[1]
+
+
+```
+```{r}
+y <- list(a=1)
+y
+y["b"] <-  list(NULL)
+y
+y["c"] <- NULL
+y
+# $a
+# [1] 1
+# 
+# $b
+# NULL
+```
+
+```{r}
+typeof(TRUE)
+typeof(1L)
+typeof(1:3)
+as.double("one")
+typeof(NA)
+typeof(NA+1)
+typeof(NaN)
+typeof(Inf)
+1:4 * 2:4
+typeof(NULL)
+is.na(NULL) #logical(0) 不用加括号
+is.na(NaN) # TRUE
+is.na(NA)
+typeof(FALSE)
+typeof(FALSE + TRUE)
+
+typeof(NULL + FALSE )
+NULL + FALSE
+NA + FALSE
+NaN+ FALSE
+Inf + TRUE
+c(4,5,NULL,3)
+# [1] "logical"
+# [1] "integer"
+# [1] "integer"
+# NAs introduced by coercion[1] NA
+# [1] "logical"
+# [1] "double"
+# [1] "double"
+# [1] "double"
+# longer object length is not a multiple of shorter object length[1]  2  6 12  8
+# [1] "NULL"
+# logical(0)
+# integer(0)
+
+# 看下vectorize 
+# 背诵rule
+# 作业1
+
+# [1] "factor"
+# [1] "integer"
+# [1] "a" "b" "c"
 ```
 
 
@@ -291,3 +1004,59 @@ x # 不同的list 可以保持不同的type
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+•	Typeof(x= c(L=1,M=2,N=3)) is double 
+
+
+
+attr(s,"names") <- letters[1:3]
+
+attr(s,"names") 
+[1] "a" "b" "c" NA 
+
+
+
+attributes(s)
+$names
+[1] "a" "b" "c" NA 
+
+s
+  a    b    c <NA> 
+   1    2    3    4  # 不循环
+   
+   attr(s,"something") <- "something"
+s
+attributes(s)
+s
+ a    b    c <NA> 
+   1    2    3    4 
+attr(,"something")
+[1] "something"
+
+•	Names(x) dim(x) class(x) won’t get lost
