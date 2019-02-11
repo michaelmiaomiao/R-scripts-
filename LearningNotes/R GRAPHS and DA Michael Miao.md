@@ -653,6 +653,8 @@ join()	Joining data frames (tables)	JOIN
 mutate()	Creating New Variables	COLUMN ALIAS
 
 
+print.data.frame() 打印所有df
+
 
 
 
