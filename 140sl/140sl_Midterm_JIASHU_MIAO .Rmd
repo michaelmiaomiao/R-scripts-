@@ -1,0 +1,108 @@
+---
+title: "140SL MIDTERM"
+author: "JIASHU MIAO 804786709"
+date: "2019/2/6"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+## 1. 
+- 
+
+```{r}
+ # rm(list=ls())
+pkg <- c("readr","readxl","dplyr","stringr","ggplot2","tidyr")
+pkgload <- lapply(pkg, require, character.only = TRUE)
+
+```
+
+1. 
+-  Provide a demographic profile for both test components (AnionGap and SODIUM).
+```{r}
+data1 <- read_excel("/Users/MichaelMiao/UCLA/uclatextbook/140sl/140\ review\ from\ Wilbur/demographicData4pm.xls")
+load("/Users/MichaelMiao/UCLA/uclatextbook/140sl/140\ review\ from\ Wilbur/LAB4PM.RData")
+data2 <- LAB4PM
+summary(data1)
+summary(data2)
+names(data1)
+names(data2)
+
+```
+```{r}
+datajoin <- inner_join(data1,data2,by = "STUDY_ID")
+#View(datajoin)
+datajoind <- distinct(datajoin)
+attach(datajoin)
+summary(datajoin)
+```
+```{r}
+tapply(datajoin$AnionGap,datajoin$Race,mean)
+tapply(datajoin$AnionGap,datajoin$Gender,mean)
+tapply(datajoin$AnionGap,datajoin$Ethnicity,mean)
+```
+```{r}
+tapply(datajoin$SODIUM,datajoin$Race,mean)
+tapply(datajoin$SODIUM,datajoin$Gender,mean)
+tapply(datajoin$SODIUM,datajoin$Ethnicity,mean)
+```
+
+```{r}
+prop.table(table(datajoin$Gender))
+prop.table(table(datajoin$Race))
+table(Gender)
+table(Race)
+table(Ethnicity)
+```
+```{r}
+datajoinnew <- datajoin %>% mutate(.,Noinfo = replace(Race, Race=="Patient Refused","Unknown"))
+table(datajoinnew$Noinfo)
+datajoinnew <- datajoinnew %>% select_at(.,vars(-c(Race)))
+datajoinnew <- rename(datajoinnew, Race = Noinfo)
+dim(datajoinnew)
+datajoinnew <- datajoinnew %>% mutate(., NO = replace(Ethnicity, Ethnicity == "Patient Refused","Unknown")) 
+datajoinnew <- datajoinnew %>% select_at(.,vars(-c(Ethnicity)))
+dim(datajoinnew)
+datajoinnew <- rename(datajoinnew, Ethnicity = NO)
+
+```
+
+- There are about 55% females and 44% males enroll in this test. There are many unknows and I would like to make the patient refused as unknown for both race and ethicnicity. The two component seems to have no specific pattern but they distribute well.
+
+
+## 2
+
+```{r}
+str(datajoinnew)
+par(mfrow=c(1,2))
+ggplot(data = datajoinnew,aes(factor(Year),AnionGap))+geom_boxplot(fill = c("yellow","blue"))
+
+ggplot(data = datajoinnew,aes(factor(Year),SODIUM))+geom_boxplot(fill = c("yellow","blue"))
+```
+```{r}
+attach(datajoinnew)
+plot(SODIUM,Year)
+plot(AnionGap,Year)
+plot(as.factor(Gender),AnionGap)
+plot(as.factor(Gender),SODIUM)
+plot(as.factor(Race),AnionGap)
+plot(as.factor(Race),SODIUM)
+plot(as.factor(Ethnicity),AnionGap)
+plot(as.factor(Ethnicity),SODIUM)
+```
+
+
+## 3
+
+```{r}
+attach(datajoinnew)
+
+model1 <- glm(data = datajoinnew, SODIUM~ factor(Ethnicity)+ factor(Race) + factor(Gender))
+summary(model1)
+model2 <- glm(data = datajoinnew, AnionGap~ factor(Ethnicity)+ factor(Race) + factor(Gender))
+summary(model2)
+model3 <- glm(data = datajoinnew,SODIUM~AnionGap)
+summary(model3)
+```
+
+I think there is very tiny association of Sodium between gender(male) and race(asian) ; and some tiny association of Anigap between gender(male) and race(black). The association is very small overall.There is association between the Sodium and Aniongap. Also, the value goes up for the Sodium and Aniongap with year goes up.
