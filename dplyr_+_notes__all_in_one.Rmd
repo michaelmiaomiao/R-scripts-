@@ -422,6 +422,20 @@ ggplot(data = dataNEW2,mapping = aes( factor(`Hospital Visit This Quarter (1=Yes
 ```
 
 
+```{r}
+# 想把fac换成 num的话 需要    
+
+
+as.numeric(as.character(x))
+
+```
+```{r}
+
+```
+
+
+
+
 
 
 
