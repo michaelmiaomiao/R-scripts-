@@ -6,5 +6,183 @@ output: html_document
 ---
 ```{r}
 
+pkg <- c("readr","readxl","dplyr","stringr","ggplot2","tidyr","stats")
+pkgload <- lapply(pkg, require, character.only = TRUE)
 ```
+```{r}
+# load the data
+
+load("LAB4PM.RData")
+# readxl::read_excel()
+# save()
+data1 <- LAB4PM
+
+class(data1)
+names(data1)
+str(data1)
+data2 <- select(data1, AnionGap, Age, Year, SODIUM)
+
+colSums(data2, na.rm = T)
+dataex1 <- read_excel("/Users/MichaelMiao/Documents/GitHub/R-scripts-/interview/Acumen_Data_Analysis_Exercise.xlsx", sheet = "Data")
+str(dataex1)
+which(is.na(dataex1$Race))
+colSums(is.na(dataex1))
+MEANSEX <- mean(dataex1$`Sex (Male=1)`,na.rm = T)
+replace(dataex1$`Sex (Male=1)`,is.na(dataex1$`Sex (Male=1)`) , MEANSEX)
+is.na(dataex1$`Sex (Male=1)`)
+
+any(is.na(dataex1$`Sex (Male=1)`))
+colSums(is.na(dataex1))
+
+?if_else()
+?ifelse
+
+
+```
+```{r}
+# 8 Write a function in R language to replace the missing value in a vector with the mean of that vector.
+x= c(1:20)
+x <- replace(x,x>10,NA) #  #!!!!一定要保存
+```
+
+```{r}
+# 7 How do you split a continuous variable into different groups/ranks in R?
+   
+as.factor(x)
+df <- data.frame(x, y=sample(1:100, 20, replace = F)) 
+
+df
+df %>% group_by(x) %>%  summarise_all(.,funs(mean)) 
+```
+```{r}
+# https://blog.revolutionanalytics.com/2012/03/r-and-hadoop-step-by-step-tutorials.html
+```
+
+```{r}
+# file.show("LAB4PM.RData")
+save(data2, file="accumendata.RData")
+load("accumendata.RData")
+
+# floating-point numbers (type num); their precision is 0.1 cmol+ (kg soil)-1 .
+
+```
+
+```{r}
+dataex2 <- rename(dataex1, Sex = `Sex (Male=1)` )
+names(dataex2)
+stem(dataex2$Sex)
+stem(dataex2$Race)
+```
+
+```{r}
+
+  # > hist(Clay1, breaks=seq(0, 96, by=8), col="darkgray", border="black",
+  # +     main="Clay proportion in surface soil, weight %")
+  # > rug(Clay1)
+# 
+```
+
+```{r}
+
+?rug
+# rug(x, ticksize = 0.03, side = 1, lwd = 0.5, col = par("fg"),
+    # quiet = getOption("warn") < 0, ...)
+```
+```{r}
+require(stats)  # both 'density' and its default method
+with(faithful, {
+    plot(density(eruptions, bw = 0.15))
+    # rug(eruptions)
+    rug(jitter(eruptions, amount = 0.01), side = 3, col = "light blue")
+})
+
+```
+
+```{r}
+# two ways to subset
+# mtcars
+attach(mtcars)
+mtcars[disp > 65, ]
+(ix <- which(disp > 65))
+mtcars[ix, ]
+par(mfrow=c(2,2))
+```
+```{r}
+?t.test()
+```
+
+
+```{r}
+# sdata2$Age[order(data2$Age)]
+# data2$Age
+```
+```{r}
+by(data = data2$Age, data1$Year, range)
+#!!! by function 太好用了吧
+
+```
+```{r}
+# pairwise.t.test(Clay5, zone, p.adj="none",pool.sd=F)
+```
+
+```{r}
+?par()
+par(mfrow=c(2,2))
+# par(mfcol=c(1,2))
+pairs(data = data2, data2$Year ~data2$Age+data2$AnionGap)
+pairs(data = data2, ~data2$Age+data2$AnionGap)
+
+```
+```{r}
+# > cov(obs[c(10,7,13)])
+#                         CEC1   Clay1     OC1
+#                CEC1  25.9479  39.609  5.6793
+#                Clay1 39.6092 194.213 12.5021
+#                OC1    5.6793  12.502  2.2520
+#                > cor(obs[c(10,7,13)])
+#                         CEC1   Clay1     OC1
+#                CEC1  1.00000 0.55796 0.74294
+#                Clay1 0.55796 1.00000 0.59780
+#                OC1   0.74294 0.59780 1.00000
+```
+```{r}
+# summary(lmcec.null)$adj.r.squared !!这种表达101a
+
+```
+
+```{r}
+ # vif(lm(Clay5 ~ Clay1 + CEC1 + OC1 + CEC2 + OC2, data=obs))
+# > AIC(lm(Clay5 ~ Clay2 + CEC1 + OC1 + CEC2 + OC2, data=obs)) with higher aic好 reduced odel
+
+```
+Q87 : What proportion of the total variance is explained by the first component alone? By the first and second? Jump to A87 •
+The numbers here are misleading, because the variables are on different scales. In these cases it is better to compute the standardised components, using the correlation instead of covariance matrix; this standardises all the variables to zero mean and unit standard deviation before computing the components.
+Task 59 : Compute the standardized principal components of three variables: topsoil clay, CEC, and organic carbon. •
+This option is specified by setting the scale optional argument to TRUE. > pc.s <- prcomp(obs[c(10,7,13)], scale=T)
+  > summary(pc.s)
+  Importance of components:
+                           PC1   PC2    PC3
+  Standard deviation     1.506 0.690 0.5044
+
+
+
+```{r}
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

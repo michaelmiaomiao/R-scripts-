@@ -465,6 +465,8 @@ as.numeric(as.character())
 r-shiny examples
 
 
+# command + delete 删除整个行
+
 
 
 
