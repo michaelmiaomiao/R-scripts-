@@ -1,0 +1,96 @@
+---
+title: "learning dplyr"
+author: "JIASHU MIAO"
+date: "2/20/2019"
+output: html_document
+---
+
+```{r}
+pkg <- c("readr","readxl","dplyr","stringr","ggplot2","tidyr")
+pkgload <- lapply(pkg, require, character.only = TRUE)
+library(hflights)
+```
+
+```{r}
+head(hflights)
+summary(hflights)
+```
+
+```{r}
+dim(hflights)
+```
+```{r}
+# tbl is a special type of data.frame
+```
+
+```{r}
+hflights <- tbl_df(hflights)
+hflights
+```
+```{r}
+glimpse(hflights)
+```
+
+```{r}
+attach(hflights)
+
+```
+```{r}
+Dest[Distance]
+```
+
+
+```{r}
+two <- c("AA","AS")
+lut <- c("AA" = "American",
+         "AS"= "Alaska",
+         "B6"= "JetBlue")
+lut[two]
+# assign name into it 
+```
+
+```{r}
+ # Print out a summary with variable max_div
+summarize(filter(hflights, Diverted == 1), max_div = max(Distance))
+```
+
+```{r}
+diff(range(1:20))
+```
+
+```{r}
+# first(x) - The first element of vector x.
+# last(x) - The last element of vector x.
+# nth(x, n) - The nth element of vector x.
+# n() - The number of rows in the data.frame or group of observations that summarize() describes.
+# n_distinct(x) - The number of unique values in vector x.
+
+
+```
+
+```{r}
+nth(hflights$Year,2)
+```
+
+```{r}
+# Print out a summary of hflights with the following variables:
+# n_obs: the total number of observations,
+# n_carrier: the total number of carriers,
+# n_dest: the total number of destinations,
+# aa, a tbl with all flights flown by American Airlines, is already available.
+```
+```{r}
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
