@@ -146,7 +146,7 @@ pairs(data = data2, ~data2$Age+data2$AnionGap)
 #                OC1   0.74294 0.59780 1.00000
 ```
 ```{r}
-# summary(lmcec.null)$adj.r.squared !!这种表达101a
+# summary(lmcec.null)$adj.r.squared !!这种表达101a <- <- 
 
 ```
 
@@ -164,6 +164,42 @@ This option is specified by setting the scale optional argument to TRUE. > pc.s 
                            PC1   PC2    PC3
   Standard deviation     1.506 0.690 0.5044
 
+
+
+```{r}
+cumsum(data2$Age)
+
+```
+
+
+```{r}
+xs <- "numeric"
+class(xs)
+```
+
+```{r}
+#setRefClass()
+seq_len(3)
+seq_along(c(1,2,7,1))
+seq(1.2)
+seq(9.4)
+floor(-1.2)
+trunc(-1.2)
+s <- "shi sha \ns" 
+s
+s2 <- "hello"
+cat(s,s2)
+
+
+```
+
+```{r}
+filter_all(mtcars, all_vars(. > 150))
+
+# Or the union:
+filter_all(mtcars, any_vars(. > 150))
+
+```
 
 
 ```{r}

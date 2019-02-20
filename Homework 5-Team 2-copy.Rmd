@@ -1,0 +1,272 @@
+---
+title: "STATS 140SL Homework 5"
+author: "Team 2"
+date: "2019/2/19"
+output: 
+  pdf_document:
+    latex_engine: xelatex
+    toc: true
+    toc_depth: 3
+    number_sections: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+\section{Loading the Data}
+
+**Section Contributor: Enjie Ma**
+
+```{r}
+library(jsonlite)
+#setwd("~/Downloads/STATS COURSES/STATS 140SL/Homework 5/yelp_dataset")
+
+#business <- fromJSON(sprintf("[%s]", paste(readLines("~/Downloads/STATS COURSES/STATS 140SL/Homework 5/yelp_dataset/business.json"), 
+                                           collapse=",")),flatten=TRUE)
+#checkin <- fromJSON(sprintf("[%s]", paste(readLines("~/Downloads/STATS COURSES/STATS 140SL/Homework 5/yelp_dataset/checkin.json"), 
+                                          collapse=",")), flatten=TRUE)
+## user <- fromJSON(sprintf("[%s]", paste(readLines("user.json",n=10000), collapse=",")),
+                 ## flatten=TRUE)
+
+##tip <- fromJSON(sprintf("[%s]", paste(readLines("tip.json",n=10000), collapse=",")), 
+               ## flatten=TRUE)
+##photo <- fromJSON(sprintf("[%s]", paste(readLines("photo.json",n=10000), collapse=",")), 
+                 ## flatten=TRUE)
+
+##review <- fromJSON(sprintf("[%s]", paste(readLines("review.json",n=10000), collapse=",")),
+                   ##flatten = TRUE)
+
+head(business,n=2)
+head(checkin,n=3)
+```
+
+\section{Research Question Proposed}
+
+\subsection{Question 1}
+
+**Section Contributor: Shiyu Ji**
+
+What are the restaurants that are overnight hits in United States in 2018? (Celebrity Restaurant that Emerges in 2018)
+
+What are their features?
+
+\subsection{Question 2}
+
+**Section Contributor: Michael (Jiashu) Miao**
+
+Will the longtitude and latitude affects the stars of all wine bars and restaurants in state of AZ, ON, and OH that are open? If so, can you please tell how they affect the stars of that business? 
+
+
+\section{Implementation of Question 1 and Analysis}
+
+**Section Contributor: Shiyu Ji**
+
+\subsection{Implementation}
+
+\subsubsection{Define the Question in Detail}
+
+Get the restaurant's checkin data in 2018 and compare with the check in data in 2017. If the number of the checkin of the restaurant in 2018 is larger than 75 percentile of the year, and it has a significant increase compared to the average growth in 2017. Then we call it as a celebrity restaurant.
+
+\subsubsection{Data Cleaning: Checkin Dataset}
+
+We first need to calculate the check-ins in 2018 and 2017 by counting the number of 2017 and 2018 in the string.
+
+```{r}
+library(dplyr)
+library(stringr)
+checkin<-checkin %>% mutate("2018checkin"=str_count(date, "2018"),
+                            "2017checkin"=str_count(date,"2017"))
+```
+
+\subsubsection{Cleaning the Business Dataset and Merging}
+
+We need to combine the two dataset "business" and "checkin" to get the information of the overnight hits. And make sure that the results are only restaurants that provide food. 
+
+**There are 35326 restaurants that have check-in data in this dataset.**
+
+**19834 of them have check-in data from both 2017 and 2018.**
+
+**2961 of them have check-in data from 2018 but not 2017. We see them as the newly opened restaurants.**
+
+```{r}
+buscheckin<-inner_join(business,checkin,by="business_id")
+buscheckin<- buscheckin %>% filter(str_detect(categories,"Food"))
+dim(buscheckin)
+fullbuscheckin<-buscheckin %>% filter(`2018checkin`>0&`2017checkin`>0) %>%
+  mutate("Growth"=(`2018checkin`-`2017checkin`)/`2017checkin`)
+newbuscheckin<- buscheckin %>% filter(`2018checkin`>0&`2017checkin`==0)
+dim(fullbuscheckin)
+dim(newbuscheckin)
+summary(fullbuscheckin$Growth)
+summary(buscheckin$`2018checkin`)
+```
+
+\subsubsection{Locate the Restaurants and Summary Table}
+
+First, get a summary data of the checkin amounts in 2018 and decide a cut point as $C_{2018}$. According to the summary data above, we decide it to be 100. 
+
+Then set the growth cut point in check-in for those that have check-ins in 2017 and 2018, and name it as $p$. According to the summary data, we decide it as 0.2.
+
+A restaurant is called "overnight hit" when its 2018 check-in is larger than 100 and:
+
+1) if the increase compared to 2017 in check-in is larger than 0.2.
+
+or
+
+2) if it doesn't have check in data in 2017.
+
+**There are only 300 restaurants that satisfy the criteria over U.S. given the data we have.**
+
+**For Demonstration Purposes, herewith I only attach the shortened dataframe with only 4 variables to indicate that the files have been merged.**  
+
+**In fact, all columns (62 variables) can be used for analyzing the characteristics of the data.**
+
+```{r}
+newbuscheckin<- newbuscheckin%>%filter(`2018checkin`>=100) 
+fullbuscheckin<-fullbuscheckin %>% filter(Growth>=0.2&`2018checkin`>=100)
+overnighthit2018<-rbind(newbuscheckin,fullbuscheckin[,-62])
+dim(overnighthit2018)
+overnighthit2018<-overnighthit2018 %>% arrange(desc(`2018checkin`)) %>% 
+  rename("Restaurant Name"="name")
+knitr::kable(head(overnighthit2018,n=10)[,c("Restaurant Name","state","city",
+                                       "2018checkin","2017checkin")],format="latex")
+```
+
+\subsection{Analysis of the Restaurant Attributes}
+
+**Section Contributor: Shiyu Ji**
+
+\subsubsection{The State with Most Overnight Hit Restaurants}
+
+```{r}
+library(ggplot2)
+table(buscheckin$state)
+colorfunc<-colorRampPalette(c("darkorange2","goldenrod1"))
+ggplot(overnighthit2018,aes(x=state))+geom_bar(fill=colorfunc(7))+
+  ggtitle("States with Overnight Hit Restaurants in 2018")+
+  theme_minimal()
+```
+
+Nevada has the most number of overnight hit restaurants in the dataset. Given that the proportion of overnight hit restaurants in also the highest in Nevada, we say that **Nevada is a king in "Overnight Hit Restaurants in 2018".**
+
+\subsubsection{The Rating Distribution for the Overnight Restaurants}
+
+**Most restaurants are around 4-4.5 stars.**
+
+```{r}
+colorfunc<-colorRampPalette(c("rosybrown1","lightcoral"))
+ggplot(overnighthit2018,aes(x=stars))+geom_bar(fill=colorfunc(8))+
+  ggtitle("Overnight Hit Restaurants Rating in 2018")+
+  theme_minimal()
+table(overnighthit2018$stars)
+```
+
+
+\section{Implementation of Question 2 and Analysis}
+
+**Section Contributor: Michael (Jiashu) Miao**
+
+\subsection{Implementation}
+
+\subsubsection{Define the Question in Detail}
+
+This is a linear regression question to explore the association between location, which are variables like latitude and longtitude, and the stars of all wine bars and restaurants in three States selected from the business data frame. We will decide based on states categories and setup the model and plot it if there is any association as we predict.
+
+\subsubsection{Checking and Cleaning the Business Dataset for Question 2}
+
+Instead of using merge to get a combined dataset as question 1. For question 2, we only need the business dataframe and we select variables and filter out rows that now qualified our requirement.
+
+To prevent chaing the original dataset, I set business1 as my default dataframe and write on it.
+
+```{r}
+pkg <- c("readr","readxl","dplyr","stringr","ggplot2","tidyr","stats")
+pkgload <- lapply(pkg, require, character.only = TRUE)
+# load the packages for the dataset
+```
+
+```{r}
+business1=business
+head(business,n=2)
+str(business1$categories)
+names(business1)
+```
+
+\subsubsection{Manipulating Business Dataset for Question 2}
+
+Use dylyr package to conduct data manipulation. First we filter out the three States and then we check out the rows that the business is open when the data is collected. Later we select five variables of which as longtitude, latitude, stars, categories and state. Then we filter out the business categories by patterning "Wine bars" and "Restaurants". 
+
+```{r}
+business1 <- business1 %>% filter(.,state=="ON" | state =="OH" | state =="AZ")
+business1 <- business1 %>% filter(., is_open==1)
+business1 <- business1 %>% select(.,longitude,latitude,stars,categories,state)
+pattern1 <- c("Wine Bars", "Restaurants")
+business1 <- business1[grepl(paste(pattern1),business1$categories),]
+business1$state <- as.factor(business1$state)
+levels(business1$state)
+```
+
+\subsection{Analysis of the Restaurant Attributes}
+
+\subsubsection{Model Select and Create for Regression}
+
+I select generalized linear regression models for the full model and than divides the model into three different models group by the states. 
+
+```{r}
+business1 %>% group_by(business1$state) %>% summarise(., stars_mean=mean(stars))
+
+businessAZ <-business1 %>% filter(., state=="AZ") %>% as.data.frame()
+businessON <-business1 %>% filter(., state=="ON") %>% as.data.frame()
+businessOH <-business1 %>% filter(., state=="OH") %>% as.data.frame()
+
+modelAZ <- glm(data = businessAZ, formula = businessAZ$stars ~ businessAZ$longitude + businessAZ$latitude )
+
+modelON <- glm(data = businessON, formula = businessON$stars ~ businessON$longitude + businessON$latitude )
+
+modelOH <- glm(data = businessOH, formula = businessOH$stars ~ businessOH$longitude + businessOH$latitude )
+
+colSums(is.na(businessOH))
+```
+
+```{r}
+summary(modelAZ)
+
+
+```
+```{r}
+summary(modelOH)
+```
+```{r}
+summary(modelON)
+par(mfrow = c(2,2))
+plot(modelON)
+
+```
+
+```{r}
+modelmix <- glm(data = business1, formula = business1$stars~ business1$longitude+business1$latitude)
+summary(modelmix)
+
+```
+```{r}
+plot(businessON$longitude,businessON$stars)
+plot(businessON$latitude,businessON$stars)
+#range(businessON$longitude)
+```
+
+\subsubsection{Regression analysis for State ON and Interpretation}
+
+After I ran four models and summarized them. I realize the modelON works because both of the two variables are siginificant from the summary table of which their P-values are smaller than the siginificant level 0.05. So it is legit to say there is an association between the stars of wine bars and restaurants in State ON. 
+
+The formuala is: 
+
+$$\ Stars = 1.083 * Longitude - 2.2195 * Latitude + 186.7469 $$
+
+It means that in State ON, the higher the longtitude and lower the latitude, will result in higher stars. And geometrically it means the warmer more humid the location, the better the rating of the wine bars and restaurants in Ontario Canada.
+
+
+
+
+
+
+
