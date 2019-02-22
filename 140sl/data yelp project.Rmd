@@ -28,6 +28,10 @@ str(business1$categories)
 ```
 
 ```{r}
+
+```
+
+```{r}
 names(business1)
 #attach(business1)
 business1 <- business1 %>% filter(.,state=="ON" | state =="OH" | state =="AZ")
