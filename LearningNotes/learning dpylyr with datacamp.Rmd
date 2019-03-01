@@ -29,6 +29,8 @@ hflights
 ```
 ```{r}
 glimpse(hflights)
+
+9% 8
 ```
 
 ```{r}
@@ -144,6 +146,20 @@ test <- advertising[!sample, ]
 
 
 ```
+
+
+```{r}
+s
+```
+
+```{r}
+
+
+9 %% 2
+
+
+```
+
 
 
 
