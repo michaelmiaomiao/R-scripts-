@@ -54,6 +54,13 @@ lut[two]
 ```{r}
  # Print out a summary with variable max_div
 summarize(filter(hflights, Diverted == 1), max_div = max(Distance))
+
+
+
+```
+
+```{r}
+re
 ```
 
 ```{r}
@@ -88,6 +95,9 @@ mtcars
 is.na(mtcars
       )
 ```
+
+
+
 
 ```{r}
 # ggplot(data = delay, mapping = aes(x = dist, y = delay)) +

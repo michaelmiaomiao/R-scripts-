@@ -1,0 +1,23 @@
+---
+title: "learning stats using R for data science"
+author: "JIASHU MIAO"
+date: "3/2/2019"
+output: html_document
+---
+```{r}
+pkg <- c("readr","readxl","dplyr","stringr","ggplot2","tidyr","matrixStats")
+pkgload <- lapply(pkg, require, character.only = TRUE)
+```
+```{r}
+state <- read.csv("state.csv")
+mean(state$Population)
+mean(state[["Population"]],trim = 0.1)
+# 俩括号进入population
+weighted.mean(state$Murder.Rate, w= state$Population)
+weightedMedian(state$Murder.Rate, w= state$Population)
+hist(state$Murder.Rate,freq = FALSE)
+lines(density(state$Murder.Rate),lwd = 3, col= "blue")
+# barplot(as.matrix(dfw))
+```
+
+

@@ -1,0 +1,30 @@
+---
+title: "hw6 GRAPHS"
+author: "JIASHU MIAO"
+date: "3/4/2019"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r}
+pkg <- c("readr","readxl","dplyr","stringr","ggplot2","tidyr","stats")
+pkgload <- lapply(pkg, require, character.only = TRUE)
+library(jsonlite,warn.conflicts = F)
+business <- fromJSON(sprintf("[%s]", paste(readLines("/Users/MichaelMiao/Documents/GitHub/Visualization-of-Yelp-s-Academic-Dataset/Project/source/business.json"), collapse=",")),flatten=TRUE)
+#head(business,n=2)
+business1=business
+#head(business,n=2)
+#str(business1$categories)
+#names(business1)
+business1 <- business1 %>% select(.,longitude,latitude,stars,state)
+box <- business1 %>% group_by(business1$state) %>% summarise(., stars_mean=mean(stars))
+
+```
+```{r}
+model1 <- lm(data = business1,formula = business1$stars~business1$longitude)
+#summary(model1)
+par(mfrow=c(2,2))
+plot(model1)
+plot(business1$longitude,business1$stars,col="red")
+```
