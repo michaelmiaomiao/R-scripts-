@@ -468,7 +468,67 @@ r-shiny examples
 # command + delete 删除整个行
 
 
+# for
+for (i in x){
+ print(x[i])
+}
 
+
+# matplot for matrix
+
+# drop=false 
+可以avoid 变成vector for matrix
+
+# 选择funciton 太酷了
+`file.choose()`
+
+#merge df
+`merge(statas, mydf, by.x=",by.y=")`
+
+# drop a column 
+`df$column_wanted_drop = NULL`
+
+
+# ggplot
+data - geometriec - geometrics - statisits - facets- coordinates - theme
+
+# overriding
+
+# geom_density
+`geom_density(aes(fill=genre),position="stack")`
+
+# add smooth 
+geom_smooth(fill=NA)	
+
+#geom_jitter()
+see the data better
+
+# alpha=0.5 负责透明度
+
+
+#facet
+`facet_grid(Genre~.)`
+
+`facet_grid(Genre~year)` 方格子
+
+# coordinate
+```{r}
+xlim(500,900)+ylim(1,10)
+# wont work well for all time.
+# because cut off the graph beyond limit
+
+```
+
+# zoom 
+```
+coor_cartesian(ylim=c(0,50),xlim=c())
+
+```
+
+#theme
+可以改变坐标轴文字大小和 title大小颜色等
+legeng.justificaition=c(1,1) 右上角
+family=改字体
 
 
 

@@ -163,8 +163,12 @@ s
 ```
 
 ```{r}
-
-
+rnorm(2)
+qnorm(1)
+#file.choose()
+# runif(1)
+```
+```{r}
 
 ```
 

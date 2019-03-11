@@ -23,7 +23,7 @@ box <- business1 %>% group_by(business1$state) %>% summarise(., stars_mean=mean(
 ```
 ```{r}
 model1 <- lm(data = business1,formula = business1$stars~business1$longitude)
-#summary(model1)
+summary(model1)
 par(mfrow=c(2,2))
 plot(model1)
 plot(business1$longitude,business1$stars,col="red")

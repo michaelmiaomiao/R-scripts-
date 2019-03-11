@@ -18,6 +18,7 @@ weightedMedian(state$Murder.Rate, w= state$Population)
 hist(state$Murder.Rate,freq = FALSE)
 lines(density(state$Murder.Rate),lwd = 3, col= "blue")
 # barplot(as.matrix(dfw))
+rweibull(100,1.5,5000)
 ```
 
 

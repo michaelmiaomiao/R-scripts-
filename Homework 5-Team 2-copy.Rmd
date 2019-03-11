@@ -22,10 +22,9 @@ knitr::opts_chunk$set(echo = TRUE)
 library(jsonlite)
 #setwd("~/Downloads/STATS COURSES/STATS 140SL/Homework 5/yelp_dataset")
 
-#business <- fromJSON(sprintf("[%s]", paste(readLines("~/Downloads/STATS COURSES/STATS 140SL/Homework 5/yelp_dataset/business.json"), 
-                                           collapse=",")),flatten=TRUE)
+business <- fromJSON(sprintf("[%s]", paste(readLines("/Users/MichaelMiao/Documents/GitHub/Visualization-of-Yelp-s-Academic-Dataset/Project/source/business.json"), collapse=",")),flatten=TRUE)
 #checkin <- fromJSON(sprintf("[%s]", paste(readLines("~/Downloads/STATS COURSES/STATS 140SL/Homework 5/yelp_dataset/checkin.json"), 
-                                          collapse=",")), flatten=TRUE)
+                                          
 ## user <- fromJSON(sprintf("[%s]", paste(readLines("user.json",n=10000), collapse=",")),
                  ## flatten=TRUE)
 
@@ -38,7 +37,7 @@ library(jsonlite)
                    ##flatten = TRUE)
 
 head(business,n=2)
-head(checkin,n=3)
+
 ```
 
 \section{Research Question Proposed}

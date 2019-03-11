@@ -32,7 +32,7 @@ params:
 # Package automatic upload and install
 # set up working directory
 # Chunk for package 
-setwd("~/git/R-scripts/Reportformula")
+setwd("~/Github/R-scripts/Report/Reportformula")
 
 
 if (!require("magrittr")) install.packages("magrittr")
