@@ -30,7 +30,7 @@ hflights
 ```{r}
 glimpse(hflights)
 
-9% 8
+9%%8
 ```
 
 ```{r}
@@ -60,7 +60,7 @@ summarize(filter(hflights, Diverted == 1), max_div = max(Distance))
 ```
 
 ```{r}
-re
+
 ```
 
 ```{r}
@@ -141,7 +141,7 @@ library(modelr)
 library(broom)
 advertising <- read_csv("http://www-bcf.usc.edu/~gareth/ISL/Advertising.csv") %>%
   select(-X1)
-glimpse(zhuyaos)
+glimpse(box)
 
 set.seed(123)
 
