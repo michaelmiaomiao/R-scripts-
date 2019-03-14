@@ -1,0 +1,238 @@
+---
+title: "Stats 102A - Homework 6"
+author: "Put Your Name Here"
+date: 
+output: html_document
+---
+
+_Modify this file with your answers and responses. Please preserve all text that is italicized._
+
+### Reading
+
+a. Comparing Groups - Chapters 6 (especially section 6.4), 7, 8, and 9 (skip 9.7 and 9.9)
+
+b. Science Isn't Broken -  http://fivethirtyeight.com/features/science-isnt-broken
+
+c. ASA's 2016 statement on Statistical Significance and P-Values
+
+http://amstat.tandfonline.com/doi/pdf/10.1080/00031305.2016.1154108?needAccess=true
+
+
+# Task 1: Read the two webpages linked above. Explain what a p-value is and how a researcher should use it. (150 words or less)
+
+-- write your answer here
+
+
+
+
+# Task 2
+
+## Randomization tests 
+
+credit: David C. Howell
+
+"When waiting to get someone's parking space, have you ever thought that the driver you are waiting for is taking longer than necessary? Ruback and Juieng (1997) ran a simple experiment to examine that question. They observed behavior in parking lots and recorded the time that it took for a car to leave a parking place. They broke the data down on the basis of whether or not someone in another car was waiting for the space.
+
+The data are positively skewed, because a driver can safely leave a space only so quickly, but, as we all know, they can sometimes take a very long time. But because the data are skewed, we might feel distinctly uncomfortable using a parametric t-test. So we will adopt a randomization test." -- David C. Howell
+
+Miles: Technically this is an observational study, but the assumption of exchangeability still holds. Whether someone is waiting for the driver or not can be assumed to be random and not related to the driver itself. Thus, all permutations of the condition are equally likely, and it is valid to use a randomization test.
+
+```{r}
+# Data credit: David C. Howell
+# no waiting records the time it took a driver to leave the parking spot if no one was waiting for the driver
+no_waiting <- c(36.30, 42.07, 39.97, 39.33, 33.76, 33.91, 39.65, 84.92, 40.70, 39.65,
+39.48, 35.38, 75.07, 36.46, 38.73, 33.88, 34.39, 60.52, 53.63, 50.62)
+
+# waiting records the time it takes a driver to leave if someone was waiting on the driver 
+waiting <- c(49.48, 43.30, 85.97, 46.92, 49.18, 79.30, 47.35, 46.52, 59.68, 42.89,
+49.29, 68.69, 41.61, 46.81, 43.75, 46.55, 42.33, 71.48, 78.95, 42.06)
+
+
+mean(waiting)
+mean(no_waiting)
+obs_dif <- mean(waiting) - mean(no_waiting)
+```
+
+Conduct a randomization test to test the hypothesis that there is no difference in average time for drivers who have a person waiting vs those who do not have a person waiting, against the alternative that drivers who have a person waiting will take *longer* than if they did not.
+
+Be sure to calculate an empirical p-value and make the appropriate conclusion.
+
+
+# Task 3
+
+## Randomization test for numeric data
+
+## _Textbook: Comparing Groups, Chapter 6, Exercise 6.1_
+
+Make sure you use the **Comparing Groups** textbook. Make sure you read the description of the experiment that generated the data on page 118 of the textbook.
+
+Data: <https://raw.githubusercontent.com/zief0002/comparing-groups/master/data/AfterSchool.csv>
+
+Data Codebook: <https://github.com/zief0002/comparing-groups/blob/master/data-codebooks/AfterSchoolProgram.pdf>
+
+Be sure to calculate an empirical p-value and make the appropriate conclusion.
+
+
+
+## Bootstrap
+
+There are parametric and nonparametric bootstrap methods. Parametric bootstrap methods assume that the population follows some specified distribution. For parametric bootstrap methods to produce reasonable results, the parametric distribution that is used to model the population must be correct.
+
+Nonparametric bootstrap methods do not specify the distribution. In these scenarios, the sample provides the only information we have about the population. We can use the sample as a pseudo-population by resampling it, and thus we can quantities like the standard error.
+
+### Worked Example
+
+Install and load the package "bootstrap". Install and load the package "boot"
+
+Inside the package bootstrap, there are two data sets of interest to us: `law` and `law82`. The data set `law82` contains LSAT scores and GPAs of students admitted to law school in the universe of 82 law schools. The data set `law` is a sample of 15 of these schools. (Curiously, the GPAs get multiplied by 100 in `law`)
+
+By having the population and a sample, we can see how the bootstrap behaves. 
+
+We can see the true value of the correlation between LSAT and GPA in the population.
+
+```{r, error = TRUE}
+library(bootstrap)
+cor(law82$LSAT, law82$GPA)
+```
+
+Now we will take a look at the sample, and a sample of our own making.
+
+```{r, error = TRUE}
+cor(law$LSAT, law$GPA)
+set.seed(1)
+law_samp1 <- law82[sample(1:82,15), 2:3]  #subset based on some randomly selected rows
+cor(law_samp1$LSAT, law_samp1$GPA)
+set.seed(2)
+law_samp2 <- law82[sample(1:82,15), 2:3]
+cor(law_samp2$LSAT, law_samp2$GPA)
+set.seed(10)
+law_samp10 <- law82[sample(1:82,15), 2:3]
+cor(law_samp10$LSAT, law_samp10$GPA)
+```
+We can see that the correlation between LSAT and GPA can depend heavily on the sample selected from the population. law_samp1 has a correlation of about 0.95, law_samp2 has r = 0.63, and law_samp3 has r = 0.82.
+
+We can use bootstrap to get an estimate of the standard error of the correlation statistic. And thus by having the standard error, we can perform further statistical inference.
+
+To perform the bootstrap, we will take a look at the `law` data set, which is a sample of 15 taken from the population of 82. We will use this as our pseudo population, by resampling with replacement.
+
+```{r}
+# manual bootstrap
+B <- 500  # number of replications
+n <- nrow(law)  # sample size
+results <- rep(NA, B)
+
+set.seed(1)
+for(i in 1:B){
+  # randomly select some indices
+  index <- sample(1:n, size = n, replace = TRUE)
+  # now that we have the indices, we will subset each column
+  lsat <- law$LSAT[index]
+  gpa <- law$GPA[index]
+  results[i] <- cor(lsat, gpa)
+}
+
+sd(results)  # the standard error
+```
+
+When looking at the sample of 15, we get a standard error of about 0.13.
+
+### Aside: Using Package Boot
+
+The loop I wrote above (I think) gives a fairly clear picture of what is happening in the bootstrap process: We randomly sample from the given sample with replacement and calculate the desired sample statistic each time. We record each of these results, and then calculate the standard error (or some other statistic.)
+
+In practice, bootstrapping is often performed using the `boot` package. The primary function in `boot` is `boot()`, which requires three arguments: the data, a function for the statistic, and the number of replicates.
+
+The trickiest part to get used to is writing the functions that calculate the desired statistic. These functions always have two arguments: the data and the indices. The way the `boot()` function works is that it counts how many rows are in the data, and randomly samples with replacement from 1:n. It then uses those indices to subset the data to calculate the desired statistic.
+
+In our case, we want to find the correlation. So we will write our function to do so like this:
+
+```{r}
+cor_func <- function(data, index){
+  d <- data[index, ]
+  lsat <- d$LSAT
+  gpa <- d$GPA
+  cor(lsat, gpa)
+}
+```
+
+Or more concisely...
+
+```{r}
+cor_func <- function(data, index){
+  cor(data[index, 1], data[index, 2])
+}
+```
+
+We then use the above function in `boot()` as follows:
+
+```{r}
+library(boot)
+results <- boot(law, cor_func, 500)
+results
+sd(results$t)
+```
+
+### Running bootstrap on the other random samples
+
+We can attempt this with the other random samples that we took from the population.
+
+```{r}
+results1 <- boot(law_samp1, cor_func, 500)
+sd(results1$t)
+
+results2 <- boot(law_samp2, cor_func, 500)
+sd(results2$t)
+
+results10 <- boot(law_samp10, cor_func, 500)
+sd(results10$t)
+```
+
+The SE estimate from samp1 is about 0.03, for samp2 it's about 0.15, and for samp10 it's about 0.06.
+
+So our estimates of the standard error also seem to exhibit a wide amount of variation depending on the properties of the sample that acted as our pseudo-population.
+
+So how good is the bootstrap at estimating these quantities?
+
+If the population is assumed to be normally distributed, then the correlation between x and y should have a standard error of:
+
+$$\frac{(1 - \rho^2)}{\sqrt{n - 1}}$$
+
+Our population (`law82`) has a correlation of 0.76. So our standard error for samples of size 15 should be about `r (1 - .76^2)/sqrt(14)`.
+
+
+# Task 4
+
+## _Comparing Groups, Chapter 7, Exercise 7.1_
+
+Data: <https://raw.githubusercontent.com/zief0002/comparing-groups/master/data/HSB.csv>
+
+Data codebook: <https://github.com/zief0002/comparing-groups/blob/master/data-codebooks/HSB.pdf>
+
+
+# Task 5 
+
+Bootstrap hypothesis test for the speed of light.
+
+In 1882 Simon Newcomb tried to measure the speed of light. He measured the time it took for light to travel from Fort Myer on the west bank of the Potomac River to a fixed mirror at the foot of the Washington monument approximately 3720 meters away.  <https://agupubs.onlinelibrary.wiley.com/doi/pdf/10.1029/2002EO000297>
+
+The values are recorded as deviations from 24800 nanoseconds. Thus a value of 28 means that Newcomb measured the time to travel to the mirror and back as 24828 nanoseconds.
+
+He made 66 measurements, and the deviations are as follows:
+
+```{r}
+light <- c(28, 26, 33, 24, 34, -44, 27, 16, 40, -2, 29, 22, 24, 21, 25, 30, 23, 29, 31, 19, 
+           24, 20, 36, 32, 36, 28, 25, 21, 28, 29, 37, 25, 28, 26, 30, 32, 36, 26, 30, 22, 
+           36, 23, 27, 27, 28, 27, 31, 27, 26, 33, 26, 32, 32, 24, 39, 28, 24, 25, 32, 25, 
+           29, 27, 28, 29, 16, 23)
+```
+
+The modern accepted value for the time light travels the distance used in the experiment is 24833 nanoseconds, or a deviation of 33.
+
+- Perform a bootstrap test to see if Newcomb's measurements are significantly different from the modern accepted value of 33.
+    - H0: mean = 33, Ha: mean != 33
+    - The mean of this sample of data is 26.212.
+    - Recenter the vector light, so it is centered at 33. This simulates a population of data that is centered at the true mean, but exhibits the same variation around the mean as Newcomb's measurements.
+    - Perform bootstrap resampling (you might need 10^5 repetitions) to see how often a random sample drawn from this population could produce a mean as extreme as the sample observed in our data.
+
+
+- Perform the bootstrap test again after removing the two negative outliers (-2, and -44) to see if the Newcomb's measurements are significantly different from the modern accepted value of 33. Don't forget to recenter the data after removing the outliers.
