@@ -530,5 +530,34 @@ coor_cartesian(ylim=c(0,50),xlim=c())
 legeng.justificaition=c(1,1) 右上角
 family=改字体
 
+#strwrap(
+    "Stopping distance of cars (ft) vs. speed (mph) from Ezekiel (1930)",
+    width = 30), collapse = "\n")
+    
+    
+# paste 
+(nth <- paste0(1:12, c("st", "nd", "rd", rep("th", 9))))
+ [1] "1st"  "2nd"  "3rd"  "4th"  "5th"  "6th"  "7th"  "8th"  "9th"  "10th"
+[11] "11th" "12th"
+
+
+# df %>%
+  select(select_vars(names(df), starts_with('b', ignore.case = TRUE)))
+
+#Alternatively
+select_vars(names(df), matches('^[Bb]'))
+
+
+
+# With R 3.3.0, we can use strrep from base R
+
+strrep("my_string",2)
+#[1] "my_stringmy_string"
+We can also pass a vector of values in times
+
+strrep("my_string",1:3)
+#[1] "my_string"                   "my_stringmy_string"         
+#[3] "my_stringmy_stringmy_string" 
+
 
 
