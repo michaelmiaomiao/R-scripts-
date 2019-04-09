@@ -605,3 +605,18 @@ Convert to a 5 × 2 matrix:
 
 curve func for drawing functions.
 
+
+
+
+> wellness$Fatigue[wellness$Fatigue == 7] <- 6
+> wellness_new <- wellness %>% 
+>   group_by(PlayerID) %>% 
+>   mutate(fatigue_stand = standardize(Fatigue), sore_stand = standardize(Soreness), desire_stand = standardize(Desire),
+>          irritability_stand = standardize(Irritability), sleepquality_stand = standardize(SleepQuality))
+> 
+> 
+> 
+
+
+# 
+
