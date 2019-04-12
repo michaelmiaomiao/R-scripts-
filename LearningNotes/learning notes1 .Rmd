@@ -1,0 +1,37 @@
+---
+title: "Untitled"
+author: "JIASHU MIAO"
+date: "4/9/2019"
+output: html_document
+---
+```{r}
+pkg <- c("readr","readxl","dplyr","stringr","ggplot2","tidyr")
+```
+
+
+```{r}
+seq(1,nrow(rpe),10)
+
+gps <- gps %>% group_by(PlayerID) %>% 
+  mutate(tackle = (AccelImpulse > 3.5 & Speed < 1 &(AccelX < 0 | AccelY < 0 | AccelZ < 0))) 
+
+gps$group <- rep(1:ceiling(nrow(gps)/10),each=10)
+gps$group %>% tail(.,20)
+
+ tapply(gps$PlayerID,gps$GameID,mean)
+# seq_len(gps,length.out = 10)
+tackle_num <- gps %>% group_by(GameID,Half,PlayerID,group) %>% 
+   summarise(tackle = any(tackle), speedAverage = mean(Speed)) 
+
+
+tackle_num
+
+
+tackle_num2 <-  gps %>% group_by(GameID,Half,PlayerID,group) %>% 
+   summarise(tackle = any(tackle), speedAverage = mean(Speed)) %>%  summarise(tackle=sum(tackle),speedAverage=mean(speedAverage))
+tackle_num2
+tackle_num
+# summarise第二次就 无视第二个groypby了
+
+```
+
