@@ -19,7 +19,8 @@ gps$group <- rep(1:ceiling(nrow(gps)/10),each=10)
 gps$group %>% tail(.,20)
 
  tapply(gps$PlayerID,gps$GameID,mean)
-# seq_len(gps,length.out = 10)
+# seq_len(nrow(gps),length.out = 10)
+ # ?seq_len
 tackle_num <- gps %>% group_by(GameID,Half,PlayerID,group) %>% 
    summarise(tackle = any(tackle), speedAverage = mean(Speed)) 
 
@@ -34,4 +35,16 @@ tackle_num
 # summarise第二次就 无视第二个groypby了
 
 ```
+
+```{r}
+# install.packages("MASS")
+library("MASS")
+
+re <- 1/9*(12+6+28+12+24+34) 
+fractions(re)
+
+
+# suppressMessages(library(foo))
+```
+
 
