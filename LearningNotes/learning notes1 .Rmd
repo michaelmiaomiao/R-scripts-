@@ -40,11 +40,41 @@ tackle_num
 # install.packages("MASS")
 library("MASS")
 
-re <- 1/9*(12+6+28+12+24+34) 
+re <- 1 / 9 * (12 + 6 + 28 + 12 + 24 + 34)
 fractions(re)
 
 
 # suppressMessages(library(foo))
+
+
+# command shit k !!!!
+# command ooption (shift )L
+# coomnd shift option G
+# control f11 f12 ！！！！！
+# cmd shift A reform
+# cmd f9 f10
+
+#  option up/ down move line
+
+# cmmd left/ right!!!
+
+
+# option + delete 
+
+# view ctrl + 1、2、3、4
+
+# commna shit left / right 可以选择
+               #  	Cmd+Option+O
+# Unfold All	Shift+Alt+O	
+# Cmd+Shift+Option+O
+# Cmd+Shift+Option+O
+# Go to line	Shift+Alt+G	Cmd+Shift+Option+G
+# Çd ion
+
+
+
+
+
 ```
 
 
