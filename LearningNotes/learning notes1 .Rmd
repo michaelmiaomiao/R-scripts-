@@ -203,6 +203,67 @@ set.seed(42)
   )
  min(model$results$RMSE)
 ```
+```{r}
+# install.packages("readtext")
+library("readtext")
+files="https://kenbenoit.net/pdfs/text_analysis_in_R.pdf"
+rt <- readtext(files,text_field = "texts")
+
+
+rt
+
+
+
+
+
+
+```
+```{r}
+##text analysi 
+install.packages("quanteda")
+```
+
+```{r}
+library("quanteda")
+
+
+text <- "An example of preprocessing techiniqeus "
+toks <- tokens(text)
+
+toks[[1]] %>% length()
+
+
+
+
+```
+
+```{r}
+toupper(toks)
+```
+
+```{r}
+# For example using gsub or sub
+# 
+#     gsub('.*:(.*)','\\1',string)
+#     1] "E001" "E002" "E003"
+```
+```{r}
+sw <- stopwords("english") %>% print
+tokens_remove(toks,sw)
+
+```
+
+```{r}
+# install.packages("spacyr")
+```
+
+```{r}
+text
+
+ tokens(text,ngrams = 3,skip = 0:1)
+library(quanteda)
+tokens(text)
+```
 
 
 
