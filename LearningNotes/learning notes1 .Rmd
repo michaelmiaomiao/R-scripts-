@@ -261,6 +261,8 @@ tokens_remove(toks,sw)
 text
 
  tokens(text,ngrams = 3,skip = 0:1)
+ tokens(text,ngrams = 3,skip = 0:2)
+library(quanteda)
 library(quanteda)
 tokens(text)
 ```
