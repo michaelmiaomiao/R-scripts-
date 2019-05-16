@@ -8,6 +8,17 @@ output: html_document
 pkg <- c("readr","readxl","dplyr","stringr","ggplot2","tidyr")
 ```
 
+```{r}
+pkg <- c("readr","readxl","dplyr","stringr","ggplot2","tidyr","car","caret"
+
+,"ranger"
+,"rsample"
+,"randomForest")
+pkgload <- lapply(pkg, require, character.only = TRUE)
+
+```
+
+
 
 ```{r}
 seq(1,nrow(rpe),10)
@@ -72,9 +83,127 @@ fractions(re)
 # Çd ion
 
 
-
+# Median imputation is fast, but...
+# Can produce incorrect results if data missing not at random
 
 
 ```
+
+```{r}
+ data(mtcars)
+ mtcars[mtcars$disp < 140, "hp"] <- NA
+ Y <- mtcars$mpg
+ X <- mtcars[, 2:4]
+# Use median imputation
+ 
+ set.seed(42)
+ model <- train(x = X, y = Y, method = "glm",
+                 preProcess = "medianImpute")
+ print(min(model$results$RMSE))
+
+ 
+ 
+
+  set.seed(42)
+ model <- train(x = X, y = Y,
+                 method = "glm",
+                 preProcess = "knnImpute"
+  )
+ 
+ print(min(model$results$RMSE))
+# Compare to 3.61 for median imputation
+```
+```{r}
+ # Generate some data with missing values
+ data(mtcars)
+ set.seed(42)
+ mtcars[sample(1:nrow(mtcars), 10), "hp"] <- NA
+ Y <- mtcars$mpg
+ X <- mtcars[,2:4]
+# Use linear model "recipe"
+ set.seed(42)
+ model <- train(
+    x = X, y = Y, method = "glm",
+    preProcess = c("medianImpute", "center", "scale")
+  )
+ print(min(model$results$RMSE))
+ 3.612713
+ 
+ 
+ # spatial 
+ set.seed(42)
+ model <- train(
+    x = X, y = Y, method = "glm",
+    preProcess = c("medianImpute", "center", "scale", "spatialSign"))
+ min(model$results$RMSE)
+
+```
+
+```{r}
+# PCA before modeling
+ set.seed(42)
+ model <- train(
+    x = X, y = Y, method = "glm",
+    preProcess = c("medianImpute", "center", "scale", "pca")
+  )
+ min(model$results$RMSE)
+```
+
+●
+● ●
+●
+Start with median imputation For linear models...
+Center and scale
+Try KNN imputation if data missing not at random
+Try PCA and spatial sign
+**Tree-based models don't need much preprocessing**
+
+```{r}
+     # Reproduce dataset from last video
+ data(mtcars)
+ set.seed(42)
+ mtcars[sample(1:nrow(mtcars), 10), "hp"] <- NA
+ Y <- mtcars$mpg
+ X <- mtcars[, 2:4]
+# Add constant-valued column to mtcars
+
+  X$bad <- 1
+```
+
+```{r}
+model <- train(
+    x = X, y = Y, method = "glm",
+    preProcess = c("medianImpute", "center", "scale", "pca")
+  )
+# model
+```
+
+Make sure they were fit on the same data! Selection criteria
+Highest average AUC
+Lowest standard deviation in AUC
+● ●
+● ●
+●
+The resamples() function is your friend
+
+In Machine Learning, performance measurement is an essential task. So when it comes to a classification problem, we can count on an AUC - ROC Curve. When we need to check or visualize the performance of the multi - class classification problem, we use AUC (Area Under The Curve) ROC (Receiver Operating Characteristics) curve. It is one of the most important evaluation metrics for checking any classification model’s performance. It is also written as AUROC (Area Under the Receiver Operating Characteristics)
+
+```{r}
+xyplot(resamples, metric = "ROC")
+```
+
+```{r}
+summary(model)
+```
+```{r}
+set.seed(42)
+ model <- train(
+    x = X, y = Y, method = "glm",
+    preProcess = c("zv", "medianImpute", "center", "scale", "pca")
+  )
+ min(model$results$RMSE)
+```
+
+
 
 
