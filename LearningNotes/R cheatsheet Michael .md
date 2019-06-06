@@ -181,3 +181,22 @@ test_bc_y  <- forecast::BoxCox(test_1$Sale_Price, lambda)
 
 
 sapply(house[, important], function(x) sum(is.na(x)))
+
+
+a <- c(8, 9, 10)
+b <- c(9, 10)
+c <- 10
+
+seq_along(a)
+# [1] 1 2 3
+seq_along(b)
+# [1] 1 2
+seq_along(c)
+# [1] 1
+
+seq(a)
+# [1] 1 2 3
+seq(b)
+# [1] 1 2
+seq(c)
+# [1]  1  2  3  4  5  6  7  8  9 10
